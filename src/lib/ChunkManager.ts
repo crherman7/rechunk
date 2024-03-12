@@ -12,7 +12,7 @@ export class ChunkManager {
   // Static instance of ChunkManager
   protected static instance: ChunkManager;
   // Cache to store imported chunks
-  protected cache: Record<string, string> = {};
+  protected cache: Record<string, React.ComponentType<any>> = {};
   // Resolver function to resolve chunk imports
   protected resolver: ResolverFunction = async function () {
     // Default resolver function throws error
@@ -63,7 +63,11 @@ export class ChunkManager {
    * @param {string} chunk - The chunk string.
    * @returns {*} The JavaScript component generated from the chunk.
    */
-  protected chunkToComponent(chunkId: string, chunk: string, global: object) {
+  protected chunkToComponent(
+    chunkId: string,
+    chunk: string,
+    global: object,
+  ): React.ComponentType<any> {
     const exports = {};
 
     const Component = new Function(
@@ -109,7 +113,7 @@ export class ChunkManager {
         return null;
       },
     },
-  ) {
+  ): Promise<React.ComponentType<any>> {
     // Warn if verification is turned off
     warning(verify, 'Verification was turned off; this is insecure.');
 

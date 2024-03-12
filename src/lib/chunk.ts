@@ -1,7 +1,7 @@
 // Importing ChunkManager class from './ChunkManager' file
 import {ChunkManager} from './ChunkManager';
 // Importing ResolverFunction type from '../@types' file
-import {ResolverFunction} from '../@types';
+import type {ResolverFunction} from '../@types';
 
 /**
  * Asynchronously imports a chunk using the shared ChunkManager instance.
