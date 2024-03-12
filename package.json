@@ -16,6 +16,10 @@
     "react": "*",
     "react-native": "*"
   },
+  "dependencies": {
+    "tiny-invariant": "^1.3.3",
+    "tiny-warning": "^1.0.3"
+  },
   "devDependencies": {
     "@react-native/eslint-config": "^0.73.2",
     "@react-native/typescript-config": "^0.74.0",
