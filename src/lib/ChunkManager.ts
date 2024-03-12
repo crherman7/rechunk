@@ -1,9 +1,9 @@
 // Importing necessary modules and types
 import warning from 'tiny-warning';
+import invariant from 'tiny-invariant';
 import {NativeModules} from 'react-native';
 
 import type {ResolverFunction} from '../@types';
-import invariant from 'tiny-invariant';
 
 /**
  * Manager class for handling chunk imports and caching.
@@ -14,7 +14,7 @@ export class ChunkManager {
   // Cache to store imported chunks
   protected cache: Record<string, string> = {};
   // Resolver function to resolve chunk imports
-  protected resolver: ResolverFunction = function () {
+  protected resolver: ResolverFunction = async function () {
     // Default resolver function throws error
     throw new Error(
       'rechunk resolver was not added.' +
@@ -59,19 +59,24 @@ export class ChunkManager {
 
   /**
    * Converts chunk string to a JavaScript component.
+   * @param {string} chunkId - The chunk identifier.
    * @param {string} chunk - The chunk string.
    * @returns {*} The JavaScript component generated from the chunk.
    */
-  protected chunkToComponent(chunk: string, global: object) {
+  protected chunkToComponent(chunkId: string, chunk: string, global: object) {
     const exports = {};
 
-    return new Function(
+    const Component = new Function(
       '__rechunk__',
       'exports',
       `${Object.keys(global)
         .map(key => `var ${key} = __rechunk__.${key};`)
         .join('\n')}; ${chunk}; return exports.default;`,
     )(...[global, exports]);
+
+    this.cache[chunkId] = Component;
+
+    return Component;
   }
 
   /**
@@ -86,13 +91,13 @@ export class ChunkManager {
    * Imports a chunk asynchronously and returns the corresponding JavaScript component.
    * @param {string} chunkId - The ID of the chunk to import.
    * @param {string} publicKey - The public key for verifying the chunk.
-   * @param {boolean} [verify=true] - Indicates whether to verify the chunk.
+   * @param {boolean} verify - Indicates whether to verify the chunk.
    * @returns {Promise<*>} A promise resolving to the JavaScript component imported from the chunk.
    */
   async importChunk(
     chunkId: string,
     publicKey: string,
-    verify = true,
+    verify: boolean,
     global = {
       require: (moduleId: string) => {
         if (moduleId === 'react') {
@@ -110,7 +115,7 @@ export class ChunkManager {
 
     // If chunk is already cached, return the cached component
     if (this.cache[chunkId]) {
-      return this.chunkToComponent(this.cache[chunkId], global);
+      return this.cache[chunkId];
     }
 
     // Resolve the chunk
@@ -126,19 +131,13 @@ export class ChunkManager {
         publicKey,
       );
 
-      // Add verified chunk to cache
-      this.cache[chunkId] = verifiedChunk;
-
-      return this.chunkToComponent(verifiedChunk, global);
+      return this.chunkToComponent(chunkId, verifiedChunk, global);
     }
 
     // If verification is turned off, decode the chunk
     // @ts-ignore
     const unverifiedChunk = await this.nativeChunkManager.decode(chunk.data);
 
-    // Add unverified chunk to cache
-    this.cache[chunkId] = unverifiedChunk;
-
-    return this.chunkToComponent(unverifiedChunk, global);
+    return this.chunkToComponent(chunkId, unverifiedChunk, global);
   }
 }

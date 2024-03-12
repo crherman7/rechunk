@@ -8,9 +8,13 @@ import {ResolverFunction} from '../@types';
  * @param {string} chunkId - The ID of the chunk to import.
  * @returns {Promise<*>} A promise resolving to the imported JavaScript component.
  */
-export async function importChunk(chunkId: string) {
+export async function importChunk(
+  chunkId: string,
+  publicKey: string,
+  verify = true,
+) {
   // Using shared ChunkManager instance to import the chunk
-  return ChunkManager.shared.importChunk(chunkId, '');
+  return ChunkManager.shared.importChunk(chunkId, publicKey, verify);
 }
 
 /**
