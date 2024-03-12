@@ -1,12 +1,17 @@
 {
-  "name": "rechunk",
+  "name": "@crherman7/rechunk",
   "version": "1.0.0",
   "description": "Re.Chunk remote chunks for React Native",
   "license": "MIT",
   "private": true,
   "repository": "git@github.com:crherman7/rechunk.git",
   "author": "Chris Herman <crherman7@gmail.com>",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "tsc --watch --project ./tsconfig.build.json",
+    "build": "tsc --project ./tsconfig.build.json"
+  },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
