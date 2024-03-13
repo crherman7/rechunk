@@ -1,5 +1,5 @@
-@objc(RCTReChunk)
-class RCTReChunk: NSObject {
+@objc(ReChunk)
+class ReChunk: NSObject {
 
   @objc(multiply:withB:withResolver:withRejecter:)
   func multiply(a: Float, b: Float, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
