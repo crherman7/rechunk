@@ -39,9 +39,7 @@ export class ChunkManager {
    * @param {Object} nativeChunkManager - Native chunk manager module.
    * @throws {Error} Throws error if instance is already created or if native chunk manager module is not found.
    */
-  protected constructor(
-    private nativeChunkManager = NativeModules.ChunkManager,
-  ) {
+  protected constructor(private nativeChunkManager = NativeModules.ReChunk) {
     // Ensure only one instance of ChunkManager is created
     if (ChunkManager.instance) {
       throw new Error(
@@ -132,6 +130,8 @@ export class ChunkManager {
         chunk.data,
         // @ts-ignore
         chunk.hash,
+        //@ts-ignore
+        chunk.sig,
         publicKey,
       );
 
