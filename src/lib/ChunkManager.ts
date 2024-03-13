@@ -1,14 +1,16 @@
 // Importing necessary modules and types
 import warning from 'tiny-warning';
 import invariant from 'tiny-invariant';
+import EventEmitter from 'eventemitter3';
 import {NativeModules} from 'react-native';
 
+import base64 from './base64';
 import type {ResolverFunction} from '../@types';
 
 /**
  * Manager class for handling chunk imports and caching.
  */
-export class ChunkManager {
+export class ChunkManager extends EventEmitter {
   // Static instance of ChunkManager
   protected static instance: ChunkManager;
   // Cache to store imported chunks
@@ -40,19 +42,20 @@ export class ChunkManager {
    * @throws {Error} Throws error if instance is already created or if native chunk manager module is not found.
    */
   protected constructor(private nativeChunkManager = NativeModules.ReChunk) {
-    // Ensure only one instance of ChunkManager is created
-    if (ChunkManager.instance) {
-      throw new Error(
-        'ChunkManager was already instantiated. Use ChunkManager.shared instead.',
-      );
-    }
+    super();
 
-    // Throw error if nativeChunkManager is not found
+    // Ensure only one instance of ChunkManager is created
     invariant(
-      nativeChunkManager,
-      'rechunk react-native module was not found.' +
-        (__DEV__ ? ' Did you forget to update native dependencies?' : ''),
+      !ChunkManager.instance,
+      'ChunkManager was already instantiated. Use ChunkManager.shared instead.',
     );
+
+    // // Throw error if nativeChunkManager is not found
+    // invariant(
+    //   nativeChunkManager,
+    //   'rechunk react-native module was not found.' +
+    //     (__DEV__ ? ' Did you forget to update native dependencies?' : ''),
+    // );
   }
 
   /**
@@ -67,14 +70,39 @@ export class ChunkManager {
     global: object,
   ): React.ComponentType<any> {
     const exports = {};
+    const module = {exports};
+
+    const args = () => {
+      /**
+       * Typical transiplers/bundlers will export modules.exports
+       */
+      if (chunk.includes('module.exports')) {
+        return {
+          initialArgs: 'module, exports',
+          additionalArgs: [global, module, exports],
+          returnStatement: 'return module.exports;',
+        };
+      }
+
+      /**
+       * Babel v6+ go remove module.exports in favor of just exports
+       */
+      return {
+        initialArgs: 'exports',
+        additionalArgs: [global, exports],
+        returnStatement: 'return exports.default;',
+      };
+    };
+
+    const {initialArgs, additionalArgs, returnStatement} = args();
 
     const Component = new Function(
       '__rechunk__',
-      'exports',
+      initialArgs,
       `${Object.keys(global)
         .map(key => `var ${key} = __rechunk__.${key};`)
-        .join('\n')}; ${chunk}; return exports.default;`,
-    )(...[global, exports]);
+        .join('\n')} ${chunk} ${returnStatement}`,
+    )(...additionalArgs);
 
     this.cache[chunkId] = Component;
 
@@ -111,37 +139,36 @@ export class ChunkManager {
         return null;
       },
     },
-  ): Promise<React.ComponentType<any>> {
+  ): Promise<{default: React.ComponentType<any>}> {
     // Warn if verification is turned off
     warning(verify, 'Verification was turned off; this is insecure.');
 
     // If chunk is already cached, return the cached component
     if (this.cache[chunkId]) {
-      return this.cache[chunkId];
+      return {default: this.cache[chunkId]};
     }
 
     // Resolve the chunk
     const chunk = await this.resolver(chunkId);
 
     // Verify the chunk if required
-    if (verify) {
-      const verifiedChunk = await this.nativeChunkManager.verify(
-        // @ts-ignore
-        chunk.data,
-        // @ts-ignore
-        chunk.hash,
-        //@ts-ignore
-        chunk.sig,
-        publicKey,
-      );
+    // if (verify) {
+    //   const verifiedChunk = await this.nativeChunkManager.verify(
+    //     // @ts-ignore
+    //     chunk.data,
+    //     // @ts-ignore
+    //     chunk.hash,
+    //     //@ts-ignore
+    //     chunk.sig,
+    //     publicKey,
+    //   );
 
-      return this.chunkToComponent(chunkId, verifiedChunk, global);
-    }
+    //   return {default: this.chunkToComponent(chunkId, verifiedChunk, global)};
+    // }
 
     // If verification is turned off, decode the chunk
-    // @ts-ignore
-    const unverifiedChunk = await this.nativeChunkManager.decode(chunk.data);
+    const unverifiedChunk = base64.decode(chunk);
 
-    return this.chunkToComponent(chunkId, unverifiedChunk, global);
+    return {default: this.chunkToComponent(chunkId, unverifiedChunk, global)};
   }
 }

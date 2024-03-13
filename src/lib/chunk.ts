@@ -10,9 +10,9 @@ import type {ResolverFunction} from '../@types';
  */
 export async function importChunk(
   chunkId: string,
-  publicKey: string,
+  publicKey = '',
   verify = true,
-) {
+): Promise<any> {
   // Using shared ChunkManager instance to import the chunk
   return ChunkManager.shared.importChunk(chunkId, publicKey, verify);
 }
