@@ -11,11 +11,28 @@ import type {ResolverFunction} from '../@types';
  * Manager class for handling chunk imports and caching.
  */
 export class ChunkManager extends EventEmitter {
-  // Static instance of ChunkManager
+  /**
+   * Represents a static instance of the ChunkManager class.
+   * This static instance allows access to the ChunkManager functionality without the need to create new instances.
+   * @type {ChunkManager}
+   * @protected
+   */
   protected static instance: ChunkManager;
-  // Cache to store imported chunks
+
+  /**
+   * Cache to store imported chunks.
+   * This cache improves performance by storing previously imported chunks for future use.
+   * @type {Record<string, React.ComponentType<any>>}
+   * @protected
+   */
   protected cache: Record<string, React.ComponentType<any>> = {};
-  // Resolver function to resolve chunk imports
+
+  /**
+   * Resolver function used to resolve chunk imports.
+   * This function is responsible for dynamically loading and resolving imported chunks.
+   * @type {ResolverFunction}
+   * @protected
+   */
   protected resolver: ResolverFunction = async function () {
     // Default resolver function throws error
     throw new Error(
@@ -23,6 +40,44 @@ export class ChunkManager extends EventEmitter {
         (__DEV__ ? ' Did you forget to addResolver?' : ''),
     );
   };
+
+  /**
+   * Object representing protected global variables and functions.
+   * This object provides controlled access to certain modules and settings.
+   * @type {Object}
+   * @protected
+   */
+  protected global: Object = {
+    /**
+     * Custom implementation of require function to control module access.
+     * @param {string} moduleId - The ID of the module to be required.
+     * @returns {Object|null} - The required module if allowed, otherwise null.
+     * @protected
+     */
+    require: (moduleId: string) => {
+      if (moduleId === 'react') {
+        return require('react');
+      } else if (moduleId === 'react-native') {
+        return require('react-native');
+      }
+
+      return null;
+    },
+  };
+
+  /**
+   * Flag indicating whether verification is enabled.
+   * @type {boolean}
+   * @protected
+   */
+  protected verify: boolean = true;
+
+  /**
+   * The public key used for verification purposes.
+   * @type {string}
+   * @protected
+   */
+  protected publicKey: string = '';
 
   /**
    * Get the shared instance of ChunkManager.
@@ -50,12 +105,12 @@ export class ChunkManager extends EventEmitter {
       'ChunkManager was already instantiated. Use ChunkManager.shared instead.',
     );
 
-    // // Throw error if nativeChunkManager is not found
-    // invariant(
-    //   nativeChunkManager,
-    //   'rechunk react-native module was not found.' +
-    //     (__DEV__ ? ' Did you forget to update native dependencies?' : ''),
-    // );
+    // Throw error if nativeChunkManager is not found
+    invariant(
+      nativeChunkManager,
+      'rechunk react-native module was not found.' +
+        (__DEV__ ? ' Did you forget to update native dependencies?' : ''),
+    );
   }
 
   /**
@@ -110,11 +165,35 @@ export class ChunkManager extends EventEmitter {
   }
 
   /**
-   * Adds a resolver function to resolve chunk imports.
-   * @param {ResolverFunction} resolver - The resolver function.
+   * Adds configuration settings to the ChunkManager instance.
+   * This method sets the public key, resolver function, verification flag, and global object for the ChunkManager instance.
+   * @param {string} publicKey - The public key used for verification purposes.
+   * @param {ResolverFunction} resolver - The resolver function used to resolve chunk imports.
+   * @param {boolean} verify - Flag indicating whether verification is enabled.
+   * @param {object} global - Object representing protected global variables and functions.
    */
-  addResolver(resolver: ResolverFunction) {
+  addConfiguration(
+    publicKey: string,
+    resolver: ResolverFunction,
+    verify: boolean,
+    global: object,
+  ) {
+    // Ensure publicKey is provided
+    invariant(publicKey, 'public key cannot be an empty string');
+
+    // Set the public key
+    this.publicKey = publicKey;
+
+    // Set the resolver function
     this.resolver = resolver;
+
+    // Issue a warning if verification is turned off
+    warning(verify, 'Verification was turned off; this is insecure.');
+
+    // Set the verification flag
+    this.verify = verify;
+
+    // this.global = global
   }
 
   /**
@@ -126,23 +205,7 @@ export class ChunkManager extends EventEmitter {
    */
   async importChunk(
     chunkId: string,
-    publicKey: string,
-    verify: boolean,
-    global = {
-      require: (moduleId: string) => {
-        if (moduleId === 'react') {
-          return require('react');
-        } else if (moduleId === 'react-native') {
-          return require('react-native');
-        }
-
-        return null;
-      },
-    },
   ): Promise<{default: React.ComponentType<any>}> {
-    // Warn if verification is turned off
-    warning(verify, 'Verification was turned off; this is insecure.');
-
     // If chunk is already cached, return the cached component
     if (this.cache[chunkId]) {
       return {default: this.cache[chunkId]};
@@ -166,9 +229,12 @@ export class ChunkManager extends EventEmitter {
     //   return {default: this.chunkToComponent(chunkId, verifiedChunk, global)};
     // }
 
-    // If verification is turned off, decode the chunk
-    const unverifiedChunk = base64.decode(chunk);
-
-    return {default: this.chunkToComponent(chunkId, unverifiedChunk, global)};
+    return {
+      default: this.chunkToComponent(
+        chunkId,
+        base64.decode(chunk),
+        this.global,
+      ),
+    };
   }
 }

@@ -7,15 +7,22 @@
 export {importChunk} from './lib';
 
 /**
- * Adds a resolver function to the shared ChunkManager instance.
- * This function is exported as 'addResolver'.
- * @param {ResolverFunction} resolver - The resolver function to add.
- */
-export {addResolver} from './lib';
-
-/**
  * Type-guards the configuration for Re.Chunk.
  * @param {ChunkConfig} config - The config to guard.
  * @returns {ChunkConfig} A type-guarded Re.Chunk configuration.
  */
 export {defineConfig} from './lib';
+
+/**
+ * Adds a configuration to the shared ChunkManager instance.
+ * This function is exported as 'addConfiguration'.
+ */
+import {addConfiguration} from './lib';
+
+/**
+ * Exports the addResolver function under the default namespace,
+ * making it accessible under the ReChunk namespace.
+ */
+export default {
+  addConfiguration,
+};
