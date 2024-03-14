@@ -122,7 +122,6 @@ export class ChunkManager extends EventEmitter {
   protected chunkToComponent(
     chunkId: string,
     chunk: string,
-    global: object,
   ): React.ComponentType<any> {
     const exports = {};
     const module = {exports};
@@ -134,7 +133,7 @@ export class ChunkManager extends EventEmitter {
       if (/module\.exports/.test(chunk)) {
         return {
           initialArgs: 'module, exports',
-          additionalArgs: [global, module, exports],
+          additionalArgs: [this.global, module, exports],
           returnStatement: 'return module.exports;',
         };
       }
@@ -144,7 +143,7 @@ export class ChunkManager extends EventEmitter {
        */
       return {
         initialArgs: 'exports',
-        additionalArgs: [global, exports],
+        additionalArgs: [this.global, exports],
         returnStatement: 'return exports.default;',
       };
     };
@@ -154,7 +153,7 @@ export class ChunkManager extends EventEmitter {
     const Component = new Function(
       '__rechunk__',
       initialArgs,
-      `${Object.keys(global)
+      `${Object.keys(this.global)
         .map(key => `var ${key} = __rechunk__.${key};`)
         .join('\n')} ${chunk} ${returnStatement}`,
     )(...additionalArgs);
@@ -230,11 +229,7 @@ export class ChunkManager extends EventEmitter {
     // }
 
     return {
-      default: this.chunkToComponent(
-        chunkId,
-        base64.decode(chunk),
-        this.global,
-      ),
+      default: this.chunkToComponent(chunkId, base64.decode(chunk)),
     };
   }
 }
