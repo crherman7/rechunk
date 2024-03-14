@@ -28,6 +28,7 @@ end
 target 'example' do
   config = use_native_modules!
 
+
   use_react_native!(
     :path => config[:reactNativePath],
     # Enables Flipper.
@@ -38,6 +39,8 @@ target 'example' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
+
+  pod 'rechunk', :modular_headers => true, :path => '../..'
 
   target 'exampleTests' do
     inherit! :complete

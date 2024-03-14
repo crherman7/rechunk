@@ -9,6 +9,7 @@
   "author": "Chris Herman <crherman7@gmail.com>",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "source": "src/index",
   "scripts": {
     "dev": "tsc --watch --project ./tsconfig.build.json",
     "build": "tsc --project ./tsconfig.build.json"
