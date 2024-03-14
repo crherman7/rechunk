@@ -36,7 +36,7 @@ export class ChunkManager extends EventEmitter {
   protected resolver: ResolverFunction = async function () {
     // Default resolver function throws error
     throw new Error(
-      'rechunk resolver was not added.' +
+      '[ReChunk]: resolver was not added.' +
         (__DEV__ ? ' Did you forget to addResolver?' : ''),
     );
   };
@@ -102,13 +102,13 @@ export class ChunkManager extends EventEmitter {
     // Ensure only one instance of ChunkManager is created
     invariant(
       !ChunkManager.instance,
-      'ChunkManager was already instantiated. Use ChunkManager.shared instead.',
+      '[ReChunk]: ChunkManager was already instantiated. Use ChunkManager.shared instead.',
     );
 
     // Throw error if nativeChunkManager is not found
     invariant(
       nativeChunkManager,
-      'rechunk react-native module was not found.' +
+      '[ReChunk]: rechunk react-native module was not found.' +
         (__DEV__ ? ' Did you forget to update native dependencies?' : ''),
     );
   }
@@ -131,7 +131,7 @@ export class ChunkManager extends EventEmitter {
       /**
        * Typical transiplers/bundlers will export modules.exports
        */
-      if (chunk.includes('module.exports')) {
+      if (/module\.exports/.test(chunk)) {
         return {
           initialArgs: 'module, exports',
           additionalArgs: [global, module, exports],
@@ -179,7 +179,7 @@ export class ChunkManager extends EventEmitter {
     global: object,
   ) {
     // Ensure publicKey is provided
-    invariant(publicKey, 'public key cannot be an empty string');
+    invariant(publicKey, '[ReChunk]: public key cannot be an empty string.');
 
     // Set the public key
     this.publicKey = publicKey;
@@ -188,7 +188,7 @@ export class ChunkManager extends EventEmitter {
     this.resolver = resolver;
 
     // Issue a warning if verification is turned off
-    warning(verify, 'Verification was turned off; this is insecure.');
+    warning(verify, '[ReChunk]: verification is off; chunks are insecure.');
 
     // Set the verification flag
     this.verify = verify;
