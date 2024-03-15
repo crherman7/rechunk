@@ -48,5 +48,15 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>ReChunkPublicKey</key>
+	<string>-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl7ghD2mi4E/keGW4sw9S
+iyV8eGP5lbqzKYEl0kBsIR4gPFMpPxhW+dtsziLjTv20ZdRZAT8W+FjZsihTA+xD
++MRQhMcJaRnw2jPeK3GPmXe3or9XOdweXgpkfvTRFJzkqQQxx4HuKEUQo4S36RKQ
+J5mjvAdRfs4qK1SI6iik+ewvVnB0017MBbE2fc1UCCYz9hdCRVyFSdnMl4b0DJfW
+ggp2KnCJ9VZRL4G7Br8kRT2QBdF8EFZOA0GBKJmWWDFxpUAZ2D5NePHq20ddNhAi
+2Nm3LRRlQ/4ocP01hfxYW8SDiPoZdGVGG/Uf5mTAEQmUcSOk5DRZbn2nNCFYMvC8
+ewIDAQAB
+-----END PUBLIC KEY-----</string>
 </dict>
 </plist>

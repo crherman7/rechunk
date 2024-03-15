@@ -43,7 +43,7 @@ class ReChunkModule(reactContext: ReactApplicationContext) :
     private fun getPublicKeyFromStringsIfExist(): String? {
         val packageName: String = reactContext.packageName
         val resId: Int =
-            context.resources.getIdentifier("RechunkPublicKey", "string", packageName)
+            context.resources.getIdentifier("ReChunkPublicKey", "string", packageName)
         if (resId != 0) {
             return context.getString(resId).ifEmpty {
                 null

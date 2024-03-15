@@ -32,6 +32,13 @@
     "react-native": "^0.73.6",
     "typescript": "^5.4.2"
   },
+  "files": [
+    "android",
+    "dist",
+    "ios",
+    "plugin",
+    "rechunk.podspec"
+  ],
   "workspaces": [
     "example"
   ]

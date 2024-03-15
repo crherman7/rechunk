@@ -5,15 +5,6 @@ import CryptoKit
 @available(iOS 13.0, *)
 @objc(ReChunk)
 public class ReChunk: NSObject {
-
-    private static func getPublicKey() -> String? {
-        // obtain public key embedded into the bundle from infoPlist under a key RepackPublicKey
-        let bundle = Bundle.main
-        let publicKey = bundle.object(forInfoDictionaryKey: "RechunkPublicKey") as? String
-
-        return publicKey
-    }
-    
     // MARK: Verification
     
     @objc
@@ -46,6 +37,14 @@ public class ReChunk: NSObject {
     }
     
     // MARK: Helper Methods
+
+    private func getPublicKey() -> String? {
+        // obtain public key embedded into the bundle from infoPlist under a key RepackPublicKey
+        let bundle = Bundle.main
+        let publicKey = bundle.object(forInfoDictionaryKey: "ReChunkPublicKey") as? String
+
+        return publicKey
+    }
     
     private func base64DecodeString(encodedString: String) -> String? {
         guard let data = Data(base64Encoded: encodedString),

@@ -23,7 +23,7 @@ export async function importChunk(chunkId: string): Promise<any> {
 export function addConfiguration(
   resolver: ResolverFunction,
   verify: boolean,
-  global: object,
+  global: object = {},
 ) {
   // Delegates the configuration addition to the shared instance of ChunkManager
   ChunkManager.shared.addConfiguration(resolver, verify, global);
