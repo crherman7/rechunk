@@ -54,7 +54,7 @@ export class ChunkManager extends EventEmitter {
      * @returns {Object|null} - The required module if allowed, otherwise null.
      * @protected
      */
-    require: (moduleId: string) => {
+    require: (moduleId: string): object | null => {
       if (moduleId === 'react') {
         return require('react');
       } else if (moduleId === 'react-native') {
@@ -198,19 +198,18 @@ export class ChunkManager extends EventEmitter {
     // Resolve the chunk
     const chunk = await this.resolver(chunkId);
 
-    // Verify the chunk if required
-    // if (verify) {
-    //   const verifiedChunk = await this.nativeChunkManager.verify(
-    //     // @ts-ignore
-    //     chunk.data,
-    //     // @ts-ignore
-    //     chunk.hash,
-    //     //@ts-ignore
-    //     chunk.sig,
-    //   );
+    if (this.verify) {
+      const verifiedChunk = await this.nativeChunkManager.verify(
+        // @ts-ignore
+        chunk.data,
+        // @ts-ignore
+        chunk.hash,
+        //@ts-ignore
+        chunk.sig,
+      );
 
-    //   return {default: this.chunkToComponent(chunkId, verifiedChunk, global)};
-    // }
+      return {default: this.chunkToComponent(chunkId, verifiedChunk)};
+    }
 
     return {
       default: this.chunkToComponent(chunkId, base64.decode(chunk)),

@@ -2,9 +2,11 @@
 
 @interface RCT_EXTERN_MODULE(ReChunk, NSObject)
 
-RCT_EXTERN_METHOD(multiply:(float)a withB:(float)b
-                 withResolver:(RCTPromiseResolveBlock)resolve
-                 withRejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(verify:(NSString *)data
+                  hash:(NSString *)hash
+                  signature:(NSString *)signature
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
 
 + (BOOL)requiresMainQueueSetup
 {

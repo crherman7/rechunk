@@ -19,5 +19,5 @@ export default defineConfig({
    * Specifies the path to the private key for authentication or authorization.
    * @type {string}
    */
-  privateKeyPath: './',
+  privateKeyPath: './keys/private.pem',
 });
