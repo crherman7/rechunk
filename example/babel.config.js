@@ -13,5 +13,6 @@ module.exports = {
         },
       },
     ],
+    [path.resolve('../plugin')],
   ],
 };

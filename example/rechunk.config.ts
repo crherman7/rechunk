@@ -14,4 +14,10 @@ export default defineConfig({
   entry: {
     foo: './src/Foo.tsx',
   },
+
+  /**
+   * Specifies the path to the private key for authentication or authorization.
+   * @type {string}
+   */
+  privateKeyPath: './',
 });

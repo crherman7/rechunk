@@ -73,13 +73,6 @@ export class ChunkManager extends EventEmitter {
   protected verify: boolean = true;
 
   /**
-   * The public key used for verification purposes.
-   * @type {string}
-   * @protected
-   */
-  protected publicKey: string = '';
-
-  /**
    * Get the shared instance of ChunkManager.
    * @returns {ChunkManager} The shared instance of ChunkManager.
    */
@@ -107,7 +100,7 @@ export class ChunkManager extends EventEmitter {
 
     // Throw error if nativeChunkManager is not found
     invariant(
-      nativeChunkManager,
+      this.nativeChunkManager,
       '[ReChunk]: rechunk react-native module was not found.' +
         (__DEV__ ? ' Did you forget to update native dependencies?' : ''),
     );
@@ -166,23 +159,15 @@ export class ChunkManager extends EventEmitter {
   /**
    * Adds configuration settings to the ChunkManager instance.
    * This method sets the public key, resolver function, verification flag, and global object for the ChunkManager instance.
-   * @param {string} publicKey - The public key used for verification purposes.
    * @param {ResolverFunction} resolver - The resolver function used to resolve chunk imports.
    * @param {boolean} verify - Flag indicating whether verification is enabled.
    * @param {object} global - Object representing protected global variables and functions.
    */
   addConfiguration(
-    publicKey: string,
     resolver: ResolverFunction,
     verify: boolean,
     global: object,
   ) {
-    // Ensure publicKey is provided
-    invariant(publicKey, '[ReChunk]: public key cannot be an empty string.');
-
-    // Set the public key
-    this.publicKey = publicKey;
-
     // Set the resolver function
     this.resolver = resolver;
 
@@ -192,13 +177,13 @@ export class ChunkManager extends EventEmitter {
     // Set the verification flag
     this.verify = verify;
 
-    // this.global = global
+    // Set the global require object
+    this.global = global;
   }
 
   /**
    * Imports a chunk asynchronously and returns the corresponding JavaScript component.
    * @param {string} chunkId - The ID of the chunk to import.
-   * @param {string} publicKey - The public key for verifying the chunk.
    * @param {boolean} verify - Indicates whether to verify the chunk.
    * @returns {Promise<*>} A promise resolving to the JavaScript component imported from the chunk.
    */
@@ -222,7 +207,6 @@ export class ChunkManager extends EventEmitter {
     //     chunk.hash,
     //     //@ts-ignore
     //     chunk.sig,
-    //     publicKey,
     //   );
 
     //   return {default: this.chunkToComponent(chunkId, verifiedChunk, global)};

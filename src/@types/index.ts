@@ -12,4 +12,5 @@ export type ResolverFunction = (chunkId: string) => Promise<string>;
  */
 export type ChunkConfig = {
   entry: Record<string, string>;
+  privateKeyPath: string;
 };
