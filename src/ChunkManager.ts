@@ -116,7 +116,8 @@ export class ChunkManager extends TinyEmitter {
     // Add chunkId and chunk to cache
     this.cache[chunkId] = Component;
 
-    // Emit chunkId with boolean that the chunk is available
+    // Notifies listeners that a chunk is available, facilitating communication
+    // for handling edge cases or asynchronous dependencies.
     this.emit(chunkId);
 
     return Component;
