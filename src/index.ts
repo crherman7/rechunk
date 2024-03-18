@@ -8,6 +8,7 @@ import './polyfill';
 import {ChunkManager} from './ChunkManager';
 // Importing ResolverFunction type from '../@types' file
 import type {ResolverFunction} from './types';
+import {TinyEmitter} from 'tiny-emitter';
 
 /**
  * Asynchronously imports a chunk using the shared ChunkManager instance.
@@ -41,6 +42,20 @@ function addConfiguration(
  * @returns {ChunkConfig} A type-guarded Re.Chunk configuration.
  */
 export {defineConfig} from './config';
+
+/**
+ * Registers an event listener with the specified event name and callback function.
+ * Optionally, you can provide a context object (`ctx`) to bind `this` when the callback is invoked.
+ * @param {string} event - The name of the event to listen for.
+ * @param {Function} callback - The function to be invoked when the event is emitted.
+ * @param {any} [ctx] - (Optional) The context to bind to the callback function.
+ * @returns {TinyEmitter} - The `TinyEmitter` instance for chaining purposes.
+ */
+export function on(event: string, callback: Function, ctx?: any): TinyEmitter {
+  // Calls the `on` method of the shared `ChunkManager` instance to register the event listener.
+  // Passes the provided event name, callback function, and optional context to the `on` method.
+  return ChunkManager.shared.on(event, callback, ctx);
+}
 
 /**
  * Exports the addResolver function under the default namespace,

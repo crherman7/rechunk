@@ -1,15 +1,15 @@
 // Importing necessary modules and types
 import warning from 'tiny-warning';
 import invariant from 'tiny-invariant';
-import EventEmitter from 'eventemitter3';
 import {NativeModules} from 'react-native';
+import {TinyEmitter} from 'tiny-emitter';
 
 import type {ResolverFunction} from './types';
 
 /**
  * Manager class for handling chunk imports and caching.
  */
-export class ChunkManager extends EventEmitter {
+export class ChunkManager extends TinyEmitter {
   /**
    * Represents a static instance of the ChunkManager class.
    * This static instance allows access to the ChunkManager functionality without the need to create new instances.
@@ -130,7 +130,11 @@ export class ChunkManager extends EventEmitter {
       }`,
     )(this.global, module, exports);
 
+    // Add chunkId and chunk to cache
     this.cache[chunkId] = Component;
+
+    // Emit chunkId with boolean that the chunk is available
+    this.emit(chunkId);
 
     return Component;
   }
