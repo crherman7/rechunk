@@ -3,7 +3,7 @@ import invariant from 'tiny-invariant';
 import {TinyEmitter} from 'tiny-emitter';
 import {NativeModules} from 'react-native';
 
-import type {ResolverFunction} from './types';
+import type {CustomRequire, ResolverFunction} from './types';
 
 /**
  * Manager class for handling chunk imports and caching.
@@ -45,23 +45,7 @@ export class ChunkManager extends TinyEmitter {
    * @type {Object}
    * @protected
    */
-  protected global: Object = {
-    /**
-     * Custom implementation of require function to control module access.
-     * @param {string} moduleId - The ID of the module to be required.
-     * @returns {Object|null} - The required module if allowed, otherwise null.
-     * @protected
-     */
-    require: (moduleId: string): object | null => {
-      if (moduleId === 'react') {
-        return require('react');
-      } else if (moduleId === 'react-native') {
-        return require('react-native');
-      }
-
-      return null;
-    },
-  };
+  protected global: CustomRequire | object = {};
 
   /**
    * Flag indicating whether verification is enabled.

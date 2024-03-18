@@ -4,11 +4,12 @@
  */
 import './polyfill';
 
+import {TinyEmitter} from 'tiny-emitter';
+
 // Importing ChunkManager class from './ChunkManager' file
 import {ChunkManager} from './ChunkManager';
 // Importing ResolverFunction type from '../@types' file
-import type {ResolverFunction} from './types';
-import {TinyEmitter} from 'tiny-emitter';
+import type {CustomRequire, ResolverFunction} from './types';
 
 /**
  * Asynchronously imports a chunk using the shared ChunkManager instance.
@@ -30,7 +31,23 @@ export async function importChunk(chunkId: string): Promise<any> {
 function addConfiguration(
   resolver: ResolverFunction,
   verify: boolean,
-  global: object = {},
+  global: CustomRequire = {
+    /**
+     * Custom implementation of require function to control module access.
+     * @param {string} moduleId - The ID of the module to be required.
+     * @returns {Object|null} - The required module if allowed, otherwise null.
+     * @protected
+     */
+    require: (moduleId: string): object | null => {
+      if (moduleId === 'react') {
+        return require('react');
+      } else if (moduleId === 'react-native') {
+        return require('react-native');
+      }
+
+      return null;
+    },
+  },
 ) {
   // Delegates the configuration addition to the shared instance of ChunkManager
   ChunkManager.shared.addConfiguration(resolver, verify, global);
