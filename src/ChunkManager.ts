@@ -4,7 +4,6 @@ import invariant from 'tiny-invariant';
 import EventEmitter from 'eventemitter3';
 import {NativeModules} from 'react-native';
 
-import base64 from './base64';
 import type {ResolverFunction} from './types';
 
 /**
@@ -119,37 +118,17 @@ export class ChunkManager extends EventEmitter {
     const exports = {};
     const module = {exports};
 
-    const args = () => {
-      /**
-       * Typical transiplers/bundlers will export modules.exports
-       */
-      if (/module\.exports/.test(chunk)) {
-        return {
-          initialArgs: 'module, exports',
-          additionalArgs: [this.global, module, exports],
-          returnStatement: 'return module.exports;',
-        };
-      }
-
-      /**
-       * Babel v6+ go remove module.exports in favor of just exports
-       */
-      return {
-        initialArgs: 'exports',
-        additionalArgs: [this.global, exports],
-        returnStatement: 'return exports.default;',
-      };
-    };
-
-    const {initialArgs, additionalArgs, returnStatement} = args();
-
     const Component = new Function(
       '__rechunk__',
-      initialArgs,
+      'module, exports',
       `${Object.keys(this.global)
         .map(key => `var ${key} = __rechunk__.${key};`)
-        .join('\n')} ${chunk} ${returnStatement}`,
-    )(...additionalArgs);
+        .join('\n')} ${chunk} ${
+        /module\.exports/.test(chunk)
+          ? 'return module.exports;'
+          : 'return exports.default;'
+      }`,
+    )(this.global, module, exports);
 
     this.cache[chunkId] = Component;
 
@@ -199,7 +178,7 @@ export class ChunkManager extends EventEmitter {
     const chunk = await this.resolver(chunkId);
 
     if (this.verify) {
-      const verifiedChunk = await this.nativeChunkManager.verify(
+      await this.nativeChunkManager.verify(
         // @ts-ignore
         chunk.data,
         // @ts-ignore
@@ -208,11 +187,11 @@ export class ChunkManager extends EventEmitter {
         chunk.sig,
       );
 
-      return {default: this.chunkToComponent(chunkId, verifiedChunk)};
+      return {default: this.chunkToComponent(chunkId, atob(chunk))};
     }
 
     return {
-      default: this.chunkToComponent(chunkId, base64.decode(chunk)),
+      default: this.chunkToComponent(chunkId, atob(chunk)),
     };
   }
 }

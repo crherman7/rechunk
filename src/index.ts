@@ -1,3 +1,9 @@
+/**
+ * This polyfill file adds support for the global `btoa` and `atob` methods
+ * if they are not already defined in the environment.
+ */
+import './polyfill';
+
 // Importing ChunkManager class from './ChunkManager' file
 import {ChunkManager} from './ChunkManager';
 // Importing ResolverFunction type from '../@types' file
@@ -44,4 +50,8 @@ export default {
   addConfiguration,
 };
 
+/**
+ * This statement exports all named exports from the './types' module.
+ * It effectively re-exports all exports from './types', allowing them to be imported from this module.
+ */
 export * from './types';

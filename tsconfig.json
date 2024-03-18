@@ -5,6 +5,6 @@
     "paths": {
       "@crherman7/rechunk": ["./src/index"]
     },
-    "types": ["react-native"]
+    "types": ["react-native", "node"]
   }
 }
