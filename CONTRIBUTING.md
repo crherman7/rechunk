@@ -42,7 +42,7 @@ To maintain consistency across the project, please follow our style guide when w
 
 ## Help and Support
 
-If you need help or have any questions about contributing, feel free to reach out to us via [crherman7@gmail.com].
+If you need help or have any questions about contributing, feel free to reach out to us via crherman7@gmail.com.
 
 Thank you for your contributions!
 
