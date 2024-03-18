@@ -5,7 +5,7 @@ import EventEmitter from 'eventemitter3';
 import {NativeModules} from 'react-native';
 
 import base64 from './base64';
-import type {ResolverFunction} from '../@types';
+import type {ResolverFunction} from './types';
 
 /**
  * Manager class for handling chunk imports and caching.

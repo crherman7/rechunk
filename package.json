@@ -11,8 +11,8 @@
   "types": "dist/index.d.ts",
   "source": "src/index",
   "scripts": {
-    "dev": "tsc --watch --project ./tsconfig.build.json",
-    "build": "tsc --project ./tsconfig.build.json"
+    "dev": "tsup src/index.ts --dts --minify --watch",
+    "build": "tsup src/index.ts --dts --minify"
   },
   "peerDependencies": {
     "react": "*",
@@ -30,6 +30,7 @@
     "prettier": "^2.4.1",
     "react": "^18.2.0",
     "react-native": "^0.73.6",
+    "tsup": "^8.0.2",
     "typescript": "^5.4.2"
   },
   "files": [

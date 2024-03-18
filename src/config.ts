@@ -1,4 +1,4 @@
-import {ChunkConfig} from '../@types';
+import {ChunkConfig} from './types';
 
 /**
  * Defines a configuration for rechunk.
