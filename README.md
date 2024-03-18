@@ -4,7 +4,7 @@
   <img alt="ReChunk Banner" src="./.github/assets/banner.png">
 </picture>
 
-<h2 align="center">External Hosted Components with Remote Chunks</h2>
+<h2 align="center">Render Externally Hosted Components with React Native</h2>
 
 ## Features
 
