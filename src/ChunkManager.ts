@@ -1,8 +1,7 @@
-// Importing necessary modules and types
 import warning from 'tiny-warning';
 import invariant from 'tiny-invariant';
-import {NativeModules} from 'react-native';
 import {TinyEmitter} from 'tiny-emitter';
+import {NativeModules} from 'react-native';
 
 import type {ResolverFunction} from './types';
 
@@ -36,7 +35,7 @@ export class ChunkManager extends TinyEmitter {
     // Default resolver function throws error
     throw new Error(
       '[ReChunk]: resolver was not added.' +
-        (__DEV__ ? ' Did you forget to addResolver?' : ''),
+        (__DEV__ ? ' Did you forget to addConfiguration?' : ''),
     );
   };
 

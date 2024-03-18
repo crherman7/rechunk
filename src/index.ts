@@ -37,13 +37,6 @@ function addConfiguration(
 }
 
 /**
- * Type-guards the configuration for Re.Chunk.
- * @param {ChunkConfig} config - The config to guard.
- * @returns {ChunkConfig} A type-guarded Re.Chunk configuration.
- */
-export {defineConfig} from './config';
-
-/**
  * Registers an event listener with the specified event name and callback function.
  * Optionally, you can provide a context object (`ctx`) to bind `this` when the callback is invoked.
  * @param {string} event - The name of the event to listen for.
@@ -56,6 +49,13 @@ export function on(event: string, callback: Function, ctx?: any): TinyEmitter {
   // Passes the provided event name, callback function, and optional context to the `on` method.
   return ChunkManager.shared.on(event, callback, ctx);
 }
+
+/**
+ * Type-guards the configuration for Re.Chunk.
+ * @param {ChunkConfig} config - The config to guard.
+ * @returns {ChunkConfig} A type-guarded Re.Chunk configuration.
+ */
+export {defineConfig} from './config';
 
 /**
  * Exports the addResolver function under the default namespace,
