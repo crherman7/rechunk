@@ -57,9 +57,8 @@ public class ReChunk: NSObject {
     
     private func verifySignature(data: Data, signature: Data, publicKey: SecKey) -> Bool {
         var error: Unmanaged<CFError>?
-        let algorithm = SecKeyAlgorithm.rsaSignatureMessagePKCS1v15SHA256
         
-        return SecKeyVerifySignature(publicKey, algorithm, data as CFData, signature as CFData, &error)
+        return SecKeyVerifySignature(publicKey, .rsaSignatureMessagePKCS1v15SHA256, data as CFData, signature as CFData, &error)
     }
     
     private func loadPublicKey(from pkcs1PublicKeyString: String) -> SecKey? {

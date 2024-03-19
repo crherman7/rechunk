@@ -151,7 +151,6 @@ export class ChunkManager extends TinyEmitter {
   /**
    * Imports a chunk asynchronously and returns the corresponding JavaScript component.
    * @param {string} chunkId - The ID of the chunk to import.
-   * @param {boolean} verify - Indicates whether to verify the chunk.
    * @returns {Promise<*>} A promise resolving to the JavaScript component imported from the chunk.
    */
   async importChunk(
@@ -166,20 +165,13 @@ export class ChunkManager extends TinyEmitter {
     const chunk = await this.resolver(chunkId);
 
     if (this.verify) {
-      await this.nativeChunkManager.verify(
-        // @ts-ignore
-        chunk.data,
-        // @ts-ignore
-        chunk.hash,
-        //@ts-ignore
-        chunk.sig,
-      );
+      await this.nativeChunkManager.verify(chunk.data, chunk.hash, chunk.sig);
 
-      return {default: this.chunkToComponent(chunkId, atob(chunk))};
+      return {default: this.chunkToComponent(chunkId, atob(chunk.data))};
     }
 
     return {
-      default: this.chunkToComponent(chunkId, atob(chunk)),
+      default: this.chunkToComponent(chunkId, atob(chunk.data)),
     };
   }
 }
