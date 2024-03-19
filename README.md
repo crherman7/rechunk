@@ -9,8 +9,8 @@
 ## Features
 
 - **🚀 Remote Components**: Aliqua nulla voluptate voluptate ex officia eu occaecat aute culpa culpa.
-- **🌎 Host Agnostic**: Est irure voluptate voluptate aliquip enim aute.
-- **🔒 Security First**: Commodo pariatur ex nulla et consequat cillum dolore occaecat veniam amet eu minim esse.
+- **🌎 Host-Agnostic**: Est irure voluptate voluptate aliquip enim aute.
+- **🔒 Secure**: Commodo pariatur ex nulla et consequat cillum dolore occaecat veniam amet eu minim esse.
 
 ## Getting Started
 
@@ -18,7 +18,7 @@ Go to the [Quick Start](https://rechunk.dev/) to get started.
 
 ## Contribution
 
-Please read the [contributing guide](./CONTRIBUTING.md) and let's build Flagship Code together.
+Please read the [Contributing Guide](./CONTRIBUTING.md) and let's build Flagship Code together.
 
 If you have any questions, you can open an issue to communicate with us.
 
