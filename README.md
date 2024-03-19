@@ -8,9 +8,9 @@
 
 ## Features
 
-- **🚀 Remote Components**: Ea aliqua est labore labore est mollit ipsum est minim ullamco non. Id id exercitation duis do sint laboris. Nostrud aute ex excepteur est voluptate voluptate fugiat eiusmod ullamco nulla ipsum veniam Lorem sit. Veniam ullamco occaecat ex culpa laborum commodo et.
-- **🎨 Custom Hosting**: Fugiat velit deserunt reprehenderit pariatur. Aliquip sunt minim exercitation ad ipsum veniam eiusmod culpa ipsum. Ad commodo pariatur reprehenderit anim aute do nulla amet ut qui mollit eu cillum tempor.
-- **🔒 Security First**: Lorem sit deserunt adipisicing laborum occaecat pariatur non excepteur. Magna anim magna sint pariatur esse excepteur. Commodo ullamco eiusmod aliquip id.
+- **🚀 Remote Components**: Aliqua nulla voluptate voluptate ex officia eu occaecat aute culpa culpa.
+- **🌎 Host Agnostic**: Est irure voluptate voluptate aliquip enim aute.
+- **🔒 Security First**: Commodo pariatur ex nulla et consequat cillum dolore occaecat veniam amet eu minim esse.
 
 ## Getting Started
 

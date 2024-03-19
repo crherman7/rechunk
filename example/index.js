@@ -2,7 +2,6 @@ import {AppRegistry} from 'react-native';
 import ReChunk from '@crherman7/rechunk';
 
 import App from './App';
-import {name as appName} from './app.json';
 
 ReChunk.addConfiguration(async chunkId => {
   return new Promise(res =>
@@ -16,4 +15,4 @@ ReChunk.addConfiguration(async chunkId => {
   );
 }, false);
 
-AppRegistry.registerComponent(appName, () => App);
+AppRegistry.registerComponent('example', () => App);
