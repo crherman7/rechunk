@@ -1,12 +1,10 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 
-const Foo = () => {
+export default function Foo() {
   return (
     <View>
-      <Text>Top</Text>
+      <Text>Minim magna pariatur ea nostrud.</Text>
     </View>
   );
-};
-
-export default Foo;
+}
