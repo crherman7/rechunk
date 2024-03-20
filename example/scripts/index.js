@@ -12,6 +12,7 @@ const terser = require('@rollup/plugin-terser');
 const typescript = require('@rollup/plugin-typescript');
 
 const pak = require('../package.json');
+const rc = require('../rechunk.config.json');
 
 /**
  * Create a basic HTTP server.
@@ -30,22 +31,14 @@ const server = http.createServer(async (req, res) => {
     // Get the search parameters
     const {chunkId} = parsedUrl.query;
 
-    // Dynamically import bundle-require
-    const {bundleRequire} = await import('bundle-require');
+    const input = path.resolve(process.cwd(), rc.entry[chunkId]);
 
-    // Load configuration from rechunk.config.ts
-    const {mod} = await bundleRequire({
-      filepath: path.resolve(process.cwd(), 'rechunk.config.ts'),
-      format: 'cjs',
-    });
-
-    // Resolve the input file path
-    const input = path.resolve(process.cwd(), mod.default.entry[chunkId]);
+    const rcExternal = rc.external || [];
 
     // Rollup bundling process
     const rollupBuild = await rollup({
       input,
-      external: Object.keys(pak.dependencies),
+      external: [...Object.keys(pak.dependencies), ...rcExternal],
       plugins: [
         resolve(),
         commonjs(),
@@ -71,7 +64,7 @@ const server = http.createServer(async (req, res) => {
 
     // Read private key from file
     const privateKey = await fs.readFile(
-      path.resolve(process.cwd(), mod.default.privateKeyPath),
+      path.resolve(process.cwd(), rc.privateKeyPath),
       'utf-8',
     );
 

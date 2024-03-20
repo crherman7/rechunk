@@ -68,13 +68,6 @@ export function on(event: string, callback: Function, ctx?: any): TinyEmitter {
 }
 
 /**
- * Type-guards the configuration for Re.Chunk.
- * @param {ChunkConfig} config - The config to guard.
- * @returns {ChunkConfig} A type-guarded Re.Chunk configuration.
- */
-// export {defineConfig} from './config';
-
-/**
  * Exports the addResolver function under the default namespace,
  * making it accessible under the ReChunk namespace.
  */

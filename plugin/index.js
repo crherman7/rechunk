@@ -26,27 +26,38 @@ module.exports = function rechunkPlugin({types: t}) {
           const packageJsonPath = path.resolve(process.cwd(), 'package.json');
           // Read package.json to get dependencies
           const packageJson = require(packageJsonPath);
+
+          // Resolve the path to rechunk.config.json
+          const rechunkConfigJsonPath = path.resolve(
+            process.cwd(),
+            'rechunk.config.json',
+          );
+          // Read rechunk.config.json to get external
+          const rechunkConfigJson = require(rechunkConfigJsonPath);
+
+          const external = rechunkConfigJson.external || [];
           const dependencies = packageJson.dependencies || {};
 
           // Generate requireStatements for each dependency
-          const requireStatements = Object.keys(dependencies).map(
-            dependency => {
-              return t.ifStatement(
-                t.binaryExpression(
-                  '===',
-                  t.identifier('moduleId'),
-                  t.stringLiteral(dependency),
+          const requireStatements = [
+            ...Object.keys(dependencies),
+            ...external,
+          ].map(dependency => {
+            return t.ifStatement(
+              t.binaryExpression(
+                '===',
+                t.identifier('moduleId'),
+                t.stringLiteral(dependency),
+              ),
+              t.blockStatement([
+                t.returnStatement(
+                  t.callExpression(t.identifier('require'), [
+                    t.stringLiteral(dependency),
+                  ]),
                 ),
-                t.blockStatement([
-                  t.returnStatement(
-                    t.callExpression(t.identifier('require'), [
-                      t.stringLiteral(dependency),
-                    ]),
-                  ),
-                ]),
-              );
-            },
-          );
+              ]),
+            );
+          });
 
           // Create the require function expression
           const requireFunction = t.functionExpression(

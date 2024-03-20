@@ -16,16 +16,6 @@ type ResolverReturn = Promise<{
 export type ResolverFunction = (chunkId: string) => Promise<ResolverReturn>;
 
 /**
- * Represents the configuration object for chunks.
- * @typedef {Object} ChunkConfig
- * @property {Record<string, string>} entry - The entry points of the chunks, where keys represent chunk names and values represent entry file paths.
- */
-export type ChunkConfig = {
-  entry: Record<string, string>;
-  privateKeyPath: string;
-};
-
-/**
  * Represents an interface for a custom require function to control module access.
  */
 export type CustomRequire = {

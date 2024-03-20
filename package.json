@@ -10,19 +10,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "source": "src/index",
-  "exports": {
-    ".": {
-      "default": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./config": {
-      "default": "./dist/config.js",
-      "types": "./dist/config.d.ts"
-    }
-  },
   "scripts": {
-    "dev": "tsup src/index.ts src/config.ts --dts --minify --watch",
-    "build": "tsup src/index.ts src/config.ts --dts --minify"
+    "dev": "tsup src/index.ts --dts --minify --watch",
+    "build": "tsup src/index.ts --dts --minify"
   },
   "peerDependencies": {
     "react": "*",
@@ -50,7 +40,8 @@
     "dist",
     "ios",
     "plugin",
-    "rechunk.podspec"
+    "rechunk.podspec",
+    "schema.json"
   ],
   "workspaces": [
     "example"

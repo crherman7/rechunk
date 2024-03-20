@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "privateKeyPath": {
+      "type": "string"
+    },
+    "external": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["entry", "privateKeyPath"]
+}

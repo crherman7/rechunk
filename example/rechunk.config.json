@@ -1,0 +1,7 @@
+{
+  "$schema": "../schema.json",
+  "entry": {
+    "foo": "./src/Foo.tsx"
+  },
+  "privateKeyPath": "./keys/private.pem"
+}
