@@ -5,6 +5,7 @@
     "paths": {
       "@crherman7/rechunk": ["./src/index"]
     },
+    "allowJs": false,
     "types": ["react-native", "node"]
   }
 }
