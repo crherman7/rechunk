@@ -6,6 +6,7 @@ import tailwind from '@astrojs/tailwind';
 export default defineConfig({
   integrations: [
     starlight({
+      favicon: 'favicon.ico',
       title: 'ReChunk',
       social: {
         github: 'https://github.com/crherman7/rechunk',
