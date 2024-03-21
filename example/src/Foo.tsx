@@ -1,9 +1,11 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
+import {SharedComponent} from '@/shared';
+
 export default function Foo() {
   return (
-    <View>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>
         Deserunt nostrud proident anim in eiusmod cillum culpa nulla cillum sint
         excepteur enim minim dolore. Ullamco non eu reprehenderit nisi duis sint
@@ -12,6 +14,7 @@ export default function Foo() {
         aliquip nisi est cillum velit consequat sint. Amet amet ullamco id
         excepteur esse eiusmod.
       </Text>
+      <SharedComponent />
     </View>
   );
 }

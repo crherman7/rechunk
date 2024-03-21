@@ -4,7 +4,8 @@
     "baseUrl": "./",
     "paths": {
       "@crherman7/rechunk": ["./src/index"],
-      "@crherman7/rechunk/config": ["./src/config"]
+      "@crherman7/rechunk/config": ["./src/config"],
+      "@/*": ["./example/src/*"]
     },
     "allowJs": false,
     "types": ["react-native", "node"]

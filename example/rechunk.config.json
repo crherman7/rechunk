@@ -3,5 +3,6 @@
   "entry": {
     "foo": "./src/Foo.tsx"
   },
-  "privateKeyPath": "./keys/private.pem"
+  "privateKeyPath": "./keys/private.pem",
+  "external": ["@/shared"]
 }

@@ -45,12 +45,13 @@ const server = http.createServer(async (req, res) => {
         image(),
         typescript({
           compilerOptions: {
-            jsx: 'react-jsx',
+            jsx: 'react',
             allowSyntheticDefaultImports: true,
           },
         }),
         terser(),
       ],
+      logLevel: 'silent',
     });
 
     // Generate bundled code
