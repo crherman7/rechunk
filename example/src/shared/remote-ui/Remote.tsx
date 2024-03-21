@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-import {SharedComponent} from '@/shared';
+import {Local} from '@/shared';
 
-export default function Foo() {
+export default function Remote() {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>
@@ -14,7 +14,7 @@ export default function Foo() {
         aliquip nisi est cillum velit consequat sint. Amet amet ullamco id
         excepteur esse eiusmod.
       </Text>
-      <SharedComponent />
+      <Local />
     </View>
   );
 }

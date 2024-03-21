@@ -1,1 +1,1 @@
-export {default as SharedComponent} from './SharedComponent';
+export {default as Local} from './Local';

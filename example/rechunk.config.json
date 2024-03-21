@@ -1,7 +1,7 @@
 {
   "$schema": "../schema.json",
   "entry": {
-    "foo": "./src/shared/remote-ui/Foo.tsx"
+    "foo": "./src/shared/remote-ui/Remote.tsx"
   },
   "privateKeyPath": "./keys/private.pem",
   "external": ["@/shared"]
