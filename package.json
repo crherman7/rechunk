@@ -17,6 +17,7 @@
     "schema.json"
   ],
   "workspaces": [
+    "docs",
     "example"
   ],
   "scripts": {
