@@ -7,7 +7,6 @@
       "@crherman7/rechunk/config": ["./src/config"],
       "@/*": ["./example/src/*"]
     },
-    "allowJs": false,
     "types": ["react-native", "node"]
   }
 }

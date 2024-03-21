@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
 import React, {Suspense} from 'react';
 import {importChunk} from '@crherman7/rechunk';
 import {ErrorBoundary} from 'react-error-boundary';

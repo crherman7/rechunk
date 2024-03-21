@@ -1,1 +1,1 @@
-export {default as SharedComponent} from './SharedComponent';
+export * from './ui';
