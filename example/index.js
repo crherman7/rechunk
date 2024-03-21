@@ -2,11 +2,8 @@ import {AppRegistry} from 'react-native';
 import ReChunk from '@crherman7/rechunk';
 
 import App from '@/app/App';
+import {fetchChunk} from '@/shared';
 
-ReChunk.addConfiguration(async chunkId => {
-  const res = await fetch(`http://localhost:3000?chunkId=${chunkId}`);
-
-  return res.json();
-}, true);
+ReChunk.addConfiguration(fetchChunk, true);
 
 AppRegistry.registerComponent('example', () => App);
