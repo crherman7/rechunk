@@ -45,9 +45,7 @@ const server = http.createServer(async (req, res) => {
         image(),
         typescript({
           compilerOptions: {
-            target: 'es6',
-            jsx: 'react',
-            module: 'es6',
+            jsx: 'react-jsx',
             allowSyntheticDefaultImports: true,
           },
         }),
