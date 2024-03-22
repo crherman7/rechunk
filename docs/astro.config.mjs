@@ -20,24 +20,34 @@ export default defineConfig({
         {
           label: 'Overview',
           items: [
-            {label: 'Overview', link: '/overview/overview/'},
-            {label: 'Objectives', link: '/overview/objectives/'},
-            {label: 'How it works?', link: '/overview/how-it-works/'},
+            {label: 'Overview', link: '/rechunk/overview/overview/'},
+            {label: 'Objectives', link: '/rechunk/overview/objectives/'},
+            {label: 'How it works?', link: '/rechunk/overview/how-it-works/'},
           ],
         },
         {
           label: 'Guides',
-          items: [{label: 'Getting Started', link: '/guides/getting-started/'}],
+          items: [
+            {
+              label: 'Getting Started',
+              link: '/rechunk/guides/getting-started/',
+            },
+          ],
         },
         {
           label: 'Reference',
           items: [
-            {label: 'Add Configuration', link: '/reference/add-configuration/'},
-            {label: 'Import Chunk', link: '/reference/import-chunk/'},
+            {
+              label: 'Add Configuration',
+              link: '/rechunk/reference/add-configuration/',
+            },
+            {label: 'Import Chunk', link: '/rechunk/reference/import-chunk/'},
           ],
         },
       ],
     }),
     tailwind({applyBaseStyles: false}),
   ],
+  site: 'https://crherman7.github.io',
+  base: 'rechunk',
 });

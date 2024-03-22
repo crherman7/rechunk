@@ -8,7 +8,7 @@ https://tailwindcss.com/docs/adding-custom-styles#using-css-and-layer
 */
 
 :root {
-  --sl-font: 'Source Code Pro', serif;
+  --sl-font: 'Source Code Pro Variable', monospace;
 }
 
 .site-title {
