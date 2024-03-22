@@ -6,3 +6,18 @@
 Add additional Tailwind styles to this file, for example with @layer:
 https://tailwindcss.com/docs/adding-custom-styles#using-css-and-layer
 */
+
+:root {
+  --sl-font: 'Source Code Pro', serif;
+}
+
+.site-title {
+  font-family: 'Birthstone', serif;
+  align-items: center;
+  gap: var(--sl-nav-gap);
+  font-size: var(--sl-text-h2);
+  font-weight: 600;
+  color: var(--sl-color-text-accent);
+  text-decoration: none;
+  white-space: nowrap;
+}

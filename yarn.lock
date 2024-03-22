@@ -1739,6 +1739,16 @@
     hastscript "^7.2.0"
     unist-util-visit-parents "^5.1.3"
 
+"@fontsource-variable/source-code-pro@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@fontsource-variable/source-code-pro/-/source-code-pro-5.0.18.tgz#9b543172c86938d1c9f920a7d4702c8b82b0890e"
+  integrity sha512-Dg+nFJZWvL6XVJuRqpGsaYnlPnj6ti3ApXH6htGOm80F4TUj036iaU7noRp2dh9BLHkLhnX4S+GA+6kSgbtLng==
+
+"@fontsource/birthstone@^5.0.19":
+  version "5.0.19"
+  resolved "https://registry.yarnpkg.com/@fontsource/birthstone/-/birthstone-5.0.19.tgz#4ff23a5d834a55adc2f5d5eb2a9bfb35f1a4eb5c"
+  integrity sha512-hmKJR5K6TjYnCcYg9zqStxdLUERsDp96nCOQlwc6a4eiO+uZhjLW5Nypb2lZWNnXJm6v/xBlYH9c8VRzyq0qOQ==
+
 "@hapi/hoek@^9.0.0", "@hapi/hoek@^9.3.0":
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-9.3.0.tgz#8368869dcb735be2e7f5cb7647de78e167a251fb"

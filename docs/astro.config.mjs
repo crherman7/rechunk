@@ -6,6 +6,11 @@ import tailwind from '@astrojs/tailwind';
 export default defineConfig({
   integrations: [
     starlight({
+      customCss: [
+        './src/tailwind.css',
+        '@fontsource/birthstone/400.css',
+        '@fontsource-variable/source-code-pro/wght.css',
+      ],
       favicon: 'favicon.ico',
       title: 'ReChunk',
       social: {
@@ -24,7 +29,6 @@ export default defineConfig({
           autogenerate: {directory: 'reference'},
         },
       ],
-      customCss: ['./src/tailwind.css'],
     }),
     tailwind({applyBaseStyles: false}),
   ],

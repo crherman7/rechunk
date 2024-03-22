@@ -2,6 +2,7 @@
   "name": "docs",
   "type": "module",
   "version": "0.0.1",
+  "license": "MIT",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -13,6 +14,8 @@
     "@astrojs/starlight": "^0.21.2",
     "@astrojs/starlight-tailwind": "^2.0.1",
     "@astrojs/tailwind": "^5.1.0",
+    "@fontsource/birthstone": "^5.0.19",
+    "@fontsource-variable/source-code-pro": "^5.0.18",
     "astro": "^4.3.5",
     "sharp": "^0.32.5",
     "tailwindcss": "^3.4.1",
