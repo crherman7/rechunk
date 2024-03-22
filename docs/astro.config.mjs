@@ -20,9 +20,9 @@ export default defineConfig({
         {
           label: 'Overview',
           items: [
-            {label: 'Overview', link: '/rechunk/overview/overview/'},
-            {label: 'Objectives', link: '/rechunk/overview/objectives/'},
-            {label: 'How it works?', link: '/rechunk/overview/how-it-works/'},
+            {label: 'Overview', link: '/overview/overview/'},
+            {label: 'Objectives', link: '/overview/objectives/'},
+            {label: 'How it works?', link: '/overview/how-it-works/'},
           ],
         },
         {
@@ -30,7 +30,7 @@ export default defineConfig({
           items: [
             {
               label: 'Getting Started',
-              link: '/rechunk/guides/getting-started/',
+              link: '/guides/getting-started/',
             },
           ],
         },
@@ -39,9 +39,9 @@ export default defineConfig({
           items: [
             {
               label: 'Add Configuration',
-              link: '/rechunk/reference/add-configuration/',
+              link: '/reference/add-configuration/',
             },
-            {label: 'Import Chunk', link: '/rechunk/reference/import-chunk/'},
+            {label: 'Import Chunk', link: '/reference/import-chunk/'},
           ],
         },
       ],
