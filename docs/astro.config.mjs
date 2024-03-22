@@ -18,15 +18,23 @@ export default defineConfig({
       },
       sidebar: [
         {
-          label: 'Guides',
+          label: 'Overview',
           items: [
-            // Each item here is one entry in the navigation menu.
-            {label: 'Example Guide', link: '/guides/example/'},
+            {label: 'Overview', link: '/overview/overview/'},
+            {label: 'Objectives', link: '/overview/objectives/'},
+            {label: 'How it works?', link: '/overview/how-it-works/'},
           ],
         },
         {
+          label: 'Guides',
+          items: [{label: 'Getting Started', link: '/guides/getting-started/'}],
+        },
+        {
           label: 'Reference',
-          autogenerate: {directory: 'reference'},
+          items: [
+            {label: 'Add Configuration', link: '/reference/add-configuration/'},
+            {label: 'Import Chunk', link: '/reference/import-chunk/'},
+          ],
         },
       ],
     }),
