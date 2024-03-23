@@ -14,7 +14,7 @@
 
 ## Getting Started
 
-Go to the [Quick Start](https://rechunk.dev/) to get started.
+Go to the [Quick Start](https://crherman7.github.io/rechunk/) to get started.
 
 ## Contribution
 
