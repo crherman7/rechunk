@@ -21,3 +21,15 @@ https://tailwindcss.com/docs/adding-custom-styles#using-css-and-layer
   text-decoration: none;
   white-space: nowrap;
 }
+
+.pagination-links > a {
+  background-color: var(--sl-color-black);
+}
+
+div.content-panel:nth-child(1):not(:last-child) {
+  background-color: var(--sl-color-black);
+}
+
+.right-sidebar {
+  background-color: var(--sl-color-black);
+}

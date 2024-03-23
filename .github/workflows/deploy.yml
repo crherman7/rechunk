@@ -20,6 +20,7 @@ jobs:
         uses: withastro/action@v2
         with:
           path: ./docs
+          package-manager: yarn@latest
 
   deploy:
     needs: build

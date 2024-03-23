@@ -22,7 +22,7 @@ export default defineConfig({
           items: [
             {label: 'Overview', link: '/overview/overview/'},
             {label: 'Objectives', link: '/overview/objectives/'},
-            {label: 'How it works?', link: '/overview/how-it-works/'},
+            {label: 'How it works', link: '/overview/how-it-works/'},
           ],
         },
         {
@@ -38,8 +38,8 @@ export default defineConfig({
           label: 'Reference',
           items: [
             {
-              label: 'Add Configuration',
-              link: '/reference/add-configuration/',
+              label: 'Configuration',
+              link: '/reference/configuration/',
             },
             {label: 'Import Chunk', link: '/reference/import-chunk/'},
           ],
