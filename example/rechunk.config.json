@@ -1,5 +1,5 @@
 {
-  "$schema": "../schema.json",
+  "$schema": "https://crherman7.github.io/rechunk/schema.json",
   "entry": {
     "foo": "./src/shared/remote-ui/Remote.tsx"
   },
