@@ -7,7 +7,10 @@
   "repository": "git@github.com:crherman7/rechunk.git",
   "homepage": "https://rechunk.dev",
   "author": "Chris Herman <crherman7@gmail.com>",
-  "main": "dist/index.js",
+  "main": "dist/react-native/index.js",
+  "bin": {
+    "rechunk": "./dist/cli/index.js"
+  },
   "files": [
     "android",
     "dist",
@@ -21,13 +24,20 @@
     "example"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --dts --minify",
-    "dev": "tsup src/index.ts --dts --minify --watch"
+    "build": "tsup src/react-native/index.ts src/cli/index.ts --dts --minify",
+    "dev": "tsup src/react-native/index.ts src/cli/index.ts --dts --minify --watch"
   },
-  "source": "src/index",
-  "types": "dist/index.d.ts",
+  "source": "src/react-native/index",
+  "types": "dist/react-native/index.d.ts",
   "dependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-image": "^3.0.3",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
     "base-64": "^1.0.0",
+    "commander": "^12.0.0",
+    "rollup": "^4.13.0",
     "tiny-emitter": "^2.1.0",
     "tiny-invariant": "^1.3.3",
     "tiny-warning": "^1.0.3"
