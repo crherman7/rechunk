@@ -8,15 +8,15 @@ https://tailwindcss.com/docs/adding-custom-styles#using-css-and-layer
 */
 
 :root {
-  --sl-font: 'Source Code Pro Variable', monospace;
+  --sl-font: 'Inter Variable', sans-serif;
 }
 
 .site-title {
-  font-family: 'Birthstone', serif;
+  font-family: 'Pixelify Sans Variable', system-ui;
   align-items: center;
   gap: var(--sl-nav-gap);
   font-size: var(--sl-text-h2);
-  font-weight: 600;
+  font-weight: 400;
   color: var(--sl-color-text-accent);
   text-decoration: none;
   white-space: nowrap;

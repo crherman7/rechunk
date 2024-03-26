@@ -8,8 +8,8 @@ export default defineConfig({
     starlight({
       customCss: [
         './src/tailwind.css',
-        '@fontsource/birthstone/400.css',
-        '@fontsource-variable/source-code-pro/wght.css',
+        '@fontsource-variable/inter',
+        '@fontsource-variable/pixelify-sans',
       ],
       favicon: 'favicon.ico',
       title: 'ReChunk',
@@ -32,16 +32,18 @@ export default defineConfig({
               label: 'Getting Started',
               link: '/guides/getting-started/',
             },
-          ],
-        },
-        {
-          label: 'Reference',
-          items: [
             {
               label: 'Configuration',
-              link: '/reference/configuration/',
+              link: '/guides/configuration',
             },
-            {label: 'Import Chunk', link: '/reference/import-chunk/'},
+            {
+              label: 'Chunks',
+              link: '/guides/chunks',
+            },
+            {
+              label: 'Bundling',
+              link: '/guides/bundling',
+            },
           ],
         },
       ],
