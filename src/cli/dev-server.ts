@@ -34,22 +34,46 @@ program
   )
   .option('-p, --port [port]', 'dev server port')
   .action(async options => {
+    // Importing necessary modules
+    const path = require('path');
+    const fss = require('fs');
+
+    /**
+     * Resolves the absolute path to the package.json file.
+     * @type {string}
+     */
     const pakPath = path.resolve(process.cwd(), 'package.json');
+
+    /**
+     * Resolves the absolute path to the rechunk.config.json file.
+     * @type {string}
+     */
     const rcPath = path.resolve(process.cwd(), 'rechunk.config.json');
 
+    // Check if package.json exists
     if (!fss.existsSync(pakPath)) {
       throw new Error(
         '[ReChunk]: cannot find package.json. Please make sure there is a package.json at the root of your React Native project.',
       );
     }
 
+    // Check if rechunk.config.json exists
     if (!fss.existsSync(rcPath)) {
       throw new Error(
         '[ReChunk]: cannot find rechunk.config.json. Please make sure there is a rechunk.config.json at the root of your React Native project.',
       );
     }
 
+    /**
+     * Contains the parsed package.json object.
+     * @type {Object}
+     */
     const pak = require(pakPath);
+
+    /**
+     * Contains the parsed rechunk.config.json object.
+     * @type {Object}
+     */
     const rc = require(rcPath);
 
     /**

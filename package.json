@@ -7,10 +7,10 @@
   "repository": "git@github.com:crherman7/rechunk.git",
   "homepage": "https://crherman7.github.io/rechunk",
   "author": "Chris Herman <crherman7@gmail.com>",
-  "main": "dist/react-native/index.js",
   "bin": {
     "rechunk": "./dist/cli/index.js"
   },
+  "main": "dist/react-native/index.js",
   "files": [
     "android",
     "dist",
