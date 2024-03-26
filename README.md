@@ -1,7 +1,7 @@
 # ReChunk
 
 <picture>
-  <img alt="ReChunk Banner" src="./.github/assets/banner.png">
+  <img alt="ReChunk Banner" src="./.github/assets/hero.png">
 </picture>
 
 <h2 align="center">Render Externally Hosted Components with React Native</h2>
