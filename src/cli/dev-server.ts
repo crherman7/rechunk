@@ -32,7 +32,7 @@ program
   .description(
     'ReChunk development server to serve and sign React Native chunks.',
   )
-  .option('-p, --port [port]', 'dev server port')
+  .option('-p, --port [port]', 'dev server port', '3000')
   .action(async options => {
     // Importing necessary modules
     const path = require('path');
