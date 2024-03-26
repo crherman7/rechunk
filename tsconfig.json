@@ -7,5 +7,12 @@
       "@/*": ["./example/src/*"]
     },
     "types": ["react-native", "node"]
-  }
+  },
+  "exclude": [
+    "docs",
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ]
 }
