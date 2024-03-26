@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "repository": "git@github.com:crherman7/rechunk.git",
-  "homepage": "https://rechunk.dev",
+  "homepage": "https://crherman7.github.io/rechunk",
   "author": "Chris Herman <crherman7@gmail.com>",
   "main": "dist/react-native/index.js",
   "bin": {
