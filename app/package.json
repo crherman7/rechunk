@@ -2,7 +2,9 @@
   "name": "app",
   "version": "0.0.1",
   "license": "MIT",
+  "type": "module",
   "scripts": {
+    "build": "tsup src/index.ts --minify",
     "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
@@ -11,6 +13,8 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
-    "tsx": "^3.12.2"
+    "tsup": "^8.0.2",
+    "tsx": "^3.12.2",
+    "typescript": "^5.4.3"
   }
 }

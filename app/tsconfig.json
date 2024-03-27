@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
+    "outDir": "./dist",
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "strict": true,
-    "types": [
-      "node"
-    ],
+    "types": ["node"],
     "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
-  }
+    "jsxImportSource": "hono/jsx"
+  },
+  "exclude": ["node_modules"]
 }

@@ -1,16 +1,21 @@
-import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import {Hono} from 'hono';
+import {serve} from '@hono/node-server';
 
-const app = new Hono()
+import {chunk, project} from './controllers';
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+const app = new Hono();
 
-const port = 3000
-console.log(`Server is running on port ${port}`)
+app.get('/', c => {
+  return c.text('Welcome to ReChunk!');
+});
+
+app.route('/chunk', chunk);
+app.route('/project', project);
+
+const port = 3000;
+console.log(`Server is running on port ${port}`);
 
 serve({
   fetch: app.fetch,
-  port
-})
+  port,
+});

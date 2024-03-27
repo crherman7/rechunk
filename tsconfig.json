@@ -9,6 +9,7 @@
     "types": ["react-native", "node"]
   },
   "exclude": [
+    "app",
     "docs",
     "node_modules",
     "babel.config.js",
