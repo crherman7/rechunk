@@ -16,4 +16,5 @@ import {program} from 'commander';
 program
   .command('init')
   .description('initializes a ReChunk project')
+  .requiredOption('-h, --host [host]', 'ReChunk host')
   .action(async options => {});
