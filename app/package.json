@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "build": "tsup src/index.ts --minify",
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "preview": "node dist/index.cjs"
   },
   "dependencies": {
     "@hono/node-server": "^1.9.0",
