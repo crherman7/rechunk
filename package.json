@@ -20,6 +20,7 @@
     "schema.json"
   ],
   "workspaces": [
+    "app",
     "docs",
     "example"
   ],

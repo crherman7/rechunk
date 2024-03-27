@@ -18,7 +18,7 @@ Go to the [Quick Start](https://crherman7.github.io/rechunk/) to get started.
 
 ## Contribution
 
-Please read the [Contributing Guide](./CONTRIBUTING.md) and let's build Flagship Code together.
+Please read the [Contributing Guide](./CONTRIBUTING.md) and let's build ReChunk together.
 
 If you have any questions, you can open an issue to communicate with us.
 
