@@ -1,8 +1,10 @@
 import {Hono} from 'hono';
 
+import {readAuth} from '../middleware';
+
 const project = new Hono();
 
-project.get('/', c => {
+project.get('/', readAuth(), c => {
   return c.text('ReChunk Endpoint /project GET');
 });
 
