@@ -3,8 +3,12 @@
 import process from 'process';
 import {program} from 'commander';
 
-import './bundle';
 import './dev-server';
+import './init';
+import './list';
+import './publish';
+import './unpublish';
+
 import pak from '../../package.json';
 
 /**

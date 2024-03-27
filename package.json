@@ -1,7 +1,7 @@
 {
   "name": "@crherman7/rechunk",
   "version": "1.0.0",
-  "description": "Re.Chunk remote chunks for React Native",
+  "description": "Render Remote Chunks with React Native",
   "license": "MIT",
   "private": true,
   "repository": "git@github.com:crherman7/rechunk.git",
