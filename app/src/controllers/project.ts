@@ -66,12 +66,13 @@ project.post(
     });
 
     return c.json({
+      $schema: 'https://crherman7.github.io/rechunk/schema.json',
       project,
       readKey,
       writeKey,
       publicKey: pub,
       privateKey: priv,
-      entry: [],
+      entry: {},
       external: [],
     });
   },

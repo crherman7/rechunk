@@ -8,7 +8,7 @@ import {migrate} from 'drizzle-orm/better-sqlite3/migrator';
 
   console.log('Starting migrations');
 
-  migrate(db, {migrationsFolder: 'drizzle'});
+  migrate(db, {migrationsFolder: 'migrations'});
 
   console.log('Migrations complete.');
 })();
