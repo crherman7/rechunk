@@ -1,8 +1,12 @@
 {
   "$schema": "https://crherman7.github.io/rechunk/schema.json",
+  "project": "carsick-quality-involve",
+  "readKey": "read-cba0eb62-d37f-4d71-8ee3-f6690b983487",
+  "writeKey": "write-df5930da-6a6c-4b84-8a65-1d95d055346d",
+  "publicKey": "-----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkbfV5Z4aWwcjZ7KvnJOl w9S29IzREncOQmOsI+lIn8ymxt02COlpj8p31odx4EiWoO2BLtisOn9eS9dT3OIk 434ayOdGAYLV52m06rcEI6bXipdmaqsHlVQNWIKJfbixgLtHUvTBj2+04B0zoumx oKHcbEE0pjNZYblyS/FnzPeHkAOq+DiEJBa7UQgOuQZHYyeKu5bVGVi45TvVs4g1 7X1PMYvr6XzcMMIu2yApcvEhEf4cLIP6M23fhJKJqp1smupPLmJY1/DsD77ZeHjs IYOwXNz6QIxXFxgvkIvycv1MEYIJb3F/Ft1I/zqJdzKBtFxKw/18unWTr3qgyhsd 0QIDAQAB -----END PUBLIC KEY-----",
+  "privateKey": "-----BEGIN PRIVATE KEY----- MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDhe1u3zI/x3FSC lTVj20iVJ++Sz0cIWwtiEW9Qzy9Sup/P0FD8Y2MxpS8/zYoO+HcNtQslMU6skJ/0 6z+hKTo98zQy+37M9i3F2cSNABZUJj8fNfFrO7g1B4q2wndbMYSx9eQ3BJ3SBHLs Y5o9SdpXO6pNgFUPw4AP7QgtfQ/XalAAMCneCubQfcD1ypTMxpevaoEiiEftHY0/ 6Bim7yFPuIczDpHe5PRUm23FEXnPNIHfDdZMJ8DlHOSc9uoyXmbAaVmk8EucRTjm qe93NVWQBhp41L/CDpQNilWgPngFvzIjk+6CIIWRiwNSunM4tq8yXk69miYu6VDY Jj2j1qeRAgMBAAECggEABHMsKVWPyi7GWrDh5bt6RFpOSbQOQ3GTiQ8NxrceCJiP BpmGfaKi/qPzSaOva7H23IYEBysA0dpFU96wKeivwfD6qN5qf1ZE6zyL2toDdsvt 7zpf7jU2opJIaCiwlRPGOgJfq3/Lcw18LKLfFIJQfSv75Y1osFfT/0x23rny/fXt S/QKuaS9BAeP54u1deQuG/fmQtxoF4YLOpc5CHpU8BkhfROPQJo0CtUx/pzDBDC5 sqk532W391KU65a04/hDcEgkJeQSk72RRaWgLOSHEXTZgttYMyYd5qJ/qt+dQRkX rkk7ATnIk/M3hfMBbe4nYp8GA26afwfRDQ+QFt3qQQKBgQD0ix1qZtNqCeLCzKVN kGVIMcAadeQ8ydA2T0lGreerHXmRjvKLpgDlHd9P7ftRouHyWfcVP//hBambdy3w GSDhohRXoD/BVTmn1eUqvzfLqFQ9ZbPer2OnODH1EaPXtLtZQdzhYK9B2acJ1M0P So5X9sQRsSp2u60EtXTsvolK8QKBgQDsC6Hd4sAaYBxhB/HjlQaVWyyelonHA4HX LE5vdkXArpU9mQQIw2cDG6uMmKmdiApvxjk2WNxqUWZr7NRvtZnGOqUvI/GkK1sI pefcvTIF6ZdliFUljwFP/zPyiEOPeZi8VE9zXv3cFF2CjS/lC0MGGb/eTCwBw2Ku FiailMrmoQKBgAzGt+K3PJRtr8s9peVHhgMflknLnwEOCjLMMaffrhrij1drgICL S8Csrt4eMOMy/1sKGD6j+VpoUVQuBdhld7JSJX3ugWY4baq3IiH5m5CoWr5acetQ foReCz4ijczXRHKFXmToCEAIfxGkbJI/8u/llJjYCL/rTj7QvCsiSUoBAoGAPHvK kUmeAeQowXBAuhkgo7rGFyjpyvYKGjG/M25x9yqFEVCZKQmw5qn7bj5cEAKg8f0w Ac4JRLDw9qyrzqgQ7Ctw0kB6lZ+KZw/j9rsAC2XMpnaloscfBfmVvQrPjP8SdQeB iEWJ9Q++2koFQMJ+/Rwx/uszx4viSEtiwPwxdaECgYEAnC5s6+kJFh7WS6+nmcEV t26GOSnHN6Ay1rQlHLo0BFL+4JxxCuyo+FL1jQsevTlWpJm0+xmQ+zYI6DVii6l6 wAOLRkOqv3gFcEwyXU+3jc6TUKzwRfq7WcSo1ODLpYI7WoipLKKnLmai8RNH+ENM An8EDK9k5Z5+RK9NVPnp/vo= -----END PRIVATE KEY-----",
   "entry": {
     "foo": "./src/shared/remote-ui/Remote.tsx"
   },
-  "privateKeyPath": "./keys/private.pem",
   "external": ["@/shared"]
 }

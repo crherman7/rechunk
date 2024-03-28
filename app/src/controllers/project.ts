@@ -38,8 +38,6 @@ project.get('/', readAuth(), async c => {
   return c.json(res);
 });
 
-// Use basic auth and for now it's okay to expose username and password
-// In future use secrets
 project.post(
   '/',
   basicAuth({

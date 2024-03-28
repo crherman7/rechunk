@@ -1,6 +1,7 @@
 import http from 'http';
 import url from 'url';
-import fs from 'fs/promises';
+import fs from 'fs';
+import path from 'path';
 import {createHash, createSign} from 'crypto';
 
 import {program} from 'commander';
@@ -33,9 +34,6 @@ program
   .option('-p, --port [port]', 'dev server port', '3000')
   .action(async options => {
     // Importing necessary modules
-    const path = require('path');
-    const fss = require('fs');
-
     /**
      * Resolves the absolute path to the package.json file.
      * @type {string}
@@ -49,14 +47,14 @@ program
     const rcPath = path.resolve(process.cwd(), 'rechunk.json');
 
     // Check if package.json exists
-    if (!fss.existsSync(pakPath)) {
+    if (!fs.existsSync(pakPath)) {
       throw new Error(
         '[ReChunk]: cannot find package.json. Please make sure there is a package.json at the root of your React Native project.',
       );
     }
 
     // Check if rechunk.json exists
-    if (!fss.existsSync(rcPath)) {
+    if (!fs.existsSync(rcPath)) {
       throw new Error(
         '[ReChunk]: cannot find rechunk.json. Please make sure there is a rechunk.json at the root of your React Native project.',
       );
@@ -125,12 +123,6 @@ program
           },
         } = await rollupBuild.generate({format: 'cjs', exports: 'auto'});
 
-        // Read private key from file
-        const privateKey = await fs.readFile(
-          path.resolve(process.cwd(), rc.privateKeyPath),
-          'utf-8',
-        );
-
         // Encode code as base64
         const data = btoa(code);
 
@@ -140,7 +132,7 @@ program
         // Generate signature using private key
         const sig = createSign('SHA256')
           .update(hash)
-          .sign(privateKey, 'base64');
+          .sign(rc.privateKey, 'base64');
 
         // Prepare response data
         const responseData = {
