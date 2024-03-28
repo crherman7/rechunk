@@ -55,12 +55,12 @@ chunk.post('/:chunkId', writeAuth(), async c => {
       projectId: project.id,
     });
 
-    return c.status(200);
+    return c.text('');
   }
 
   await db.update(chunks).set({data}).where(eq(chunks.name, chunkId));
 
-  return c.status(200);
+  return c.text('');
 });
 
 chunk.delete('/:chunkId', readAuth(), async c => {
@@ -68,7 +68,7 @@ chunk.delete('/:chunkId', readAuth(), async c => {
 
   await db.delete(chunks).where(eq(chunks.name, chunkId));
 
-  return c.status(200);
+  return c.text('');
 });
 
 export default chunk;

@@ -4352,6 +4352,11 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
+crypto-extra@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/crypto-extra/-/crypto-extra-1.0.1.tgz#91d9e3d8d35f9a16d548c073c31b147f34eab11e"
+  integrity sha512-EDJ07p6UDdyX+7GL6Bb6FqCuCHY34GuII9esE/xXZtW7tlB+A7MYT9O/c1M/ov2aGTdwvw0b3z5OcO50zYBG5Q==
+
 css-selector-parser@^3.0.0:
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/css-selector-parser/-/css-selector-parser-3.0.5.tgz#9b636ebccf7c4bcce5c1ac21ae27de9f01180ae9"
@@ -8371,6 +8376,13 @@ mz@^2.7.0:
     any-promise "^1.0.0"
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
+
+namor@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/namor/-/namor-3.0.1.tgz#1e9338587bc395a2f83937bebb5a7c069abe1a92"
+  integrity sha512-DuXHrPcpgSe9p/P7xS+8JdcHNasd6/eyOYa6oKSLK/Lx0tqrdzUIcWhF2HgtoFvZmoSILjzMJeWBo3Lt7T8F8A==
+  dependencies:
+    crypto-extra "1.0.1"
 
 nanoid@^3.3.7:
   version "3.3.7"
