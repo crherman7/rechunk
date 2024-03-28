@@ -76,3 +76,7 @@ dist/
 
 # Hono
 *.env
+
+# Drizzle
+migrations
+*.db

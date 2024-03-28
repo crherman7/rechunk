@@ -11,11 +11,15 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.9.0",
+    "better-sqlite3": "^9.4.3",
     "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.30.5",
     "hono": "^4.1.4"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.9",
     "@types/node": "^20.11.17",
+    "drizzle-kit": "^0.20.14",
     "tsup": "^8.0.2",
     "tsx": "^3.12.2",
     "typescript": "^5.4.3"
