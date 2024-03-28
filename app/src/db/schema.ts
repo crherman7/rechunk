@@ -7,6 +7,10 @@ export const projects = sqliteTable('projects', {
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   name: text('name').unique().notNull(),
+  readKey: text('readKey').notNull(),
+  writeKey: text('writeKey').notNull(),
+  privateKey: text('privateKey').notNull(),
+  publicKey: text('publicKey').notNull(),
 });
 
 export const chunks = sqliteTable('chunks', {
@@ -15,6 +19,7 @@ export const chunks = sqliteTable('chunks', {
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   name: text('name').unique().notNull(),
+  data: text('data').notNull(),
   projectId: integer('project_id')
     .notNull()
     .references(() => projects.id, {onDelete: 'cascade'}),
