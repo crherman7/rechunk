@@ -58,19 +58,19 @@ project.post(
     const priv = privateKey.export({type: 'pkcs8', format: 'pem'}) as string;
 
     await db.insert(projects).values({
+      name: project,
       readKey,
       writeKey,
       publicKey: pub,
       privateKey: priv,
-      name: project,
     });
 
     return c.json({
       project,
       readKey,
       writeKey,
-      publicKey,
-      privateKey,
+      publicKey: pub,
+      privateKey: priv,
       entry: [],
       external: [],
     });
