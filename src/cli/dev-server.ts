@@ -1,11 +1,9 @@
 import http from 'http';
 import url from 'url';
-import path from 'path';
-import fss from 'fs';
 import fs from 'fs/promises';
 import {createHash, createSign} from 'crypto';
 
-import {Option, program} from 'commander';
+import {program} from 'commander';
 import {rollup} from 'rollup';
 import commonjs from '@rollup/plugin-commonjs';
 import image from '@rollup/plugin-image';
@@ -15,7 +13,7 @@ import typescript from '@rollup/plugin-typescript';
 
 /**
  * Defines a command for the "dev-server" operation using the "commander" library.
- * This command facilitates serving React Native chunks based upon rechunk.config.json.
+ * This command facilitates serving React Native chunks based upon rechunk.json.
  *
  * @example
  * ```bash
@@ -45,10 +43,10 @@ program
     const pakPath = path.resolve(process.cwd(), 'package.json');
 
     /**
-     * Resolves the absolute path to the rechunk.config.json file.
+     * Resolves the absolute path to the rechunk.json file.
      * @type {string}
      */
-    const rcPath = path.resolve(process.cwd(), 'rechunk.config.json');
+    const rcPath = path.resolve(process.cwd(), 'rechunk.json');
 
     // Check if package.json exists
     if (!fss.existsSync(pakPath)) {
@@ -57,10 +55,10 @@ program
       );
     }
 
-    // Check if rechunk.config.json exists
+    // Check if rechunk.json exists
     if (!fss.existsSync(rcPath)) {
       throw new Error(
-        '[ReChunk]: cannot find rechunk.config.json. Please make sure there is a rechunk.config.json at the root of your React Native project.',
+        '[ReChunk]: cannot find rechunk.json. Please make sure there is a rechunk.json at the root of your React Native project.',
       );
     }
 
@@ -71,7 +69,7 @@ program
     const pak = require(pakPath);
 
     /**
-     * Contains the parsed rechunk.config.json object.
+     * Contains the parsed rechunk.json object.
      * @type {Object}
      */
     const rc = require(rcPath);

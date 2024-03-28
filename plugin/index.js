@@ -27,12 +27,12 @@ module.exports = function rechunkPlugin({types: t}) {
           // Read package.json to get dependencies
           const packageJson = require(packageJsonPath);
 
-          // Resolve the path to rechunk.config.json
+          // Resolve the path to rechunk.json
           const rechunkConfigJsonPath = path.resolve(
             process.cwd(),
-            'rechunk.config.json',
+            'rechunk.json',
           );
-          // Read rechunk.config.json to get external
+          // Read rechunk.json to get external
           const rechunkConfigJson = require(rechunkConfigJsonPath);
 
           const external = rechunkConfigJson.external || [];

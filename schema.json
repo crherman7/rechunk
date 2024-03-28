@@ -2,14 +2,26 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
+    "project": {
+      "type": "string"
+    },
+    "readKey": {
+      "type": "string"
+    },
+    "writeKey": {
+      "type": "string"
+    },
+    "publicKey": {
+      "type": "string"
+    },
+    "privateKey": {
+      "type": "string"
+    },
     "entry": {
       "type": "object",
       "additionalProperties": {
         "type": "string"
       }
-    },
-    "privateKeyPath": {
-      "type": "string"
     },
     "external": {
       "type": "array",
@@ -18,5 +30,13 @@
       }
     }
   },
-  "required": ["entry", "privateKeyPath"]
+  "required": [
+    "project",
+    "readKey",
+    "writeKey",
+    "publicKey",
+    "privateKey",
+    "entry",
+    "external"
+  ]
 }
