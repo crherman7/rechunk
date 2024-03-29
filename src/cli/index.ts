@@ -1,5 +1,7 @@
 #!/bin/env node
 
+import 'dotenv/config';
+
 import process from 'process';
 import {program} from 'commander';
 
