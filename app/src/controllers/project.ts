@@ -68,8 +68,8 @@ project.post(
       project,
       readKey,
       writeKey,
-      publicKey: pub,
-      privateKey: priv,
+      publicKey: pub.replaceAll('\n', ''),
+      privateKey: priv.replaceAll('\n', ''),
       entry: {},
       external: [],
     });
