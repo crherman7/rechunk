@@ -30,6 +30,7 @@ program.parseAsync().catch(async error => {
   console.log(
     'Unexpected error. Please report it as a bug: https://github.com/crherman7/rechunk/issues',
   );
+  console.log();
   console.log(error.message);
   console.log();
 
