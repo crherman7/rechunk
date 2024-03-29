@@ -1,14 +1,16 @@
 import {and, eq} from 'drizzle-orm';
 import {MiddlewareHandler} from 'hono';
-import {getCookie} from 'hono/cookie';
 
 import {db} from '../db';
+import {auth} from './auth';
 import {projects} from '../db/schema';
 
 export const readAuth = (): MiddlewareHandler => {
   return async function readAuth(c, next) {
-    const project = getCookie(c, 'rechunk_project');
-    const readKey = getCookie(c, 'rechunk_read_key');
+    const requestUser = auth(c.req);
+
+    const project = requestUser?.username;
+    const readKey = requestUser?.password;
 
     if (!project) {
       throw new Error(
