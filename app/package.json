@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "build": "tsup src/index.ts --minify",
+    "db:generate": "drizzle-kit generate:sqlite",
+    "db:migrate": "tsx src/db/migrate.ts",
     "dev": "tsx watch src/index.ts",
     "preview": "node dist/index.cjs"
   },
