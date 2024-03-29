@@ -9,6 +9,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",
+    "rechunk": "../dist/cli",
     "start": "react-native start"
   },
   "dependencies": {
