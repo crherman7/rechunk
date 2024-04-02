@@ -34,7 +34,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>ReChunkPublicKey</key>
-	<string>-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmiSvpiskuVh+NQqWTbsFPcSlHKLbRjf+mqa8ULdWwy7GKBuZNQa8oqkER1ZcCcCcplLC1yyaIDHPOHIJW16NOlwm6v+yiXdCh+3i2oolaZqxAgbPzbFHqAo2RWJnEsG8J/6OJhAJR2I/S1WsibaiYlFyryyAruGrw3lcCAtflmTBNPHIKD50k62Y0LrqcRwSK4qz/ZH76eE7k1RNEtrQBYLIQITeYuuq+UOQC0uWglevaCczHkLsumUuiQsQwoyuWfnQzuJkWr6FjMXy+A8/CftWrUKv6IChw9J8McZCa1nDUhU8DrWrfKre4q1R0I7uQ12tCPiPbu5TAWlIRIOThwIDAQAB-----END PUBLIC KEY-----</string>
+	<string>-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3kJ495DL/v38JXM7HSFKM2Xljq0ACgpxhB7IhStJbx/C9PH97YBQ37plRSB6D8fOaizsAl0kJ70djqz3b620x5M95isX2enHdZX3NYyymbhzoNTaJSbUrb3xrQzIiQ12glK05jG7/SnXtl2f1+9EsZTsKHwagnM57fgHUCGtzh+CkA8FghUlG/FZTrIXmdXLKLRhM8Lql6mKvs0TduMHvsRh1ihoZEY8xdi/58Akudxfl6Hzo2AxAVJ9Ol6mJGW30LPrs+yNHIppeU4HPFxU7fG/lDds0k3e3Ie8i0QDQwVEq7WZ+iuTqXJPViK239efSefFxJE9rlRxo7+78IEgPwIDAQAB-----END PUBLIC KEY-----</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

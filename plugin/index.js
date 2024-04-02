@@ -77,6 +77,59 @@ module.exports = function rechunkPlugin({types: t}) {
           );
         }
       },
+      /**
+       * Visits MemberExpression nodes and inserts the rechunk project and readKey
+       * as a configuration object argument into process.env.RECHUNK_USERNAME
+       * and process.env.RECHUNK_PASSWORD.
+       * @param {object} path - Babel path object.
+       */
+      MemberExpression(p) {
+        // Check if the MemberExpression is accessing process.env
+        if (
+          !t.isIdentifier(p.node.object, {name: 'process'}) ||
+          !t.isIdentifier(p.node.property, {name: 'env'})
+        ) {
+          return;
+        }
+
+        const parent = p.parentPath;
+
+        // Ensure that the MemberExpression has a parent MemberExpression
+        if (!t.isMemberExpression(parent.node)) {
+          return;
+        }
+
+        // Resolve the path to rechunk.json
+        const rechunkConfigJsonPath = path.resolve(
+          process.cwd(),
+          'rechunk.json',
+        );
+        // Read rechunk.json to get external
+        const rechunkConfigJson = require(rechunkConfigJsonPath);
+
+        // Destructure project and readKey used to replace process.env values
+        const {project, readKey} = rechunkConfigJson;
+
+        // Replace process.env.RECHUNK_USERNAME with the rechunk project
+        if (
+          t.isIdentifier(parent.node.property, {
+            name: 'RECHUNK_USERNAME',
+          }) &&
+          !parent.parentPath.isAssignmentExpression()
+        ) {
+          parent.replaceWith(t.stringLiteral(project));
+        }
+
+        // Replace process.env.RECHUNK_PASSWORD with the rechunk readKey
+        if (
+          t.isIdentifier(parent.node.property, {
+            name: 'RECHUNK_PASSWORD',
+          }) &&
+          !parent.parentPath.isAssignmentExpression()
+        ) {
+          parent.replaceWith(t.stringLiteral(readKey));
+        }
+      },
     },
   };
 };
