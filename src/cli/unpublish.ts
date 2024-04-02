@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import {program} from 'commander';
 
 /**
@@ -17,4 +19,24 @@ program
   .command('unpublish')
   .description('unpublishes a chunk')
   .requiredOption('-c, --chunk [chunk]', 'a chunk to unpublish')
-  .action(async options => {});
+  .action(async options => {
+    const {chunk} = options;
+    const ctx = process.cwd();
+
+    const rcPath = path.resolve(ctx, 'rechunk.json');
+
+    if (!fs.existsSync(rcPath)) {
+      throw new Error(
+        'project does not exist, please run "rechunk init" to create rechunk.json',
+      );
+    }
+
+    const rc = require(rcPath);
+
+    await fetch(`${process.env.RECHUNK_HOST}/chunk/${chunk}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Basic ${btoa(`${rc.project}:${rc.writeKey}`)}`,
+      },
+    });
+  });

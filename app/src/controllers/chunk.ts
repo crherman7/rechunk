@@ -1,6 +1,6 @@
 import {Hono} from 'hono';
 import crypto from 'crypto';
-import {eq} from 'drizzle-orm';
+import {and, eq} from 'drizzle-orm';
 
 import {db} from '../db';
 import {Project, chunks} from '../db/schema';
@@ -63,10 +63,13 @@ chunk.post('/:chunkId', writeAuth(), async c => {
   return c.text('');
 });
 
-chunk.delete('/:chunkId', readAuth(), async c => {
+chunk.delete('/:chunkId', writeAuth(), async c => {
+  const project = c.get('project');
   const chunkId = c.req.param('chunkId');
 
-  await db.delete(chunks).where(eq(chunks.name, chunkId));
+  await db
+    .delete(chunks)
+    .where(and(eq(chunks.name, chunkId), eq(chunks.projectId, project.id)));
 
   return c.text('');
 });
