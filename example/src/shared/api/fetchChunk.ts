@@ -17,7 +17,7 @@ export async function fetchChunk(chunkId: string): Promise<any> {
         method: 'GET',
         headers: {
           Authorization: `Basic ${btoa(
-            `${process.env.RECHUNK_USERNAME}:${process.env.RECHUNK_PASSWORD}`,
+            `${process.env.RECHUNK_PROJECT}:${process.env.RECHUNK_READ_KEY}`,
           )}`,
         },
       },

@@ -113,7 +113,7 @@ module.exports = function rechunkPlugin({types: t}) {
         // Replace process.env.RECHUNK_USERNAME with the rechunk project
         if (
           t.isIdentifier(parent.node.property, {
-            name: 'RECHUNK_USERNAME',
+            name: 'RECHUNK_PROJECT',
           }) &&
           !parent.parentPath.isAssignmentExpression()
         ) {
@@ -123,7 +123,7 @@ module.exports = function rechunkPlugin({types: t}) {
         // Replace process.env.RECHUNK_PASSWORD with the rechunk readKey
         if (
           t.isIdentifier(parent.node.property, {
-            name: 'RECHUNK_PASSWORD',
+            name: 'RECHUNK_READ_KEY',
           }) &&
           !parent.parentPath.isAssignmentExpression()
         ) {
