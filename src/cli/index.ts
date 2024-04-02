@@ -1,7 +1,5 @@
 #!/bin/env node
 
-import 'dotenv/config';
-
 import process from 'process';
 import {program} from 'commander';
 
@@ -26,10 +24,6 @@ program
  * @param {Error} error - The error that was caught.
  */
 program.parseAsync().catch(async error => {
-  console.log();
-  console.log(
-    'Unexpected error. Please report it as a bug: https://github.com/crherman7/rechunk/issues',
-  );
   console.log();
   console.log(error.message);
   console.log();

@@ -89,7 +89,7 @@ program
     // Encode code as base64
     const data = btoa(code);
 
-    await fetch(`${process.env.RECHUNK_HOST}/chunk/${chunk}`, {
+    await fetch(`${rc.host}/chunk/${chunk}`, {
       method: 'POST',
       headers: {
         Authorization: `Basic ${btoa(`${rc.project}:${rc.writeKey}`)}`,

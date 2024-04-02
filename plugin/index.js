@@ -108,7 +108,7 @@ module.exports = function rechunkPlugin({types: t}) {
         const rechunkConfigJson = require(rechunkConfigJsonPath);
 
         // Destructure project and readKey used to replace process.env values
-        const {project, readKey} = rechunkConfigJson;
+        const {host, project, readKey} = rechunkConfigJson;
 
         // Replace process.env.RECHUNK_USERNAME with the rechunk project
         if (
@@ -128,6 +128,16 @@ module.exports = function rechunkPlugin({types: t}) {
           !parent.parentPath.isAssignmentExpression()
         ) {
           parent.replaceWith(t.stringLiteral(readKey));
+        }
+
+        // Replace process.env.RECHUNK_HOST with the rechunk host
+        if (
+          t.isIdentifier(parent.node.property, {
+            name: 'RECHUNK_HOST',
+          }) &&
+          !parent.parentPath.isAssignmentExpression()
+        ) {
+          parent.replaceWith(t.stringLiteral(host));
         }
       },
     },

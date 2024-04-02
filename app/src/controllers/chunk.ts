@@ -17,7 +17,7 @@ chunk.get('/:chunkId', readAuth(), async c => {
   const chunkId = c.req.param('chunkId');
 
   const chunk = await db.query.chunks.findFirst({
-    where: eq(chunks.name, chunkId),
+    where: and(eq(chunks.name, chunkId), eq(chunks.projectId, project.id)),
   });
 
   if (!chunk) {

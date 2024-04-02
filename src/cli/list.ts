@@ -32,7 +32,7 @@ program
 
     const rc = require(rcPath);
 
-    const res = await fetch(`${process.env.RECHUNK_HOST}/project`, {
+    const res = await fetch(`${rc.host}/project`, {
       method: 'GET',
       headers: {
         Authorization: `Basic ${btoa(`${rc.project}:${rc.readKey}`)}`,

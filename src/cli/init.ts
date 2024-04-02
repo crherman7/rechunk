@@ -18,22 +18,25 @@ import {program} from 'commander';
 program
   .command('init')
   .description('initializes a ReChunk project')
-  .action(async () => {
-    if (!process.env.RECHUNK_HOST) {
-      throw new Error('please set RECHUNK_HOST environment variable');
-    }
+  .requiredOption('-h, --host [host]', 'host of your rechunk server')
+  .requiredOption(
+    '-u, --username [username]',
+    'username of your rechunk server init endpoint for basic auth',
+  )
+  .requiredOption(
+    '-p, --password [password]',
+    'password of your rechunk server init endpoint for basic auth',
+  )
+  .action(async options => {
+    const {host, username, password} = options;
 
-    // RECHUNK_USERNAME required for basicAuth in creating a new project
-    if (!process.env.RECHUNK_USERNAME) {
-      throw Error(
-        'RECHUNK_USERNAME environment variable not found, add RECHUNK_USERNAME to .env file.',
-      );
-    }
-
-    // RECHUNK_PASSWORD required for basicAuth in creating a new project
-    if (!process.env.RECHUNK_PASSWORD) {
-      throw Error(
-        'RECHUNK_PASSWORD environment variable not found, add RECHUNK_PASSWORD to .env file',
+    if (
+      !(host as string).match(
+        /^http(|s):\/\/\w+(\.\w+)*(:[0-9]+)?\/?(\/[.\w]*)*$/,
+      )
+    ) {
+      throw new Error(
+        'host does not match the URL schema i.e. https://rechunk.onrender.com, https://localhost:3000, etc.',
       );
     }
 
@@ -45,12 +48,10 @@ program
       throw new Error('project already exists, please remove rechunk.json');
     }
 
-    const res = await fetch(`${process.env.RECHUNK_HOST}/project`, {
+    const res = await fetch(`${host}/project`, {
       method: 'POST',
       headers: {
-        Authorization: `Basic ${btoa(
-          `${process.env.RECHUNK_USERNAME}:${process.env.RECHUNK_PASSWORD}`,
-        )}`,
+        Authorization: `Basic ${btoa(`${username}:${password}`)}`,
       },
     });
 
@@ -62,6 +63,6 @@ program
 
     fs.writeFileSync(
       path.resolve(ctx, 'rechunk.json'),
-      JSON.stringify(json, null, 2) + '\n',
+      JSON.stringify({...json, host}, null, 2) + '\n',
     );
   });

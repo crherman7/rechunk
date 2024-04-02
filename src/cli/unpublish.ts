@@ -33,7 +33,7 @@ program
 
     const rc = require(rcPath);
 
-    await fetch(`${process.env.RECHUNK_HOST}/chunk/${chunk}`, {
+    await fetch(`${rc.host}/chunk/${chunk}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Basic ${btoa(`${rc.project}:${rc.writeKey}`)}`,

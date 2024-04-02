@@ -6,7 +6,7 @@ import {basicAuth} from 'hono/basic-auth';
 
 import {db} from '../db';
 import {readAuth} from '../middleware';
-import {Project, chunks, projects} from '../db/schema';
+import {Project, projects} from '../db/schema';
 
 // RECHUNK_USERNAME required for basicAuth in creating a new project
 if (!process.env.RECHUNK_USERNAME) {
