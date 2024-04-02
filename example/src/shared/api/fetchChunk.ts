@@ -11,15 +11,14 @@ export async function fetchChunk(chunkId: string): Promise<any> {
       throw new Error('Invalid chunkId provided');
     }
 
-    const username = process.env.RECHUNK_USERNAME;
-    const password = process.env.RECHUNK_PASSWORD;
-
     const response = await fetch(
       `https://rechunk.onrender.com/chunk/${chunkId}`,
       {
         method: 'GET',
         headers: {
-          Authorization: `Basic ${btoa(`${username}:${password}`)}`,
+          Authorization: `Basic ${btoa(
+            `${process.env.RECHUNK_USERNAME}:${process.env.RECHUNK_PASSWORD}`,
+          )}`,
         },
       },
     );
