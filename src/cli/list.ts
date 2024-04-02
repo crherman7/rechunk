@@ -19,7 +19,7 @@ import {program} from 'commander';
 program
   .command('list')
   .description('list all published chunks')
-  .action(async options => {
+  .action(async () => {
     const ctx = process.cwd();
 
     const rcPath = path.resolve(ctx, 'rechunk.json');
@@ -45,19 +45,22 @@ program
 
     const json = await res.json();
 
-    console.log(json);
+    const chunks = json.chunks.map((it: any) =>
+      Object.values({
+        id: it.id,
+        chunkName: it.name,
+        projectName: json.name,
+        timestamp: it.timestamp,
+      }),
+    );
 
-    // var table = new Table({head: ['id', 'timestamp', 'name', 'projectId']});
+    var table = new Table({
+      head: ['id', 'chunkName', 'projectName', 'timestamp'],
+    });
 
-    // table.push(
-    //   ...json.map((it: any) => {
-    //     const {data, ...passProps} = it;
+    table.push(...chunks);
 
-    //     return Object.values(passProps);
-    //   }),
-    // );
-
-    // console.log();
-    // console.log(table.toString());
-    // console.log();
+    console.log();
+    console.log(table.toString());
+    console.log();
   });
