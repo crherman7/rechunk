@@ -1,7 +1,7 @@
 import {Hono} from 'hono';
 import namor from 'namor';
 import crypto from 'crypto';
-import {eq} from 'drizzle-orm';
+import {and, eq} from 'drizzle-orm';
 import {basicAuth} from 'hono/basic-auth';
 
 import {db} from '../db';
@@ -31,8 +31,22 @@ const project = new Hono<{Variables: Variables}>();
 project.get('/', readAuth(), async c => {
   const project = c.get('project');
 
-  const res = await db.query.chunks.findMany({
-    where: eq(chunks.projectId, project.id),
+  const res = await db.query.projects.findFirst({
+    where: eq(projects.id, project.id),
+    columns: {
+      id: true,
+      name: true,
+      timestamp: true,
+    },
+    with: {
+      chunks: {
+        columns: {
+          id: true,
+          name: true,
+          timestamp: true,
+        },
+      },
+    },
   });
 
   return c.json(res);

@@ -43,7 +43,7 @@ chunk.post('/:chunkId', writeAuth(), async c => {
   const chunkId = c.req.param('chunkId');
 
   const chunk = await db.query.chunks.findFirst({
-    where: eq(chunks.name, chunkId),
+    where: and(eq(chunks.name, chunkId), eq(chunks.projectId, project.id)),
   });
 
   const data = await c.req.text();
@@ -58,7 +58,10 @@ chunk.post('/:chunkId', writeAuth(), async c => {
     return c.text('');
   }
 
-  await db.update(chunks).set({data}).where(eq(chunks.name, chunkId));
+  await db
+    .update(chunks)
+    .set({data})
+    .where(and(eq(chunks.name, chunkId), eq(chunks.projectId, project.id)));
 
   return c.text('');
 });

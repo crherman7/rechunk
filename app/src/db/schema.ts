@@ -18,7 +18,7 @@ export const chunks = sqliteTable('chunks', {
   timestamp: text('timestamp')
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  name: text('name').unique().notNull(),
+  name: text('name').notNull(),
   data: text('data').notNull(),
   projectId: integer('project_id')
     .notNull()
