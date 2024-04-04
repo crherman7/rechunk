@@ -88,7 +88,7 @@ project.post(
         entry: {},
         external: [],
       },
-      200,
+      201,
     );
   },
 );

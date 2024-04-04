@@ -59,7 +59,7 @@ chunk.post('/:chunkId', writeAuth(), async c => {
       projectId: project.id,
     });
 
-    return c.json({messsage: 'Created!'}, 200);
+    return c.json({messsage: 'Created!'}, 201);
   }
 
   await db
@@ -67,7 +67,7 @@ chunk.post('/:chunkId', writeAuth(), async c => {
     .set({data})
     .where(and(eq(chunks.name, chunkId), eq(chunks.projectId, project.id)));
 
-  return c.json({messsage: 'Updated!'}, 200);
+  return c.json({messsage: 'Updated!'}, 201);
 });
 
 chunk.delete('/:chunkId', writeAuth(), async c => {
