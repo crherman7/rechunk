@@ -1,4 +1,5 @@
 import {HonoRequest} from 'hono';
+import {HTTPException} from 'hono/http-exception';
 
 const CREDENTIALS_REGEXP =
   /^ *(?:[Bb][Aa][Ss][Ii][Cc]) +([A-Za-z0-9._~+/-]+=*) *$/;
@@ -19,7 +20,9 @@ const decodeBase64 = (str: string): Uint8Array => {
 export const auth = (req: HonoRequest) => {
   const match = CREDENTIALS_REGEXP.exec(req.header('Authorization') || '');
   if (!match) {
-    return undefined;
+    throw new HTTPException(400, {
+      message: 'auth middleware missing basic auth',
+    });
   }
 
   let userPass = undefined;
@@ -31,7 +34,9 @@ export const auth = (req: HonoRequest) => {
   } catch {} // Do nothing
 
   if (!userPass) {
-    return undefined;
+    throw new HTTPException(401, {
+      message: 'auth middleware contains "username" and "password" mismatch',
+    });
   }
 
   return {username: userPass[1], password: userPass[2]};

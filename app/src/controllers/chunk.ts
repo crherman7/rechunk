@@ -1,6 +1,7 @@
 import {Hono} from 'hono';
 import crypto from 'crypto';
 import {and, eq} from 'drizzle-orm';
+import {HTTPException} from 'hono/http-exception';
 
 import {db} from '../db';
 import {Project, chunks} from '../db/schema';
@@ -21,7 +22,7 @@ chunk.get('/:chunkId', readAuth(), async c => {
   });
 
   if (!chunk) {
-    throw new Error(`cannot find chunk for chunkdId: ${chunkId}`);
+    throw new HTTPException(404, {message: `chunkId: ${chunkId} not found`});
   }
 
   const hash = crypto.createHash('sha256').update(chunk.data).digest('hex');
@@ -31,11 +32,14 @@ chunk.get('/:chunkId', readAuth(), async c => {
     .update(hash)
     .sign(project.privateKey, 'base64');
 
-  return c.json({
-    data: chunk.data,
-    hash,
-    sig,
-  });
+  return c.json(
+    {
+      data: chunk.data,
+      hash,
+      sig,
+    },
+    200,
+  );
 });
 
 chunk.post('/:chunkId', writeAuth(), async c => {
@@ -55,7 +59,7 @@ chunk.post('/:chunkId', writeAuth(), async c => {
       projectId: project.id,
     });
 
-    return c.text('');
+    return c.json({messsage: 'Created!'}, 200);
   }
 
   await db
@@ -63,7 +67,7 @@ chunk.post('/:chunkId', writeAuth(), async c => {
     .set({data})
     .where(and(eq(chunks.name, chunkId), eq(chunks.projectId, project.id)));
 
-  return c.text('');
+  return c.json({messsage: 'Updated!'}, 200);
 });
 
 chunk.delete('/:chunkId', writeAuth(), async c => {
@@ -74,7 +78,7 @@ chunk.delete('/:chunkId', writeAuth(), async c => {
     .delete(chunks)
     .where(and(eq(chunks.name, chunkId), eq(chunks.projectId, project.id)));
 
-  return c.text('');
+  return c.json({message: 'Deleted!'}, 200);
 });
 
 export default chunk;

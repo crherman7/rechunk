@@ -1,7 +1,7 @@
 import {Hono} from 'hono';
 import namor from 'namor';
 import crypto from 'crypto';
-import {and, eq} from 'drizzle-orm';
+import {eq} from 'drizzle-orm';
 import {basicAuth} from 'hono/basic-auth';
 
 import {db} from '../db';
@@ -49,7 +49,7 @@ project.get('/', readAuth(), async c => {
     },
   });
 
-  return c.json(res);
+  return c.json(res, 200);
 });
 
 project.post(
@@ -77,16 +77,19 @@ project.post(
       privateKey: priv,
     });
 
-    return c.json({
-      $schema: 'https://crherman7.github.io/rechunk/schema.json',
-      project,
-      readKey,
-      writeKey,
-      publicKey: pub.replaceAll('\n', ''),
-      privateKey: priv.replaceAll('\n', ''),
-      entry: {},
-      external: [],
-    });
+    return c.json(
+      {
+        $schema: 'https://crherman7.github.io/rechunk/schema.json',
+        project,
+        readKey,
+        writeKey,
+        publicKey: pub.replaceAll('\n', ''),
+        privateKey: priv.replaceAll('\n', ''),
+        entry: {},
+        external: [],
+      },
+      200,
+    );
   },
 );
 
