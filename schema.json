@@ -28,6 +28,9 @@
       "items": {
         "type": "string"
       }
+    },
+    "host": {
+      "type": "string"
     }
   },
   "required": [
