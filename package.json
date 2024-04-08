@@ -25,8 +25,8 @@
     "example"
   ],
   "scripts": {
-    "build": "tsup src/react-native/index.ts src/cli/index.ts --dts --minify",
-    "dev": "tsup src/react-native/index.ts src/cli/index.ts --dts --minify --watch"
+    "build": "tsup",
+    "dev": "tsup --watch"
   },
   "source": "src/react-native/index",
   "types": "dist/react-native/index.d.ts",
