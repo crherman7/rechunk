@@ -28,7 +28,7 @@ Please check [Code of Conduct](./CODE_OF_CONDUCT.md) for more details.
 
 ### License
 
-ReChunk is licensed under the [MIT License](./LICENSE).
+ReChunk is licensed under the [MIT License](./LICENSE.md).
 
 ### TODO
 
@@ -40,5 +40,6 @@ ReChunk is licensed under the [MIT License](./LICENSE).
 - [x] Docker
 - [x] API HTTPExceptions
 - [x] Finalize rechunk.json
+- [ ] CLI Statuses
 - [ ] Cleanup db queries / mutations
 - [ ] Documentation
