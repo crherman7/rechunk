@@ -1,14 +1,14 @@
 {
   "name": "@crherman7/rechunk",
   "version": "1.0.0",
-  "description": "Render Remote Chunks with React Native",
+  "description": "🚀 Render Remote Chunks with React Native",
   "license": "MIT",
   "private": true,
   "repository": "git@github.com:crherman7/rechunk.git",
   "homepage": "https://crherman7.github.io/rechunk",
   "author": "Chris Herman <crherman7@gmail.com>",
   "bin": {
-    "rechunk": "./dist/cli/index.js"
+    "rechunk": "dist/cli/index.js"
   },
   "main": "dist/react-native/index.js",
   "files": [
@@ -16,8 +16,7 @@
     "dist",
     "ios",
     "plugin",
-    "rechunk.podspec",
-    "schema.json"
+    "rechunk.podspec"
   ],
   "workspaces": [
     "app",
@@ -31,10 +30,8 @@
   "source": "src/react-native/index",
   "types": "dist/react-native/index.d.ts",
   "dependencies": {
-    "@rollup/plugin-commonjs": "25.0.7",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-image": "^3.0.3",
-    "@rollup/plugin-node-resolve": "15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "base-64": "^1.0.0",

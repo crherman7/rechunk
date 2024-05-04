@@ -3,34 +3,42 @@
   "type": "object",
   "properties": {
     "project": {
-      "type": "string"
+      "type": "string",
+      "description": "The name of the project."
     },
     "readKey": {
-      "type": "string"
+      "type": "string",
+      "description": "The read key for accessing the project."
     },
     "writeKey": {
-      "type": "string"
+      "type": "string",
+      "description": "The write key for accessing the project."
     },
     "publicKey": {
-      "type": "string"
+      "type": "string",
+      "description": "The public key associated with the project."
     },
     "privateKey": {
-      "type": "string"
+      "type": "string",
+      "description": "The private key associated with the project."
     },
     "entry": {
       "type": "object",
       "additionalProperties": {
         "type": "string"
-      }
+      },
+      "description": "Entries associated with the project."
     },
     "external": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "External resources related to the project."
     },
     "host": {
-      "type": "string"
+      "type": "string",
+      "description": "The host for the project."
     }
   },
   "required": [

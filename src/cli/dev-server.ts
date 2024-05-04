@@ -6,11 +6,10 @@ import {createHash, createSign} from 'crypto';
 
 import {program} from 'commander';
 import {rollup} from 'rollup';
-import commonjs from '@rollup/plugin-commonjs';
 import image from '@rollup/plugin-image';
-import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
+import {getBabelOutputPlugin} from '@rollup/plugin-babel';
 
 /**
  * Defines a command for the "dev-server" operation using the "commander" library.
@@ -72,6 +71,29 @@ program
      */
     const rc = require(rcPath);
 
+    const babelConfigPath = path.resolve(process.cwd(), 'babel.config.js');
+
+    if (!fs.existsSync(babelConfigPath)) {
+      throw new Error(
+        'babel.config.js does not exist, please make sure you are running "rechunk publish" from the root of you React Native project.',
+      );
+    }
+
+    const babelConfig = require(babelConfigPath);
+
+    const found = babelConfig?.plugins?.findIndex?.((it: unknown) => {
+      if (Array.isArray(it)) {
+        return (
+          it[0] === 'module-resolver' ||
+          it[0] === require.resolve('babel-plugin-module-resolver')
+        );
+      }
+    });
+
+    if (found > -1) {
+      babelConfig.plugins.splice(found, 1);
+    }
+
     /**
      * Create a basic HTTP server.
      * This server dynamically bundles and serves code based on client requests.
@@ -102,9 +124,10 @@ program
           input,
           external: [...Object.keys(pak.dependencies), ...rcExternal],
           plugins: [
-            resolve(),
-            commonjs(),
             image(),
+            getBabelOutputPlugin({
+              ...babelConfig,
+            }),
             typescript({
               compilerOptions: {
                 jsx: 'react',
