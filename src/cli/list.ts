@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import Table from 'cli-table3';
+import {textSync} from 'figlet';
 import {program} from 'commander';
 
 /**
@@ -20,6 +21,12 @@ program
   .command('list')
   .description('list all published chunks')
   .action(async () => {
+    console.log(textSync('ReChunk'));
+
+    console.log();
+    console.log('version: 1.0.0');
+    console.log('command: list');
+
     const ctx = process.cwd();
 
     const rcPath = path.resolve(ctx, 'rechunk.json');

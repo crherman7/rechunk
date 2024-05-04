@@ -10,6 +10,7 @@ import image from '@rollup/plugin-image';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
+import {textSync} from 'figlet';
 
 /**
  * Defines a command for the "dev-server" operation using the "commander" library.
@@ -178,6 +179,13 @@ program
 
     // Start the server and listen on port 3000
     server.listen(options.port, () => {
+      console.log(textSync('ReChunk'));
+
+      console.log();
+      console.log('version: 1.0.0');
+      console.log('command: dev-server');
+      console.log();
+
       console.log(`Server is listening on port ${options.port}`);
     });
   });

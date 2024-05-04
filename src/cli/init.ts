@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import {textSync} from 'figlet';
 import {program} from 'commander';
 
 /**
@@ -28,6 +29,13 @@ program
     'password of your rechunk server init endpoint for basic auth',
   )
   .action(async options => {
+    console.log(textSync('ReChunk'));
+
+    console.log();
+    console.log('version: 1.0.0');
+    console.log('command: init');
+    console.log();
+
     const {host, username, password} = options;
 
     if (
@@ -56,7 +64,13 @@ program
     });
 
     if (!res.ok) {
-      throw new Error(res.statusText);
+      console.log(
+        `❌ Oops! Something went wrong! Unable to initialize a new ReChunk project.
+
+${res.statusText}\n`,
+      );
+
+      return;
     }
 
     const json = await res.json();
@@ -64,5 +78,9 @@ program
     fs.writeFileSync(
       path.resolve(ctx, 'rechunk.json'),
       JSON.stringify({...json, host}, null, 2) + '\n',
+    );
+
+    console.log(
+      '🎉 Successfully initialized a new ReChunk project. Generated rechunk.json!\n',
     );
   });

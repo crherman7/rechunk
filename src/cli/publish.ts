@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import {textSync} from 'figlet';
 import {program} from 'commander';
 
 import {rollup} from 'rollup';
@@ -26,6 +27,13 @@ program
   .description('publishes a chunk')
   .requiredOption('-c, --chunk [chunk]', 'a chunk to publish')
   .action(async options => {
+    console.log(textSync('ReChunk'));
+
+    console.log();
+    console.log('version: 1.0.0');
+    console.log('command: publish');
+    console.log();
+
     const {chunk} = options;
     const ctx = process.cwd();
 
@@ -112,11 +120,21 @@ program
     // Encode code as base64
     const data = btoa(code);
 
-    await fetch(`${rc.host}/chunk/${chunk}`, {
+    const res = await fetch(`${rc.host}/chunk/${chunk}`, {
       method: 'POST',
       headers: {
         Authorization: `Basic ${btoa(`${rc.project}:${rc.writeKey}`)}`,
       },
       body: data,
     });
+
+    if (!res.ok) {
+      console.log(
+        `❌ Oops! Something went wrong! Unable to publish ${chunk}.\n`,
+      );
+
+      return;
+    }
+
+    console.log(`🎉 Successfully published ${chunk}!\n`);
   });
