@@ -23,8 +23,10 @@ program
   .action(async options => {
     console.log(textSync('ReChunk'));
 
+    const {version} = require('../../package.json');
+
     console.log();
-    console.log('version: 1.0.0');
+    console.log(`version: ${version}`);
     console.log('command: unpublish');
     console.log();
 
@@ -40,6 +42,8 @@ program
     }
 
     const rc = require(rcPath);
+
+    console.log(`🔫 Unpublishing ${chunk}...\n`);
 
     const res = await fetch(`${rc.host}/chunk/${chunk}`, {
       method: 'DELETE',

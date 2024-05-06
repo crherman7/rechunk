@@ -23,8 +23,10 @@ program
   .action(async () => {
     console.log(textSync('ReChunk'));
 
+    const {version} = require('../../package.json');
+
     console.log();
-    console.log('version: 1.0.0');
+    console.log(`version: ${version}`);
     console.log('command: list');
 
     const ctx = process.cwd();
@@ -62,7 +64,11 @@ program
     );
 
     var table = new Table({
-      head: ['id', 'chunkName', 'projectName', 'timestamp'],
+      head: ['Chunk ID', 'Chunk Name', 'Project', 'Created'],
+      style: {
+        head: [],
+        border: [],
+      },
     });
 
     table.push(...chunks);

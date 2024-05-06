@@ -186,6 +186,6 @@ program
       console.log('command: dev-server');
       console.log();
 
-      console.log(`Server is listening on port ${options.port}`);
+      console.log(`👂 Server is listening on port ${options.port}`);
     });
   });

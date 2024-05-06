@@ -31,8 +31,10 @@ program
   .action(async options => {
     console.log(textSync('ReChunk'));
 
+    const {version} = require('../../package.json');
+
     console.log();
-    console.log('version: 1.0.0');
+    console.log(`version: ${version}`);
     console.log('command: init');
     console.log();
 
@@ -55,6 +57,8 @@ program
     if (fs.existsSync(rcPath)) {
       throw new Error('project already exists, please remove rechunk.json');
     }
+
+    console.log(`🚀 Creating project...\n`);
 
     const res = await fetch(`${host}/project`, {
       method: 'POST',
