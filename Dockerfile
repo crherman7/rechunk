@@ -5,7 +5,7 @@
 ##############################################################
 
 # Use the latest Node.js image as the base image
-From node:latest
+FROM node:20-alpine3.18
 
 # Set the working directory inside the container to /app
 WORKDIR /app
