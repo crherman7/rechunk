@@ -40,6 +40,6 @@ ReChunk is licensed under the [MIT License](./LICENSE.md).
 - [x] Docker
 - [x] API HTTPExceptions
 - [x] Finalize rechunk.json
-- [ ] CLI Statuses
+- [x] CLI Statuses
 - [ ] Cleanup db queries / mutations
 - [ ] Documentation
