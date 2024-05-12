@@ -2,6 +2,127 @@
 title: 'How it works'
 ---
 
-import Background from '../../../components/Background.astro';
+This guide is not required to use Rechunk - it's a semi-detailed explanation of we can render a remote component.
 
-<Background />
+## Library
+
+The core library handles the process of consuming a bundled component, including verifying data integrity and converting a string into a renderable component.
+
+### Fetch Component
+
+To consume a bundled component, you need to configure the ReChunk instance by adding specific settings. This configuration includes a custom resolver function that takes the chunk identifier as an input and returns a data object containing the encoded component, hashed component, and signature. Typically, this resolver function would involve a straightforward fetch operation.
+
+```ts title="index.ts"
+ReChunk.addConfiguration(fetchChunk, true);
+
+export async function fetchChunk(chunkId: string): Promise<any> {
+  try {
+    const response = await fetch(
+      `${process.env.RECHUNK_HOST}/chunk/${chunkId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Basic ${btoa(
+            `${process.env.RECHUNK_PROJECT}:${process.env.RECHUNK_READ_KEY}`,
+          )}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch chunk with ID ${chunkId}`);
+    }
+
+    return response.json();
+  } catch (error: any) {
+    throw new Error(`Failed to fetch chunk: ${error.message}`);
+  }
+}
+```
+
+### Data Integrity
+
+Ensuring data integrity is crucial because this library executes JavaScript; when fetching a chunk, there's a risk of tampering to execute malicious code, underscoring the need for data integrity verification. This library employs digital signature verification for this purpose.
+
+Digital signatures are mathematical tools used to confirm the authenticity of digital messages or documents. A valid digital signature assures the recipient that the sender is trusted. This library uses encoded data, hashed data, and a public key to verify authenticity. If verification succeeds, the component is rendered; otherwise, an error occurs.
+
+To enable or disable digital signature verification, update the second argument of the configuration function.
+
+```ts title="index.ts"
+ReChunk.addConfiguration(fetchChunk, true);
+```
+
+### Render Component
+
+To render a component from a string, we leverage the `new Function` JavaScript instance. This approach involves passing in a custom `require` function, which is generated using Babel during compile time. The custom `require` function is designed to inject all necessary dependencies.
+
+The string component and custom `require` function are then combined within the `new Function` instance and returned as the default object. This technique enables efficient lazy loading of components.
+
+```ts title="App.tsx"
+const Foo = React.lazy(() => importChunk('foo'));
+
+export function App(): React.JSX.Element {
+  return (
+    <ErrorBoundary FallbackComponent={Error404}>
+      <Suspense fallback={<ActivityIndicator style={styles.container} />}>
+        <Foo />
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
+```
+
+## Command-line Interface
+
+The Command-line Interface (CLI) is tasked with interacting with a remotely hosted database to store your published chunks persistently. The CLI consists of `init`, `dev-server`, `publish`, `unpublish` and `list` commands.
+
+import {Tabs, TabItem} from '@astrojs/starlight/components';
+
+<Tabs>
+<TabItem label="yarn">
+
+```sh
+yarn rechunk init
+yarn rechunk dev-server
+yarn rechunk publish --chunk foo
+yarn rechunk unpublish --chunk foo
+yarn rechunk list
+```
+
+</TabItem>
+<TabItem label="npm">
+
+```sh
+npm run rechunk init
+npm run rechunk dev-server
+npm run rechunk publish --chunk foo
+npm run rechunk unpublish --chunk foo
+npm run rechunk list
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm rechunk init
+pnpm run rechunk dev-server
+pnpm run rechunk publish --chunk foo
+pnpm run rechunk unpublish --chunk foo
+pnpm run rechunk list
+```
+
+</TabItem>
+<TabItem label="bun">
+
+```sh
+bun run rechunk init
+bun run rechunk dev-server
+bun run rechunk publish --chunk foo
+bun run rechunk unpublish --chunk foo
+bun run rechunk list
+```
+
+</TabItem>
+</Tabs>
+
+The `init` command sets up a new ReChunk project for publishing chunks. With `dev-server`, you can test chunks locally before publishing to the remote database. Use `publish` to persist a chunk remotely, `unpublish` to remove a chunk from the database, and `list` to display all published chunks.

@@ -21,7 +21,6 @@ export default defineConfig({
           label: 'Overview',
           items: [
             {label: 'Overview', link: '/overview/overview/'},
-            {label: 'Objectives', link: '/overview/objectives/'},
             {label: 'How it works', link: '/overview/how-it-works/'},
           ],
         },
