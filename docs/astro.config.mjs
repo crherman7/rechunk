@@ -36,8 +36,8 @@ export default defineConfig({
               link: '/guides/chunks',
             },
             {
-              label: 'Bundling',
-              link: '/guides/bundling',
+              label: 'Hosting',
+              link: '/guides/hosting',
             },
           ],
         },
