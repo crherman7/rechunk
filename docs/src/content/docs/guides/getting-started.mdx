@@ -84,3 +84,40 @@ ReChunk.addConfiguration(fetchChunk, true);
 
 AppRegistry.registerComponent('App', () => App);
 ```
+
+### Initialization
+
+To begin generating chunks, you first need to create a ReChunk project instance. You can achieve this easily using the CLI with a single command. By running the `init` command provided by ReChunk, you can generate a new ReChunk project.
+
+<Tabs>
+<TabItem label="yarn">
+
+```sh
+yarn rechunk init --host https://myrehunkserver.abc --username myrechunkusername --password myrechunkpassword
+```
+
+</TabItem>
+<TabItem label="npm">
+
+```sh
+npm run rechunk init --host http://myrehunkserver.abc --username myrechunkusername --password myrechunkpassword
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm rechunk init --host http://myrehunkserver.abc --username myrechunkusername --password myrechunkpassword
+```
+
+</TabItem>
+<TabItem label="bun">
+
+```sh
+bun run rechunk init --host http://myrehunkserver.abc --username myrechunkusername --password myrechunkpassword
+```
+
+</TabItem>
+</Tabs>
+
+Running the `init` command will generate a `rechunk.json` file at the root of your React Native project. This file contains private and public information related to your ReChunk project. Importantly, do not include this JSON configuration directly into your project, as it may bundle sensitive information into your app's build. The host refers to the server where your ReChunk instance is deployed. The username and password are used as basic authentication credentials to access this instance.

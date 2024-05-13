@@ -32,10 +32,6 @@ export default defineConfig({
               link: '/guides/getting-started/',
             },
             {
-              label: 'Configuration',
-              link: '/guides/configuration',
-            },
-            {
               label: 'Chunks',
               link: '/guides/chunks',
             },
