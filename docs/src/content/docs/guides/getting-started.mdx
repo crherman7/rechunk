@@ -2,6 +2,85 @@
 title: 'Getting Started'
 ---
 
-import Background from '../../../components/Background.astro';
+ReChunk is an all-inclusive package that includes a command-line interface (CLI) and library designed for rendering encoded components with React Native. The command-line interface (CLI) is designed to work alongside an API that adheres to the interface specified in the library. You can use the Docker image right out of the box and deploy it wherever best suits your project, or alternatively, create your own server that conforms to the interface.
 
-<Background />
+## Quickstart
+
+The CLI, React Native library and Babel plugin are included in the same package. This library does not require a particular React Native version but is more related to the React version as it is expected to be utilized with Suspense via lazy loading. Suspense was introduced into React 16.6.
+
+### Dependencies
+
+Use your favoriate package manager to install ReChunk.
+
+import {Tabs, TabItem} from '@astrojs/starlight/components';
+
+<Tabs>
+<TabItem label="yarn">
+
+```sh
+yarn add @crherman7/rechunk
+```
+
+</TabItem>
+<TabItem label="npm">
+
+```sh
+npm install @crherman7/rechunk
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm install @crherman7/rechunk
+```
+
+</TabItem>
+<TabItem label="bun">
+
+```sh
+bun install @crherman7/rechunk
+```
+
+</TabItem>
+</Tabs>
+
+This should have updated your `package.json` - verify it has been updated and ReChunk is added as a dependency.
+
+```json ins={6} title="package.json"
+{
+  "name": "my-awesome-app",
+  "version": "1.0.0",
+  "author": "Your Name <email@example.com>",
+  "dependencies": {
+    "@crherman7/rechunk": "1.0.0"
+  }
+}
+```
+
+Additionally, be sure to update your `babel.config.js` or `.babelrc` configuration file.
+
+```js ins={3} title="babel.config.js"
+module.exports = {
+  presets: ['module:@react-native/babel-preset'],
+  plugins: ['@crherman7/rechunk/plugin'],
+};
+```
+
+### Configuration
+
+As mentioned before, ReChunk is agnostic to the storage location of your chunks. ReChunk simply requires configuration to connect it to your server, which will then provide the requested chunk.
+
+In your application, it is essential to configure ReChunk before rendering any content. ReChunk is also independent of your navigation library; it just needs to be configured prior to rendering your app, regardless of the navigation setup.
+
+```js title="index.js" ins={2,4,7}
+import {AppRegistry} from 'react-native';
+import ReChunk from '@crherman7/rechunk';
+
+import {fetchChunk} from './src/api';
+import {App} from './src/components';
+
+ReChunk.addConfiguration(fetchChunk, true);
+
+AppRegistry.registerComponent('App', () => App);
+```
