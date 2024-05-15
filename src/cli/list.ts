@@ -1,8 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import Table from 'cli-table3';
-import {textSync} from 'figlet';
 import {program} from 'commander';
+import chalk from 'chalk';
+
+import pak from '../../package.json';
 
 /**
  * Defines a command for the "list" operation using the "commander" library.
@@ -21,13 +23,30 @@ program
   .command('list')
   .description('list all published chunks')
   .action(async () => {
-    console.log(textSync('ReChunk'));
-
-    const {version} = require('../../package.json');
-
     console.log();
-    console.log(`version: ${version}`);
-    console.log('command: list');
+    console.log(chalk.blue`
+          ░░░░░░░░░░░░░░░░░░░░░░        
+          ░░░░░░░░░░░░░░░░░░░░░░        
+          ░░░░░░░░░░░░░░░░░░░░░░        
+          ░░░░░░░░░░░░░░░░░░░░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                   `);
+    console.log(
+      chalk.blue`          Welcome to ReChunk ${chalk.bold
+        .white`v${pak.version}`}`,
+    );
+    console.log(chalk.dim`    React Native - Remote Chunks - Secure\n`);
 
     const ctx = process.cwd();
 

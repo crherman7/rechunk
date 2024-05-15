@@ -10,7 +10,7 @@ import image from '@rollup/plugin-image';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
-import {textSync} from 'figlet';
+import chalk from 'chalk';
 
 /**
  * Defines a command for the "dev-server" operation using the "commander" library.
@@ -179,7 +179,30 @@ program
 
     // Start the server and listen on port 3000
     server.listen(options.port, () => {
-      console.log(textSync('ReChunk'));
+      console.log();
+      console.log(chalk.blue`
+            ░░░░░░░░░░░░░░░░░░░░░░        
+            ░░░░░░░░░░░░░░░░░░░░░░        
+            ░░░░░░░░░░░░░░░░░░░░░░        
+            ░░░░░░░░░░░░░░░░░░░░░░        
+        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▓▓▓▓▓▓▓▓
+        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▓▓▓▓▓▓▓▓
+        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+                   ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                   ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                   ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                     `);
+      console.log(
+        chalk.blue`          Welcome to ReChunk ${chalk.bold
+          .white`v${pak.version}`}`,
+      );
+      console.log(chalk.dim`    React Native - Remote Chunks - Secure\n`);
 
       console.log();
       console.log('version: 1.0.0');

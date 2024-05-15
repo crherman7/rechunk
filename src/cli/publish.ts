@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import {textSync} from 'figlet';
+import chalk from 'chalk';
 import {program} from 'commander';
 
 import {rollup} from 'rollup';
@@ -8,6 +8,8 @@ import image from '@rollup/plugin-image';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
+
+import pkg from '../../package.json';
 
 /**
  * Defines a command for the "publish" operation using the "commander" library.
@@ -27,14 +29,31 @@ program
   .description('publishes a chunk')
   .requiredOption('-c, --chunk [chunk]', 'a chunk to publish')
   .action(async options => {
-    console.log(textSync('ReChunk'));
-
-    const {version} = require('../../package.json');
-
     console.log();
-    console.log(`version: ${version}`);
-    console.log('command: publish');
-    console.log();
+    console.log(chalk.blue`
+          ░░░░░░░░░░░░░░░░░░░░░░        
+          ░░░░░░░░░░░░░░░░░░░░░░        
+          ░░░░░░░░░░░░░░░░░░░░░░        
+          ░░░░░░░░░░░░░░░░░░░░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                   `);
+
+    console.log(
+      chalk.blue`          Welcome to ReChunk ${chalk.bold
+        .white`v${pkg.version}`}`,
+    );
+    console.log(chalk.dim`    React Native - Remote Chunks - Secure\n`);
 
     const {chunk} = options;
     const ctx = process.cwd();
@@ -92,7 +111,7 @@ program
 
     const rcExternal = rc.external || [];
 
-    console.log(`🛠  Bundling ${chunk}...\n`);
+    console.log(`🛠  Bundling ${chunk}...`);
 
     // Rollup bundling process
     const rollupBuild = await rollup({
@@ -124,7 +143,7 @@ program
     // Encode code as base64
     const data = btoa(code);
 
-    console.log(`🚀 Publishing ${chunk}...\n`);
+    console.log(`🚀 Publishing ${chunk}...`);
 
     const res = await fetch(`${rc.host}/chunk/${chunk}`, {
       method: 'POST',

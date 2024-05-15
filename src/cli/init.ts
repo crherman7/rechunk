@@ -1,7 +1,9 @@
 import fs from 'fs';
 import path from 'path';
-import {textSync} from 'figlet';
+import chalk from 'chalk';
 import {program} from 'commander';
+
+import pak from '../../package.json';
 
 /**
  * Defines a command for the "init" operation using the "commander" library.
@@ -29,14 +31,32 @@ program
     'password of your rechunk server init endpoint for basic auth',
   )
   .action(async options => {
-    console.log(textSync('ReChunk'));
-
-    const {version} = require('../../package.json');
-
     console.log();
-    console.log(`version: ${version}`);
-    console.log('command: init');
-    console.log();
+    console.log(chalk.blue`
+          ░░░░░░░░░░░░░░░░░░░░░░        
+          ░░░░░░░░░░░░░░░░░░░░░░        
+          ░░░░░░░░░░░░░░░░░░░░░░        
+          ░░░░░░░░░░░░░░░░░░░░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                   `);
+    console.log(
+      chalk.blue`          Welcome to ReChunk ${chalk.bold
+        .white`v${pak.version}`}`,
+    );
+    console.log(
+      chalk.dim`    React Native - Remote Chunks - Secure Rendering\n`,
+    );
 
     const {host, username, password} = options;
 
@@ -71,7 +91,7 @@ program
       console.log(
         `❌ Oops! Something went wrong! Unable to initialize a new ReChunk project.
 
-${res.statusText}\n`,
+    ${res.statusText}\n`,
       );
 
       return;

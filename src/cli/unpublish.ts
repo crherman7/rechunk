@@ -1,7 +1,9 @@
 import fs from 'fs';
 import path from 'path';
-import {textSync} from 'figlet';
 import {program} from 'commander';
+import chalk from 'chalk';
+
+import pak from '../../package.json';
 
 /**
  * Defines a command for the "unpublish" operation using the "commander" library.
@@ -21,14 +23,30 @@ program
   .description('unpublishes a chunk')
   .requiredOption('-c, --chunk [chunk]', 'a chunk to unpublish')
   .action(async options => {
-    console.log(textSync('ReChunk'));
-
-    const {version} = require('../../package.json');
-
     console.log();
-    console.log(`version: ${version}`);
-    console.log('command: unpublish');
-    console.log();
+    console.log(chalk.blue`
+          ░░░░░░░░░░░░░░░░░░░░░░        
+          ░░░░░░░░░░░░░░░░░░░░░░        
+          ░░░░░░░░░░░░░░░░░░░░░░        
+          ░░░░░░░░░░░░░░░░░░░░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
+                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                   `);
+    console.log(
+      chalk.blue`          Welcome to ReChunk ${chalk.bold
+        .white`v${pak.version}`}`,
+    );
+    console.log(chalk.dim`    React Native - Remote Chunks - Secure\n`);
 
     const {chunk} = options;
     const ctx = process.cwd();
