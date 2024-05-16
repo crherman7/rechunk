@@ -27,7 +27,7 @@ program
 program.parseAsync().catch(async error => {
   console.log();
   console.log(
-    chalk.red`Unexpected error. Please report it as a bug: https://github.com/brandingbrand/flagship/issues`,
+    chalk.red`Unexpected error. Please report it as a bug: https://github.com/crherman7/rechunk/issues`,
   );
   console.log();
   console.log(chalk.red(error.message));
