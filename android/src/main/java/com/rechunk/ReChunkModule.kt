@@ -1,8 +1,7 @@
 package com.rechunk
 
-import android.os.Build
+import android.annotation.SuppressLint
 import android.util.Base64
-import androidx.annotation.RequiresApi
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -27,8 +26,8 @@ class ReChunkModule(reactContext: ReactApplicationContext) :
     // ReactMethod to verify data with a digital signature
     @ReactMethod
     fun verify(data: String, hash: String, signature: String, promise: Promise) {
-         val publicKeyStr = getPublicKeyFromStringsIfExist(context)
-                ?: promise.reject("The bundle verification failed because PublicKey was not found in the bundle. Make sure you've added the PublicKey to the res/values/strings.xml under RechunkPublicKey key.")
+         val publicKeyStr: String = (getPublicKeyFromStringsIfExist()
+             ?: promise.reject("[ReChunk]: ","The bundle verification failed because PublicKey was not found in the bundle. Make sure you've added the PublicKey to the res/values/strings.xml under RechunkPublicKey key.")).toString()
 
         val publicKey = loadPublicKey(publicKeyStr)
         val isDataVerified = verifySignature(data, hash, signature, publicKey)
@@ -40,12 +39,13 @@ class ReChunkModule(reactContext: ReactApplicationContext) :
         }
     }
 
+    @SuppressLint("DiscouragedApi")
     private fun getPublicKeyFromStringsIfExist(): String? {
-        val packageName: String = reactContext.packageName
+        val packageName: String = reactApplicationContext.packageName
         val resId: Int =
-            context.resources.getIdentifier("ReChunkPublicKey", "string", packageName)
+            reactApplicationContext.resources.getIdentifier("ReChunkPublicKey", "string", packageName)
         if (resId != 0) {
-            return context.getString(resId).ifEmpty {
+            return reactApplicationContext.getString(resId).ifEmpty {
                 null
             }
         }
