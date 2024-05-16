@@ -31,6 +31,15 @@
           }
         }
       }
+    },
+    "/project": {
+      "get": {},
+      "post": {}
+    },
+    "/chunk/{chunkId}": {
+      "get": {},
+      "delete": {},
+      "post": {}
     }
   },
   "definitions": {
@@ -44,7 +53,25 @@
     },
     "ProjectPostResponse": {
       "type": "object",
-      "properties": {}
+      "properties": {
+        "$schema": {},
+        "project": {},
+        "readKey": {},
+        "writeKey": {},
+        "publicKey": {},
+        "privateKey": {},
+        "entry": {},
+        "external": {},
+        "host": {}
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
     }
   }
 }
