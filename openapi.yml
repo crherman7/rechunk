@@ -7,10 +7,10 @@ servers:
   - url: http://localhost:3000
     description: localhost server for development
 paths:
-  /:
+  "/":
     get:
       summary: Returns a JSON message.
-  /chunk/{chunkId}:
+  "/chunk/{chunkId}":
     get:
       summary: Returns a chunk by ID.
       parameters:
@@ -23,6 +23,24 @@ paths:
             minimum: 1
       security:
         - basicAuth: []
+  "/chunk/{chunkId}":
+    post:
+      summary: Creates a chunk by ID.
+      security:
+        - basicAuth: []
+  "/chunk/{chunkId}":
+    delete:
+      summary: Deletes a chunk by ID.
+      security:
+        - basicAuth: []
+  "/project":
+    get:
+      summary: Returns a project.
+      security:
+        - basicAuth: []
+  "/project":
+    post:
+      summary: Creates a project.
       responses:
         '200':
           description: Successful response with API configuration.
@@ -30,24 +48,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiConfiguration'
-  /chunk/{chunkId}:
-    post:
-      summary: Creates a chunk by ID.
-      security:
-        - basicAuth: []
-  /chunk/{chunkId}:
-    delete:
-      summary: Deletes a chunk by ID.
-      security:
-        - basicAuth: []
-  /project:
-    get:
-      summary: Returns a project.
-      security:
-        - basicAuth: []
-  /project:
-    post:
-      summary: Creates a project.
       security:
         - basicAuth: []
 components:

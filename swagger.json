@@ -1,0 +1,50 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ReChunk",
+    "summary": "A remote component hosting service.",
+    "description": "This is a sample server for a pet store.",
+    "contact": {
+      "name": "Chris Herman",
+      "email": "crherman7@gmail.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/license/mit"
+    },
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "description": "Returns a ReChunk welcome message.",
+        "responses": {
+          "200": {
+            "description": "A simple message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/RootResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "RootResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "ProjectPostResponse": {
+      "type": "object",
+      "properties": {}
+    }
+  }
+}
