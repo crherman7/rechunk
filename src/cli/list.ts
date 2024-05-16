@@ -24,7 +24,7 @@ program
   .description('list all published chunks')
   .action(async () => {
     console.log();
-    console.log(chalk.blue`
+    console.log(chalk.green`
           ░░░░░░░░░░░░░░░░░░░░░░        
           ░░░░░░░░░░░░░░░░░░░░░░        
           ░░░░░░░░░░░░░░░░░░░░░░        
@@ -43,7 +43,7 @@ program
                  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
                    `);
     console.log(
-      chalk.blue`          Welcome to ReChunk ${chalk.bold
+      chalk.green`          Welcome to ReChunk ${chalk.bold
         .white`v${pak.version}`}`,
     );
     console.log(chalk.dim`    React Native - Remote Chunks - Secure\n`);

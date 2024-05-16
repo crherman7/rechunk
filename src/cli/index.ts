@@ -1,5 +1,6 @@
 #!/bin/env node
 
+import chalk from 'chalk';
 import process from 'process';
 import {program} from 'commander';
 
@@ -25,8 +26,11 @@ program
  */
 program.parseAsync().catch(async error => {
   console.log();
-  console.log(error.message);
+  console.log(
+    chalk.red`Unexpected error. Please report it as a bug: https://github.com/brandingbrand/flagship/issues`,
+  );
   console.log();
+  console.log(chalk.red(error.message));
 
   process.exit(1);
 });
