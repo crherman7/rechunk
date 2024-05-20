@@ -32,9 +32,33 @@
       }
     },
     "/project": {
-      "get": {},
+      "get": {
+        "description": {},
+        "security": {
+          "BasicAuth": []
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      },
       "post": {
         "description": "Create a ReChunk project.",
+        "security": {
+          "BasicAuth": []
+        },
         "responses": {
           "201": {
             "content": {
@@ -56,9 +80,72 @@
       }
     },
     "/chunk/{chunkId}": {
-      "get": {},
-      "delete": {},
-      "post": {}
+      "get": {
+        "description": {},
+        "security": {
+          "BasicAuth": []
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": {},
+        "security": {
+          "BasicAuth": []
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      },
+      "post": {
+        "description": {},
+        "security": {
+          "BasicAuth": []
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {},
+              "application/xml": {}
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -73,15 +160,27 @@
     "ProjectPostResponse": {
       "type": "object",
       "properties": {
-        "$schema": {},
-        "project": {},
-        "readKey": {},
-        "writeKey": {},
-        "publicKey": {},
-        "privateKey": {},
-        "entry": {},
-        "external": {},
-        "host": {}
+        "$schema": {
+          "type": "string"
+        },
+        "project": {
+          "type": "string"
+        },
+        "readKey": {
+          "type": "string"
+        },
+        "writeKey": {
+          "type": "string"
+        },
+        "publicKey": {
+          "type": "string"
+        },
+        "privateKey": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        }
       }
     }
   },
