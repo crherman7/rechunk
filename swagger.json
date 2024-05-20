@@ -2,7 +2,6 @@
   "openapi": "3.1.0",
   "info": {
     "title": "ReChunk",
-    "summary": "A remote component hosting service.",
     "description": "Server interface for an implementation of a ReChunk instance.",
     "contact": {
       "name": "Chris Herman",
@@ -20,6 +19,7 @@
         "description": "Returns a ReChunk welcome message.",
         "responses": {
           "200": {
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -34,11 +34,14 @@
     "/project": {
       "get": {
         "description": "Returns a list of active chunks.",
-        "security": {
-          "BasicAuth": []
-        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "responses": {
           "200": {
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -65,11 +68,14 @@
       },
       "post": {
         "description": "Create a ReChunk project.",
-        "security": {
-          "BasicAuth": []
-        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "responses": {
           "201": {
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -89,13 +95,25 @@
       }
     },
     "/chunk/{chunkId}": {
+      "parameters": {
+        "name": "chunkId",
+        "in": "path",
+        "required": "true",
+        "description": "Chunk identifier.",
+        "schema": {
+          "type": "string"
+        }
+      },
       "get": {
         "description": "Returns a chunk.",
-        "security": {
-          "BasicAuth": []
-        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "responses": {
           "200": {
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -122,11 +140,14 @@
       },
       "delete": {
         "description": "Deletes a chunk.",
-        "security": {
-          "BasicAuth": []
-        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "responses": {
           "200": {
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -153,11 +174,14 @@
       },
       "post": {
         "description": "Creates or updates a chunk.",
-        "security": {
-          "BasicAuth": []
-        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
         "responses": {
           "201": {
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
