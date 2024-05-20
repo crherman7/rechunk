@@ -99,7 +99,7 @@
         {
           "name": "chunkId",
           "in": "path",
-          "required": "true",
+          "required": true,
           "description": "Chunk identifier.",
           "schema": {
             "type": "string"
