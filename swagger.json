@@ -33,11 +33,20 @@
     },
     "/project": {
       "get": {
-        "description": {},
+        "description": "Returns a list of active chunks.",
         "security": {
           "BasicAuth": []
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/ProjectGetResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -81,11 +90,20 @@
     },
     "/chunk/{chunkId}": {
       "get": {
-        "description": {},
+        "description": "Returns a chunk.",
         "security": {
           "BasicAuth": []
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/ChunkGetResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -103,11 +121,20 @@
         }
       },
       "delete": {
-        "description": {},
+        "description": "Deletes a chunk.",
         "security": {
           "BasicAuth": []
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/ChunkDeleteResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -125,11 +152,20 @@
         }
       },
       "post": {
-        "description": {},
+        "description": "Creates or updates a chunk.",
         "security": {
           "BasicAuth": []
         },
         "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/ChunkPostResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -179,6 +215,67 @@
           "type": "string"
         },
         "host": {
+          "type": "string"
+        }
+      }
+    },
+    "ProjectGetResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "timestamp": {
+          "type": "string"
+        },
+        "chunks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Chunks"
+          }
+        }
+      }
+    },
+    "ChunkGetResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string"
+        },
+        "hash": {
+          "type": "string"
+        },
+        "sig": {
+          "type": "string"
+        }
+      }
+    },
+    "ChunkDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "ChunkPostResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "Chunks": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "timestamp": {
+          "type": "string"
+        },
+        "name": {
           "type": "string"
         }
       }
