@@ -26,6 +26,11 @@
     "plugin",
     "rechunk.podspec"
   ],
+  "workspaces": [
+    "app",
+    "docs",
+    "example"
+  ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
@@ -34,17 +39,21 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "prepare": "husky",
-    "prerelease": "scripts/remove-workspace",
-    "release": "release-it",
-    "postrelease": "scripts/restore-workspace"
+    "release": "release-it"
   },
   "release-it": {
     "git": {
       "commitMessage": "chore: release v${version}",
-      "requireCleanWorkingDir": false
+      "requireCleanWorkingDir": false,
+      "push": false,
+      "commit": false
     },
     "github": {
       "release": true
+    },
+    "hooks": {
+      "before:init": "scripts/remove-workspace",
+      "after:release": "scripts/restore-workspace && git add -A && git commit -m \"chore: release\" && git push"
     }
   },
   "source": "src/react-native/index",

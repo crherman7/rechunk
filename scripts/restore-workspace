@@ -1,10 +1,21 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
+const path = require('path');
 
-fs.copyFileSync(
-  path.resolve(workingPath, 'package.json.bak'),
+const workingPath = process.cwd();
+
+const {workspaces} = JSON.parse(
+  fs.readFileSync(path.resolve(workingPath, 'package.json.bak'), 'utf8'),
+);
+
+const packageJson = JSON.parse(
+  fs.readFileSync(path.resolve(workingPath, 'package.json'), 'utf8'),
+);
+
+fs.writeFileSync(
   path.resolve(workingPath, 'package.json'),
+  `${JSON.stringify({...packageJson, workspaces}, null, 2)}\n`,
 );
 
 fs.unlinkSync(path.resolve(workingPath, 'package.json.bak'));
