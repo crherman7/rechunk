@@ -39,13 +39,14 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "prepare": "husky",
-    "prerelease": "./remove-workspace",
+    "prerelease": "scripts/remove-workspace",
     "release": "release-it",
-    "postrelease": "./restore-workspace"
+    "postrelease": "scripts/restore-workspace"
   },
   "release-it": {
     "git": {
-      "commitMessage": "chore: release v${version}"
+      "commitMessage": "chore: release v${version}",
+      "requireCleanWorkingDir": false
     },
     "github": {
       "release": true
