@@ -12,7 +12,7 @@
     "preview": "node dist/index.cjs"
   },
   "dependencies": {
-    "@hono/node-server": "^1.9.0",
+    "@hono/node-server": "^1.10.1",
     "better-sqlite3": "^9.4.3",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.30.5",
