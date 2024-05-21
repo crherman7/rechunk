@@ -1,6 +1,6 @@
 {
   "name": "@crherman7/rechunk",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.1",
   "description": "🚀 Render Remote Chunks with React Native",
   "license": "MIT",
   "private": true,
@@ -25,11 +25,6 @@
     "ios",
     "plugin",
     "rechunk.podspec"
-  ],
-  "workspaces": [
-    "app",
-    "docs",
-    "example"
   ],
   "publishConfig": {
     "access": "public",
