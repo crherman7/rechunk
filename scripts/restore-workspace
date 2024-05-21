@@ -1,0 +1,10 @@
+#!/bin/env node
+
+const fs = require('fs');
+
+fs.copyFileSync(
+  path.resolve(workingPath, 'package.json.bak'),
+  path.resolve(workingPath, 'package.json'),
+);
+
+fs.unlinkSync(path.resolve(workingPath, 'package.json.bak'));

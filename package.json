@@ -39,7 +39,9 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "prepare": "husky",
-    "release": "release-it"
+    "prerelease": "./remove-workspace",
+    "release": "release-it",
+    "postrelease": "./restore-workspace"
   },
   "release-it": {
     "git": {
