@@ -37,8 +37,8 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "release": "release-it",
-    "prepare": "husky"
+    "prepare": "husky",
+    "release": "release-it"
   },
   "release-it": {
     "github": {
