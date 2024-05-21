@@ -4,12 +4,7 @@ import chalk from 'chalk';
 import process from 'process';
 import {program} from 'commander';
 
-import './dev-server';
-import './init';
-import './list';
-import './publish';
-import './unpublish';
-
+import './cmds';
 import pak from '../../package.json';
 
 /**

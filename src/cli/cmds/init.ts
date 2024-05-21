@@ -1,9 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
 import {program} from 'commander';
 
-import pak from '../../package.json';
+import {LOGO} from '../lib';
 
 /**
  * Defines a command for the "init" operation using the "commander" library.
@@ -32,31 +31,7 @@ program
   )
   .action(async options => {
     console.log();
-    console.log(chalk.green`
-          ░░░░░░░░░░░░░░░░░░░░░░        
-          ░░░░░░░░░░░░░░░░░░░░░░        
-          ░░░░░░░░░░░░░░░░░░░░░░        
-          ░░░░░░░░░░░░░░░░░░░░░░        
-      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
-      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
-      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
-      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▓▓▓▓▓▓▓▓
-      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▓▓▓▓▓▓▓▓
-      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
-      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
-      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
-      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
-                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-                 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-                   `);
-    console.log(
-      chalk.green`          Welcome to ReChunk ${chalk.bold
-        .white`v${pak.version}`}`,
-    );
-    console.log(
-      chalk.dim`    React Native - Remote Chunks - Secure Rendering\n`,
-    );
+    console.log(LOGO);
 
     const {host, username, password} = options;
 

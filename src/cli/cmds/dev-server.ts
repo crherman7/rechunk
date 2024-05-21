@@ -1,6 +1,5 @@
 import http from 'http';
 import url from 'url';
-import fs from 'fs';
 import path from 'path';
 import {createHash, createSign} from 'crypto';
 
@@ -10,7 +9,8 @@ import image from '@rollup/plugin-image';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
-import chalk from 'chalk';
+
+import {LOGO, getBabelConfig, getPackageJson, getRechunkConfig} from '../lib';
 
 /**
  * Defines a command for the "dev-server" operation using the "commander" library.
@@ -33,54 +33,9 @@ program
   )
   .option('-p, --port [port]', 'dev server port', '3000')
   .action(async options => {
-    // Importing necessary modules
-    /**
-     * Resolves the absolute path to the package.json file.
-     * @type {string}
-     */
-    const pakPath = path.resolve(process.cwd(), 'package.json');
-
-    /**
-     * Resolves the absolute path to the rechunk.json file.
-     * @type {string}
-     */
-    const rcPath = path.resolve(process.cwd(), 'rechunk.json');
-
-    // Check if package.json exists
-    if (!fs.existsSync(pakPath)) {
-      throw new Error(
-        '[ReChunk]: cannot find package.json. Please make sure there is a package.json at the root of your React Native project.',
-      );
-    }
-
-    // Check if rechunk.json exists
-    if (!fs.existsSync(rcPath)) {
-      throw new Error(
-        '[ReChunk]: cannot find rechunk.json. Please make sure there is a rechunk.json at the root of your React Native project.',
-      );
-    }
-
-    /**
-     * Contains the parsed package.json object.
-     * @type {Object}
-     */
-    const pak = require(pakPath);
-
-    /**
-     * Contains the parsed rechunk.json object.
-     * @type {Object}
-     */
-    const rc = require(rcPath);
-
-    const babelConfigPath = path.resolve(process.cwd(), 'babel.config.js');
-
-    if (!fs.existsSync(babelConfigPath)) {
-      throw new Error(
-        'babel.config.js does not exist, please make sure you are running "rechunk publish" from the root of you React Native project.',
-      );
-    }
-
-    const babelConfig = require(babelConfigPath);
+    const pak = getPackageJson();
+    const rc = getRechunkConfig();
+    const babelConfig = getBabelConfig();
 
     const found = babelConfig?.plugins?.findIndex?.((it: unknown) => {
       if (Array.isArray(it)) {
@@ -172,43 +127,15 @@ program
         res.end(JSON.stringify(responseData));
       } else {
         // For other routes, return a 404 Not Found response
-        res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.end('404 Not Found');
+        res.writeHead(400, {'Content-Type': 'text/plain'});
+        res.end('Bad Request');
       }
     });
 
     // Start the server and listen on port 3000
     server.listen(options.port, () => {
       console.log();
-      console.log(chalk.green`
-            ░░░░░░░░░░░░░░░░░░░░░░        
-            ░░░░░░░░░░░░░░░░░░░░░░        
-            ░░░░░░░░░░░░░░░░░░░░░░        
-            ░░░░░░░░░░░░░░░░░░░░░░        
-        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
-        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
-        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░        
-        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▓▓▓▓▓▓▓▓
-        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░▓▓▓▓▓▓▓▓
-        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
-        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
-        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
-        ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓
-                   ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-                   ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-                   ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-                     `);
-      console.log(
-        chalk.green`          Welcome to ReChunk ${chalk.bold
-          .white`v${pak.version}`}`,
-      );
-      console.log(chalk.dim`    React Native - Remote Chunks - Secure\n`);
-
-      console.log();
-      console.log('version: 1.0.0');
-      console.log('command: dev-server');
-      console.log();
-
+      console.log(LOGO);
       console.log(`👂 Server is listening on port ${options.port}`);
     });
   });
