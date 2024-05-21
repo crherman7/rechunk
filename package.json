@@ -1,11 +1,19 @@
 {
   "name": "@crherman7/rechunk",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "🚀 Render Remote Chunks with React Native",
   "license": "MIT",
   "repository": "git@github.com:crherman7/rechunk.git",
   "homepage": "https://crherman7.github.io/rechunk",
   "author": "Chris Herman <crherman7@gmail.com>",
+  "keywords": [
+    "react-native",
+    "typescript",
+    "chunks",
+    "code-splitting",
+    "sdui",
+    "hosted-components"
+  ],
   "bin": {
     "rechunk": "dist/cli/index.js"
   },
@@ -17,14 +25,6 @@
     "plugin",
     "rechunk.podspec"
   ],
-  "keywords": [
-    "react-native",
-    "typescript",
-    "chunks",
-    "code-splitting",
-    "sdui",
-    "hosted-components"
-  ],
   "workspaces": [
     "app",
     "docs",
@@ -34,6 +34,11 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "release": "release-it"
+  },
+  "release-it": {
+    "github": {
+      "release": true
+    }
   },
   "source": "src/react-native/index",
   "types": "dist/react-native/index.d.ts",
@@ -67,10 +72,5 @@
     "release-it": "^17.3.0",
     "tsup": "^8.0.2",
     "typescript": "^5.4.2"
-  },
-  "release-it": {
-    "github": {
-      "release": true
-    }
   }
 }
