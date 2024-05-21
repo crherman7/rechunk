@@ -6108,10 +6108,10 @@ hermes-profile-transformer@^0.0.6:
   dependencies:
     source-map "^0.7.3"
 
-hono@^4.1.4:
-  version "4.1.4"
-  resolved "https://registry.yarnpkg.com/hono/-/hono-4.1.4.tgz#f2b8746e3d0882282d65c333d6a4e921b772cdf2"
-  integrity sha512-JcdAKRBHjWO5OEkEW6Lv5NUr4QLl4InshCIUnHwGY7hymCxmV1Ji/eAAr1hclQixWc3I7ZljMHXwIedNWRAcqA==
+hono@^4.2.7:
+  version "4.2.7"
+  resolved "https://registry.yarnpkg.com/hono/-/hono-4.2.7.tgz#439ae5b0fc3620f254988b228b0e0c4d91ffe367"
+  integrity sha512-k1xHi86tJnRIVvqhFMBDGFKJ8r5O+bEsT4P59ZK59r0F300Xd910/r237inVfuT/VmE86RQQffX4OYNda6dLXw==
 
 html-escaper@^2.0.0:
   version "2.0.2"
