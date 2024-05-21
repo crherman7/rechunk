@@ -1,10 +1,6 @@
-import fs from 'fs';
-import path from 'path';
 import Table from 'cli-table3';
 import {program} from 'commander';
-import chalk from 'chalk';
 
-import pak from '../../../package.json';
 import {LOGO, getRechunkConfig} from '../lib';
 
 /**

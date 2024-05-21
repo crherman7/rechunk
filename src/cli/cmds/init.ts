@@ -53,7 +53,7 @@ program
       throw new Error('project already exists, please remove rechunk.json');
     }
 
-    console.log(`🚀 Creating project...\n`);
+    console.log('🚀 Creating project...\n');
 
     const res = await fetch(`${host}/project`, {
       method: 'POST',

@@ -101,6 +101,9 @@ export class ChunkManager extends TinyEmitter {
     const exports = {};
     const module = {exports};
 
+    // The new Function operator is allowed to be used here as it is
+    // essential to rendering a component from a string.
+    // eslint-disable-next-line no-new-func
     const Component = new Function(
       '__rechunk__',
       'module, exports',
