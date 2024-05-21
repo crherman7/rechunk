@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "🚀 Render Remote Chunks with React Native",
   "license": "MIT",
-  "private": true,
   "repository": "git@github.com:crherman7/rechunk.git",
   "homepage": "https://crherman7.github.io/rechunk",
   "author": "Chris Herman <crherman7@gmail.com>",
@@ -17,6 +16,14 @@
     "ios",
     "plugin",
     "rechunk.podspec"
+  ],
+  "keywords": [
+    "react-native",
+    "typescript",
+    "chunks",
+    "code-splitting",
+    "sdui",
+    "hosted-components"
   ],
   "workspaces": [
     "app",
