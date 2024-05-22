@@ -1,7 +1,5 @@
 {
   "git": {
-    "commitMessage": "chore: release v${version}",
-    "requireCleanWorkingDir": false,
     "push": false,
     "commit": false
   },
@@ -12,7 +10,7 @@
     "release": true
   },
   "hooks": {
-    "before:init": "scripts/remove-workspace",
+    "before:init": ["yarn build", "scripts/remove-workspace"],
     "after:release": [
       "scripts/restore-workspace",
       "git add -A",

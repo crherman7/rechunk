@@ -2,7 +2,6 @@ import {defineConfig} from 'astro/config';
 import starlight from '@astrojs/starlight';
 import tailwind from '@astrojs/tailwind';
 
-// https://astro.build/config
 export default defineConfig({
   integrations: [
     starlight({
@@ -14,6 +13,7 @@ export default defineConfig({
       favicon: 'favicon.ico',
       title: 'ReChunk',
       social: {
+        discord: 'https://discord.gg/xFhuxjwhss',
         github: 'https://github.com/crherman7/rechunk',
       },
       sidebar: [
