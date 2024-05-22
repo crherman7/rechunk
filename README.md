@@ -29,17 +29,3 @@ Please check [Code of Conduct](./CODE_OF_CONDUCT.md) for more details.
 ### License
 
 ReChunk is licensed under the [MIT License](./LICENSE.md).
-
-### TODO
-
-- [x] React Native Library
-- [x] CLI Library
-- [x] Example App
-- [x] Server
-- [x] Database
-- [x] Docker
-- [x] API HTTPExceptions
-- [x] Finalize rechunk.json
-- [x] CLI Statuses
-- [x] Cleanup db queries / mutations
-- [ ] Documentation
