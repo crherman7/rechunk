@@ -85,3 +85,108 @@ bun rechunk publish --chunk foo
 </Tabs>
 
 ### Removal
+
+The removal of a chunk is primarily governed by the parameters set in your ReChunk configuration file, `rechunk.json`. To execute the removal, utilize the `unpublish` command in conjunction with the specified chunk identifier.
+
+<Tabs>
+<TabItem label="yarn">
+
+```sh
+yarn rechunk unpublish --chunk foo
+```
+
+</TabItem>
+<TabItem label="npm">
+
+```sh
+npm run rechunk unpublish --chunk foo
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm rechunk unpublish --chunk foo
+```
+
+</TabItem>
+<TabItem label="bun">
+
+```sh
+bun rechunk unpublish --chunk foo
+```
+
+</TabItem>
+</Tabs>
+
+You should recieve a success message that the chunk was removed. Now in your app your error boundary will be triggered as the chunk does not exist.
+
+### Listing
+
+To ascertain which chunks are currently published, you can use the `list` command. This command also depends on the configuration settings specified in your ReChunk configuration file, `rechunk.json`.
+
+<Tabs>
+<TabItem label="yarn">
+
+```sh
+yarn rechunk list
+```
+
+</TabItem>
+<TabItem label="npm">
+
+```sh
+npm run rechunk list
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm rechunk list
+```
+
+</TabItem>
+<TabItem label="bun">
+
+```sh
+bun rechunk list
+```
+
+</TabItem>
+</Tabs>
+
+## Development Server
+
+Before publishing your chunks, you can test them using the local development server, which relies on the configuration specified in your `rechunk.json` file. Instead of deploying a chunk to the ReChunk service, the component will be bundled, hashed, and cryptographically signed on-the-fly, then returned immediately. This process allows for secure testing of your chunks prior to deployment.
+
+<Tabs>
+<TabItem label="yarn">
+
+```sh
+yarn rechunk dev-server
+```
+
+</TabItem>
+<TabItem label="npm">
+
+```sh
+npm run rechunk dev-server
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm rechunk dev-server
+```
+
+</TabItem>
+<TabItem label="bun">
+
+```sh
+bun rechunk dev-server
+```
+
+</TabItem>
+</Tabs>
