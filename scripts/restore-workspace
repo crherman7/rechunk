@@ -14,17 +14,12 @@ const packageJson = JSON.parse(
   fs.readFileSync(path.resolve(workingPath, 'package.json'), 'utf8'),
 );
 
-fs.writeFileSync(
-  path.resolve(workingPath, 'package.json'),
-  `${JSON.stringify(
-    format({
-      ...packageJson,
-      private: oldPackageJson.private,
-      workspaces: oldPackageJson.workspaces,
-    }),
-    null,
-    2,
-  )}\n`,
-);
+format({
+  ...packageJson,
+  private: oldPackageJson.private,
+  workspaces: oldPackageJson.workspaces,
+}).then(res => {
+  fs.writeFileSync(path.resolve(workingPath, 'package.json'), res);
 
-fs.unlinkSync(path.resolve(workingPath, 'package.json.bak'));
+  fs.unlinkSync(path.resolve(workingPath, 'package.json.bak'));
+});
