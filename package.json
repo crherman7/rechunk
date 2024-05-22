@@ -48,7 +48,7 @@
     },
     "hooks": {
       "before:init": "scripts/remove-workspace",
-      "after:release": "scripts/restore-workspace && git add -A && git commit -m \"chore: release\" && git push"
+      "after:release": "scripts/restore-workspace && git add -A && git commit -m \"chore: release v${version}\" && git push"
     }
   },
   "source": "src/react-native/index",
