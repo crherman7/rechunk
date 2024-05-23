@@ -156,7 +156,7 @@ bun rechunk list
 </TabItem>
 </Tabs>
 
-## Development Server
+### Development Server
 
 Before publishing your chunks, you can test them using the local development server, which relies on the configuration specified in your `rechunk.json` file. Instead of deploying a chunk to the ReChunk service, the component will be bundled, hashed, and cryptographically signed on-the-fly, then returned immediately. This process allows for secure testing of your chunks prior to deployment.
 
@@ -190,3 +190,24 @@ bun rechunk dev-server
 
 </TabItem>
 </Tabs>
+
+## Usage
+
+Once your chunk or chunks have been published, the next step is to render them. ReChunk is designed to be used in conjunction with React's built-in [lazy](https://react.dev/reference/react/lazy) loading functionality. To integrate ReChunk, simply replace the standard `import` statement with `importChunk`.
+
+```ts title="App.tsx" ins={1,4} del={3}
+import {importChunk} from '@crherman7/rechunk';
+
+const Foo = React.lazy(() => import('foo'));
+const Foo = React.lazy(() => importChunk('foo'));
+```
+
+After lazy loading the chunk, it can be rendered in conjunction with [Suspense](https://react.dev/reference/react/Suspense).
+
+```ts  title="App.tsx"
+<Suspense fallback={<Loading />}>
+  <Foo />
+</Suspense>
+```
+
+If any errors occur while attempting to fetch or render the chunk, an error will be thrown. It is recommended to use an [error boundary](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) to render a fallback component and capture any errors for reporting to your error service.
