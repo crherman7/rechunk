@@ -1,6 +1,9 @@
+import fs from 'fs';
 import http from 'http';
 import url from 'url';
 import path from 'path';
+import chalk from 'chalk';
+import prettier from 'prettier';
 import {createHash, createSign} from 'crypto';
 
 import {program} from 'commander';
@@ -31,11 +34,22 @@ program
   .description(
     'ReChunk development server to serve and sign React Native chunks.',
   )
-  .option('-p, --port [port]', 'dev server port', '3000')
+  .option('-p, --port [port]', 'dev server port', '18538')
   .action(async options => {
     const pak = getPackageJson();
     const rc = getRechunkConfig();
     const babelConfig = getBabelConfig();
+
+    function updateRechunkConfig(config: Object) {
+      fs.writeFileSync(
+        path.resolve(process.cwd(), 'rechunk.json'),
+        prettier.format(JSON.stringify(config), {
+          parser: 'json',
+          bracketSpacing: false,
+        }),
+        'utf-8',
+      );
+    }
 
     const found = babelConfig?.plugins?.findIndex?.((it: unknown) => {
       if (Array.isArray(it)) {
@@ -49,6 +63,29 @@ program
     if (found > -1) {
       babelConfig.plugins.splice(found, 1);
     }
+
+    updateRechunkConfig({...rc, host: `http://localhost:${options.port}`});
+
+    // CTRL+C
+    process.on('SIGINT', () => {
+      updateRechunkConfig(rc);
+
+      process.exit(0);
+    });
+
+    // Keyboard quit
+    process.on('SIGQUIT', () => {
+      updateRechunkConfig(rc);
+
+      process.exit(0);
+    });
+
+    // `kill` command
+    process.on('SIGTERM', () => {
+      updateRechunkConfig(rc);
+
+      process.exit(0);
+    });
 
     /**
      * Create a basic HTTP server.
@@ -132,10 +169,17 @@ program
       }
     });
 
-    // Start the server and listen on port 3000
+    // Start the server and listen on port 18538
     server.listen(options.port, () => {
       console.log();
       console.log(LOGO);
-      console.log(`👂 Server is listening on port ${options.port}`);
+      console.log(
+        `    ${chalk.green`→`} patching rechunk host: http://localhost:${
+          options.port
+        }
+    ${chalk.green`→`} press ctrl+c to restore rechunk config
+    ${chalk.green`→`} serving on: http://localhost:${options.port}`,
+      );
+      console.log();
     });
   });

@@ -68,6 +68,7 @@
     "@react-native/eslint-config": "^0.73.2",
     "@react-native/typescript-config": "^0.74.0",
     "@types/base-64": "^1.0.2",
+    "@types/prettier": "^2.7.3",
     "eslint": "^8.19.0",
     "format-package": "^7.0.0",
     "husky": "^9.0.11",
