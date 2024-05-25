@@ -6,7 +6,6 @@
  */
 export async function fetchChunk(chunkId: string): Promise<any> {
   try {
-    await new Promise(res => setTimeout(res, 3000));
     // Check if chunkId is provided
     if (!chunkId || typeof chunkId !== 'string') {
       throw new Error('Invalid chunkId provided');

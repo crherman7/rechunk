@@ -100,9 +100,15 @@ program
       const parsedUrl = url.parse(req.url as any, true);
 
       // Check if the path is "/"
-      if (parsedUrl.pathname === '/') {
+      if (/\/chunk\/(\w+)/.test(parsedUrl.pathname || '')) {
         // Get the search parameters
-        const {chunkId} = parsedUrl.query;
+        const matches = parsedUrl.path?.match(/\/chunk\/(\w+)/);
+
+        if (!matches) {
+          throw new Error('[ReChunk]: cannot parse url');
+        }
+
+        const chunkId = matches[1];
 
         if (typeof chunkId !== 'string') {
           throw new Error('[ReChunk]: chunkId must be a string.');
@@ -174,11 +180,9 @@ program
       console.log();
       console.log(LOGO);
       console.log(
-        `    ${chalk.green`→`} patching rechunk host: http://localhost:${
-          options.port
-        }
-    ${chalk.green`→`} press ctrl+c to restore rechunk config
-    ${chalk.green`→`} serving on: http://localhost:${options.port}`,
+        `    ${chalk.green`→`} host:     http://localhost
+    ${chalk.green`→`} port:     ${options.port}
+    ${chalk.green`→`} endpoint: /chunk/:chunkId`,
       );
       console.log();
     });
