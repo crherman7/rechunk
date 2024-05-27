@@ -6,7 +6,8 @@
       "@crherman7/rechunk": ["./src/react-native/index"],
       "@/*": ["./example/src/*"]
     },
-    "types": ["react-native", "node"]
+    "types": ["react-native", "node"],
+    "module": "ESNext"
   },
   "exclude": [
     "app",

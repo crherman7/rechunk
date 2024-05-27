@@ -11,6 +11,7 @@ const root = path.resolve(__dirname, '..');
  */
 const config = {
   watchFolders: [root],
+  resetCache: true,
 };
 
 module.exports = mergeConfig(getDefaultConfig(__dirname), config);

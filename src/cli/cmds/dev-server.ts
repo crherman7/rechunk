@@ -4,7 +4,6 @@ import url from 'url';
 import path from 'path';
 import chalk from 'chalk';
 import prettier from 'prettier';
-import getPort from 'get-port';
 import {createHash, createSign} from 'crypto';
 
 import {program} from 'commander';
@@ -36,6 +35,8 @@ program
     'ReChunk development server to serve and sign React Native chunks.',
   )
   .action(async () => {
+    const {default: getPort} = await import('get-port');
+
     const port = await getPort();
     const pak = getPackageJson();
     const rc = getRechunkConfig();
@@ -65,7 +66,7 @@ program
       babelConfig.plugins.splice(found, 1);
     }
 
-    updateRechunkConfig({...rc, host: `http://localhost:${port}`});
+    await updateRechunkConfig({...rc, host: `http://localhost:${port}`});
 
     // CTRL+C
     process.on('SIGINT', () => {
