@@ -112,6 +112,10 @@ program
 
         const chunkId = matches[1];
 
+        console.log(
+          `${chalk.green`    ⑇`} ${new Date().toISOString()}: serving /chunk/${chunkId}`,
+        );
+
         if (typeof chunkId !== 'string') {
           throw new Error('[ReChunk]: chunkId must be a string.');
         }
@@ -182,9 +186,9 @@ program
       console.log();
       console.log(LOGO);
       console.log(
-        `    ${chalk.green`→`} host:     http://localhost
-    ${chalk.green`→`} port:     ${port}
-    ${chalk.green`→`} endpoint: /chunk/:chunkId`,
+        `    ${chalk.green`→`} host: http://localhost
+    ${chalk.green`→`} port: ${port}
+    ${chalk.green`→`} path: /chunk/:chunkId`,
       );
       console.log();
     });
