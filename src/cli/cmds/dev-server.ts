@@ -66,7 +66,7 @@ program
       babelConfig.plugins.splice(found, 1);
     }
 
-    await updateRechunkConfig({...rc, host: `http://localhost:${port}`});
+    updateRechunkConfig({...rc, host: `http://localhost:${port}`});
 
     // CTRL+C
     process.on('SIGINT', () => {
