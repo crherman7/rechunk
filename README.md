@@ -4,8 +4,6 @@
   <img alt="ReChunk Banner" src="./.github/assets/hero.png">
 </picture>
 
-<h2 align="center">Render Externally Hosted Components with React Native</h2>
-
 ## Features
 
 - **🚀 Remote Components**: Effortlessly render externally bundled components within your React Native application. Whether your components reside on remote servers or cloud platforms, rechunk seamlessly integrates them into your project, enabling dynamic and versatile UI experiences.
