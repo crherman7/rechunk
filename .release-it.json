@@ -11,9 +11,9 @@
     "release": true
   },
   "hooks": {
-    "before:init": ["yarn build", "scripts/remove-workspace"],
+    "before:init": ["yarn build", "scripts/remove-workspace.js"],
     "after:release": [
-      "scripts/restore-workspace",
+      "scripts/restore-workspace.js",
       "git add -A",
       "git commit -m \"chore: release v${version}\"",
       "git push"

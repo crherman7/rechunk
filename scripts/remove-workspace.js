@@ -14,7 +14,11 @@ const packageJson = JSON.parse(
   fs.readFileSync(path.resolve(workingPath, 'package.json'), 'utf8'),
 );
 
-const {workspaces, private, ...packageJsonWithoutWorkspaces} = packageJson;
+const {
+  workspaces,
+  private: _private,
+  ...packageJsonWithoutWorkspaces
+} = packageJson;
 
 fs.writeFileSync(
   path.resolve(workingPath, 'package.json'),
