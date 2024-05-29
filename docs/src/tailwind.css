@@ -22,14 +22,9 @@ https://tailwindcss.com/docs/adding-custom-styles#using-css-and-layer
   white-space: nowrap;
 }
 
-.pagination-links > a {
-  background-color: var(--sl-color-black);
-}
-
-div.content-panel:nth-child(1):not(:last-child) {
-  background-color: var(--sl-color-black);
-}
-
-.right-sidebar {
-  background-color: var(--sl-color-black);
+.hero > img,
+.hero > .hero-html {
+  width: 250px;
+  object-fit: contain;
+  margin-inline: auto;
 }
