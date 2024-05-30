@@ -57,6 +57,7 @@
     "commander": "^12.0.0",
     "find-babel-config": "^2.1.1",
     "get-port": "^7.1.0",
+    "glob": "^10.4.1",
     "prettier": "^2.4.1",
     "rollup": "^4.13.0",
     "tiny-emitter": "^2.1.0",

@@ -3,7 +3,7 @@ import path from 'path';
 import {program} from 'commander';
 import {
   getRechunkConfig,
-  getIOSPath,
+  getInfoPlistPath,
   getAndroidPath,
   doesKeywordExist,
   updateFile,
@@ -31,9 +31,7 @@ program
     console.log(LOGO);
 
     const rc = getRechunkConfig();
-
-    const iosPath = getIOSPath();
-    const infoPlistPath = path.resolve(iosPath, 'example', 'Info.plist');
+    const infoPlistPath = getInfoPlistPath();
 
     if (!fs.existsSync(infoPlistPath)) {
       throw new Error('[ReChunk]: cannot find Info.plist file.');

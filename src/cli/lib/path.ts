@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import {globSync} from 'glob';
 
 /**
  * Retrieves the ios path from the project root.
@@ -41,4 +42,32 @@ export function getAndroidPath(dir: string = process.cwd()): string {
   }
 
   return androidPath;
+}
+
+/**
+ * Retrieves the Info.plist path from the project root.
+ *
+ * This function checks for the presence of `Info.plist` file in ios directory of the project.
+ * If the file exists, it reads and returns the path to `Info.plist` file.
+ *
+ * @param {string} [dir=getIOSPath()] - The ios directory to start searching for the `Info.plist` file. Defaults to the path to ios directory.
+ * @returns {string} - The path to the `Info.plist` file.
+ * @throws Will throw an error if the `Info.plist` file is not found.
+ */
+export function getInfoPlistPath(dir: string = getIOSPath()): string {
+  const infoPlistPath = globSync(`${dir}/**/Info.plist`, {
+    ignore: [
+      '**/Pods/**',
+      '**/Build/**',
+      '**/DerivedData/**',
+      '**/*-tvOS*/**',
+      '**/*Tests/**/Info.plist',
+    ],
+  })[0];
+
+  if (!fs.existsSync(infoPlistPath)) {
+    throw new Error('[ReChunk]: cannot find path for Info.plist file.');
+  }
+
+  return infoPlistPath;
 }
