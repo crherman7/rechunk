@@ -1,7 +1,7 @@
 import Table from 'cli-table3';
 import {program} from 'commander';
 
-import {LOGO, getRechunkConfig} from '../lib';
+import {getRechunkConfig, LOGO} from '../lib';
 
 /**
  * Defines a command for the "list" operation using the "commander" library.

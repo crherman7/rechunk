@@ -1,6 +1,6 @@
+import {program} from 'commander';
 import fs from 'fs';
 import path from 'path';
-import {program} from 'commander';
 
 import {LOGO} from '../lib';
 

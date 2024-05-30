@@ -72,6 +72,7 @@
     "@types/base-64": "^1.0.2",
     "@types/prettier": "^2.7.3",
     "eslint": "^8.19.0",
+    "eslint-plugin-simple-import-sort": "^12.1.0",
     "format-package": "^7.0.0",
     "husky": "^9.0.11",
     "react": "^18.2.0",
@@ -79,5 +80,8 @@
     "release-it": "^17.3.0",
     "tsup": "^8.0.2",
     "typescript": "^5.4.2"
+  },
+  "engines": {
+    "node": ">=20.14.0"
   }
 }

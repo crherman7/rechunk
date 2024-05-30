@@ -1,7 +1,7 @@
-import warning from 'tiny-warning';
-import invariant from 'tiny-invariant';
-import {TinyEmitter} from 'tiny-emitter';
 import {NativeModules} from 'react-native';
+import {TinyEmitter} from 'tiny-emitter';
+import invariant from 'tiny-invariant';
+import warning from 'tiny-warning';
 
 import type {CustomRequire, ResolverFunction} from './types';
 

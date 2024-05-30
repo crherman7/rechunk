@@ -1,10 +1,11 @@
 #!/bin/env node
 
-import chalk from 'chalk';
-import process from 'process';
-import {program} from 'commander';
-
 import './cmds';
+
+import chalk from 'chalk';
+import {program} from 'commander';
+import process from 'process';
+
 import pak from '../../package.json';
 
 /**

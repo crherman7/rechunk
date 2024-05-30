@@ -1,6 +1,6 @@
+import findBabelConfig from 'find-babel-config';
 import fs from 'fs';
 import path from 'path';
-import findBabelConfig from 'find-babel-config';
 
 /**
  * Retrieves the Babel configuration for the given directory.

@@ -1,6 +1,6 @@
 import {program} from 'commander';
 
-import {LOGO, getRechunkConfig} from '../lib';
+import {getRechunkConfig, LOGO} from '../lib';
 
 /**
  * Defines a command for the "unpublish" operation using the "commander" library.

@@ -1,13 +1,12 @@
-import path from 'path';
-import {program} from 'commander';
-
-import {rollup} from 'rollup';
+import {getBabelOutputPlugin} from '@rollup/plugin-babel';
 import image from '@rollup/plugin-image';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
-import {getBabelOutputPlugin} from '@rollup/plugin-babel';
+import {program} from 'commander';
+import path from 'path';
+import {rollup} from 'rollup';
 
-import {LOGO, getBabelConfig, getPackageJson, getRechunkConfig} from '../lib';
+import {getBabelConfig, getPackageJson, getRechunkConfig, LOGO} from '../lib';
 
 /**
  * Defines a command for the "publish" operation using the "commander" library.

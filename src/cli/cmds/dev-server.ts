@@ -1,19 +1,18 @@
-import fs from 'fs';
-import http from 'http';
-import url from 'url';
-import path from 'path';
-import chalk from 'chalk';
-import prettier from 'prettier';
-import {createHash, createSign} from 'crypto';
-
-import {program} from 'commander';
-import {rollup} from 'rollup';
+import {getBabelOutputPlugin} from '@rollup/plugin-babel';
 import image from '@rollup/plugin-image';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
-import {getBabelOutputPlugin} from '@rollup/plugin-babel';
+import chalk from 'chalk';
+import {program} from 'commander';
+import {createHash, createSign} from 'crypto';
+import fs from 'fs';
+import http from 'http';
+import path from 'path';
+import prettier from 'prettier';
+import {rollup} from 'rollup';
+import url from 'url';
 
-import {LOGO, getBabelConfig, getPackageJson, getRechunkConfig} from '../lib';
+import {getBabelConfig, getPackageJson, getRechunkConfig, LOGO} from '../lib';
 
 /**
  * Defines a command for the "dev-server" operation using the "commander" library.

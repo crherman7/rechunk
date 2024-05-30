@@ -1,4 +1,9 @@
 {
   "root": true,
-  "extends": "@react-native"
+  "extends": "@react-native",
+  "plugins": ["simple-import-sort"],
+  "rules": {
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
+  }
 }
