@@ -4,6 +4,9 @@
   "description": "🚀 Render Remote Chunks with React Native",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": ">=20.14.0"
+  },
   "repository": "git@github.com:crherman7/rechunk.git",
   "homepage": "https://crherman7.github.io/rechunk",
   "author": "Chris Herman <crherman7@gmail.com>",
@@ -80,8 +83,5 @@
     "release-it": "^17.3.0",
     "tsup": "^8.0.2",
     "typescript": "^5.4.2"
-  },
-  "engines": {
-    "node": ">=20.14.0"
   }
 }
