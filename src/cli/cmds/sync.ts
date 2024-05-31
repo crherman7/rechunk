@@ -7,7 +7,9 @@ import {
   getRechunkConfig,
   getStringsXmlPath,
   LOGO,
+  type StringArrayElementsType,
   updateFile,
+  withXml,
 } from '../lib';
 
 /**
@@ -31,6 +33,8 @@ program
     console.log(LOGO);
 
     const rc = getRechunkConfig();
+    const rcKey = rc.publicKey.replaceAll('\n', '');
+
     const infoPlistPath = getInfoPlistPath();
     const stringsXmlPath = getStringsXmlPath();
 
@@ -39,7 +43,7 @@ program
       updateFile(
         infoPlistPath,
         /(<key>ReChunkPublicKey<\/key>\s*<string>)[\s\S]*?(<\/string>)/,
-        `$1${rc.publicKey}$2`,
+        `$1${rcKey}$2`,
       );
       console.log(
         chalk.yellow('🔐 ReChunk publicKey has been overwritten for ios!'),
@@ -50,16 +54,23 @@ program
 
     /* synchronisation steps for ANDROID */
     if (doesKeywordExist(stringsXmlPath, '<string name="ReChunkPublicKey">')) {
-      updateFile(
-        stringsXmlPath,
-        /(<string name="ReChunkPublicKey">)[\s\S]*?(<\/string>)/,
-        `$1${rc.publicKey}$2`,
-      );
+      withXml<StringArrayElementsType>(stringsXmlPath, xml => {
+        xml.resources.string?.forEach(attr => {
+          if (attr._attribute_name.name === 'ReChunkPublicKey') {
+            attr._attribute_value = rcKey;
+          }
+        });
+      });
       console.log(
         chalk.yellow('🔐 ReChunk publicKey has been overwritten for android!'),
       );
     } else {
-      /* @todo: implement init steps */
+      withXml<StringArrayElementsType>(stringsXmlPath, xml =>
+        xml.resources.string?.push({
+          _attribute_name: {name: 'ReChunkPublicKey'},
+          _attribute_value: rcKey,
+        }),
+      );
     }
 
     console.log('🎉 Successfully synchronized ReChunk keys with native files!');
