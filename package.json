@@ -1,6 +1,6 @@
 {
   "name": "@crherman7/rechunk",
-  "version": "1.0.0-rc.6",
+  "version": "1.0.0",
   "description": "🚀 Render Remote Chunks with React Native",
   "license": "MIT",
   "private": true,
