@@ -1,13 +1,13 @@
-import fs from 'fs';
-import path from 'path';
+import chalk from 'chalk';
 import {program} from 'commander';
+
 import {
-  getRechunkConfig,
-  getInfoPlistPath,
-  getAndroidPath,
   doesKeywordExist,
-  updateFile,
+  getInfoPlistPath,
+  getRechunkConfig,
+  getStringsXmlPath,
   LOGO,
+  updateFile,
 } from '../lib';
 
 /**
@@ -32,51 +32,35 @@ program
 
     const rc = getRechunkConfig();
     const infoPlistPath = getInfoPlistPath();
+    const stringsXmlPath = getStringsXmlPath();
 
-    if (!fs.existsSync(infoPlistPath)) {
-      throw new Error('[ReChunk]: cannot find Info.plist file.');
-    }
-
-    if (!doesKeywordExist(infoPlistPath, '<key>ReChunkPublicKey</key>')) {
-      throw new Error(
-        '[ReChunk]: cannot find ReChunkPublicKey key in Info.plist file.',
+    /* synchronisation steps for IOS */
+    if (doesKeywordExist(infoPlistPath, '<key>ReChunkPublicKey</key>')) {
+      updateFile(
+        infoPlistPath,
+        /(<key>ReChunkPublicKey<\/key>\s*<string>)[\s\S]*?(<\/string>)/,
+        `$1${rc.publicKey}$2`,
       );
-    }
-
-    updateFile(
-      infoPlistPath,
-      /(<key>ReChunkPublicKey<\/key>\s*<string>)[\s\S]*?(<\/string>)/,
-      `$1${rc.publicKey}$2`,
-    );
-
-    const androidPath = getAndroidPath();
-    const stringsValuesPath = path.resolve(
-      androidPath,
-      'app',
-      'src',
-      'main',
-      'res',
-      'values',
-      'strings.xml',
-    );
-
-    if (!fs.existsSync(stringsValuesPath)) {
-      throw new Error('[ReChunk]: cannot find strings.xml file');
-    }
-
-    if (
-      !doesKeywordExist(stringsValuesPath, '<string name="ReChunkPublicKey">')
-    ) {
-      throw new Error(
-        '[ReChunk]: cannot find ReChunkPublicKey key in strings.xml file.',
+      console.log(
+        chalk.yellow('🔐 ReChunk publicKey has been overwritten for ios!'),
       );
+    } else {
+      /* @todo: implement init steps */
     }
 
-    updateFile(
-      stringsValuesPath,
-      /(<string name="ReChunkPublicKey">)[\s\S]*?(<\/string>)/,
-      `$1${rc.publicKey}$2`,
-    );
+    /* synchronisation steps for ANDROID */
+    if (doesKeywordExist(stringsXmlPath, '<string name="ReChunkPublicKey">')) {
+      updateFile(
+        stringsXmlPath,
+        /(<string name="ReChunkPublicKey">)[\s\S]*?(<\/string>)/,
+        `$1${rc.publicKey}$2`,
+      );
+      console.log(
+        chalk.yellow('🔐 ReChunk publicKey has been overwritten for android!'),
+      );
+    } else {
+      /* @todo: implement init steps */
+    }
 
     console.log('🎉 Successfully synchronized ReChunk keys with native files!');
   });
