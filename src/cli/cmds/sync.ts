@@ -2,13 +2,12 @@ import chalk from 'chalk';
 import {program} from 'commander';
 
 import {
-  doesKeywordExist,
   getInfoPlistPath,
   getRechunkConfig,
   getStringsXmlPath,
   LOGO,
   type StringArrayElementsType,
-  updateFile,
+  withPlist,
   withXml,
 } from '../lib';
 
@@ -38,40 +37,52 @@ program
     const infoPlistPath = getInfoPlistPath();
     const stringsXmlPath = getStringsXmlPath();
 
-    /* synchronisation steps for IOS */
-    if (doesKeywordExist(infoPlistPath, '<key>ReChunkPublicKey</key>')) {
-      updateFile(
-        infoPlistPath,
-        /(<key>ReChunkPublicKey<\/key>\s*<string>)[\s\S]*?(<\/string>)/,
-        `$1${rcKey}$2`,
-      );
-      console.log(
-        chalk.yellow('🔐 ReChunk publicKey has been overwritten for ios!'),
-      );
-    } else {
-      /* @todo: implement init steps */
-    }
+    withPlist<Record<string, unknown>>(infoPlistPath, plist => {
+      if (plist.ReChunkPublicKey) {
+        plist.ReChunkPublicKey = rcKey;
 
-    /* synchronisation steps for ANDROID */
-    if (doesKeywordExist(stringsXmlPath, '<string name="ReChunkPublicKey">')) {
-      withXml<StringArrayElementsType>(stringsXmlPath, xml => {
-        xml.resources.string?.forEach(attr => {
+        console.log(
+          chalk.yellow('🔐 ReChunk publicKey has been overwritten for ios!'),
+        );
+      } else {
+        plist.ReChunkPublicKey = rcKey;
+
+        console.log(
+          chalk.yellow('🔐 ReChunk publicKey has been created for ios!'),
+        );
+      }
+
+      return plist;
+    });
+
+    withXml<StringArrayElementsType>(stringsXmlPath, xml => {
+      const xmlHasKey = !!xml.resources.string?.find(
+        ({_attribute_name}) => _attribute_name.name === 'ReChunkPublicKey',
+      );
+
+      xml.resources.string?.forEach(attr => {
+        if (xmlHasKey) {
           if (attr._attribute_name.name === 'ReChunkPublicKey') {
             attr._attribute_value = rcKey;
+
+            console.log(
+              chalk.yellow(
+                '🔐 ReChunk publicKey has been overwritten for android!',
+              ),
+            );
           }
-        });
+        } else {
+          xml.resources.string?.push({
+            _attribute_name: {name: 'ReChunkPublicKey'},
+            _attribute_value: rcKey,
+          });
+
+          console.log(
+            chalk.yellow('🔐 ReChunk publicKey has been created for android!'),
+          );
+        }
       });
-      console.log(
-        chalk.yellow('🔐 ReChunk publicKey has been overwritten for android!'),
-      );
-    } else {
-      withXml<StringArrayElementsType>(stringsXmlPath, xml =>
-        xml.resources.string?.push({
-          _attribute_name: {name: 'ReChunkPublicKey'},
-          _attribute_value: rcKey,
-        }),
-      );
-    }
+    });
 
     console.log('🎉 Successfully synchronized ReChunk keys with native files!');
   });
