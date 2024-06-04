@@ -42,13 +42,13 @@ program
         plist.ReChunkPublicKey = rcKey;
 
         console.log(
-          chalk.yellow('🔐 ReChunk publicKey has been overwritten for ios!'),
+          chalk.yellow('🔐 ReChunk publicKey has been overwritten for ios!\n'),
         );
       } else {
         plist.ReChunkPublicKey = rcKey;
 
         console.log(
-          chalk.yellow('🔐 ReChunk publicKey has been created for ios!'),
+          chalk.yellow('🔐 ReChunk publicKey has been created for ios!\n'),
         );
       }
 
@@ -67,7 +67,7 @@ program
 
             console.log(
               chalk.yellow(
-                '🔐 ReChunk publicKey has been overwritten for android!',
+                '🔐 ReChunk publicKey has been overwritten for android!\n',
               ),
             );
           }
@@ -78,11 +78,15 @@ program
           });
 
           console.log(
-            chalk.yellow('🔐 ReChunk publicKey has been created for android!'),
+            chalk.yellow(
+              '🔐 ReChunk publicKey has been created for android!\n',
+            ),
           );
         }
       });
     });
 
-    console.log('🎉 Successfully synchronized ReChunk keys with native files!');
+    console.log(
+      '🎉 Successfully synchronized ReChunk keys with native files!\n',
+    );
   });
