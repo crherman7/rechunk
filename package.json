@@ -1,6 +1,6 @@
 {
   "name": "@crherman7/rechunk",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "🚀 Securely render externally hosted components in React Native",
   "license": "MIT",
   "private": true,
