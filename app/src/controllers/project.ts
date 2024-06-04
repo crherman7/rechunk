@@ -1,12 +1,12 @@
-import {Hono} from 'hono';
-import namor from 'namor';
 import crypto from 'crypto';
 import {eq} from 'drizzle-orm';
+import {Hono} from 'hono';
 import {basicAuth} from 'hono/basic-auth';
+import namor from 'namor';
 
 import {db} from '../db';
-import {readAuth} from '../middleware';
 import {Project, projects} from '../db/schema';
+import {readAuth} from '../middleware';
 
 // RECHUNK_USERNAME required for basicAuth in creating a new project
 if (!process.env.RECHUNK_USERNAME) {

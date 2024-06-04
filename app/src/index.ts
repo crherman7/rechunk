@@ -1,9 +1,9 @@
 import 'dotenv/config';
 
-import {Hono} from 'hono';
 import {serve} from '@hono/node-server';
+import {Hono} from 'hono';
 
-import {root, chunk, project} from './controllers';
+import {chunk, project, root} from './controllers';
 
 // Creating a new instance of Hono
 const app = new Hono();

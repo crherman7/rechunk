@@ -3,8 +3,8 @@ import {MiddlewareHandler} from 'hono';
 import {HTTPException} from 'hono/http-exception';
 
 import {db} from '../db';
-import {auth} from './auth';
 import {projects} from '../db/schema';
+import {auth} from './auth';
 
 export const readAuth = (): MiddlewareHandler => {
   return async function readAuth(c, next) {

@@ -1,5 +1,5 @@
 import {InferSelectModel, relations, sql} from 'drizzle-orm';
-import {sqliteTable, text, integer} from 'drizzle-orm/sqlite-core';
+import {integer, sqliteTable, text} from 'drizzle-orm/sqlite-core';
 
 export const projects = sqliteTable('projects', {
   id: integer('id').primaryKey({autoIncrement: true}),

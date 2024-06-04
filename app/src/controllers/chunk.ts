@@ -1,10 +1,10 @@
-import {Hono} from 'hono';
 import crypto from 'crypto';
 import {and, eq} from 'drizzle-orm';
+import {Hono} from 'hono';
 import {HTTPException} from 'hono/http-exception';
 
 import {db} from '../db';
-import {Project, chunks} from '../db/schema';
+import {chunks, Project} from '../db/schema';
 import {readAuth, writeAuth} from '../middleware';
 
 type Variables = {

@@ -25,7 +25,7 @@ export const auth = (req: HonoRequest) => {
     });
   }
 
-  let userPass = undefined;
+  let userPass;
   // If an invalid string is passed to atob(), it throws a `DOMException`.
   try {
     userPass = USER_PASS_REGEXP.exec(
