@@ -6,7 +6,10 @@ declare module 'find-babel-config' {
    * @param depth - The maximum number of directories to search upwards. Defaults to undefined, meaning unlimited depth.
    * @returns A promise that resolves with an object containing the path to the configuration file and the configuration itself.
    */
-  declare function _exports(start: string, depth?: number): any;
+  declare function _exports(
+    start: string,
+    depth?: number,
+  ): Promise<{file: any; config: any}>;
 
   declare namespace _exports {
     /**
