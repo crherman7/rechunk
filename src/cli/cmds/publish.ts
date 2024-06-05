@@ -66,7 +66,7 @@ program
     // Rollup bundling process
     const rollupBuild = await rollup({
       input,
-      external: [...Object.keys(pak.dependencies), ...rcExternal],
+      external: [...Object.keys(pak.dependencies || {}), ...rcExternal],
       plugins: [
         image(),
         getBabelOutputPlugin({
