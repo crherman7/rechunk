@@ -13,8 +13,6 @@ Feel free to remove sections which do not make sense.
 
 ## Implementation
 
-With @pair
-
 <!--
 
 Some description of HOW you achieved it. Perhaps give a high level description of the program flow. Did you need to refactor something? What tradeoffs did you take? Are there things in here which you’d particularly like people to pay close attention to?
@@ -25,10 +23,22 @@ Some description of HOW you achieved it. Perhaps give a high level description o
 
 <details>
   <summary>ios</summary>
+
+  <!--
+
+  Add iOS simulator or device screenshot here.
+
+   -->
 </details>
 
 <details>
   <summary>android</summary>
+  
+  <!--
+
+  Add Android simulator or device screenshot here.
+
+  -->
 </details>
 
 ## How to Test
