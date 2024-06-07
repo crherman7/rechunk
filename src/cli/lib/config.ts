@@ -1,6 +1,7 @@
 import findBabelConfig from 'find-babel-config';
 import fs from 'fs';
 import path from 'path';
+import type {PackageJson} from 'type-fest';
 
 /**
  * Retrieves the Babel configuration for the given directory.
@@ -31,10 +32,10 @@ export function getBabelConfig(dir: string = process.cwd()): any {
  * the parsed configuration object.
  *
  * @param {string} [dir=process.cwd()] - The directory to start searching for the ReChunk configuration. Defaults to the current working directory.
- * @returns {object} The ReChunk configuration object.
+ * @returns {ReChunkConfig} The ReChunk configuration object.
  * @throws Will throw an error if the `rechunk.json` file is not found.
  */
-export function getRechunkConfig(dir: string = process.cwd()): any {
+export function getRechunkConfig(dir: string = process.cwd()): ReChunkConfig {
   const rechunkConfigPath = path.resolve(dir, 'rechunk.json');
 
   if (!fs.existsSync(rechunkConfigPath)) {
@@ -56,10 +57,10 @@ export function getRechunkConfig(dir: string = process.cwd()): any {
  * the parsed configuration object.
  *
  * @param {string} [dir=process.cwd()] - The directory to start searching for the package.json. Defaults to the current working directory.
- * @returns {object} The package.json configuration object.
+ * @returns {PackageJson} The package.json configuration object.
  * @throws Will throw an error if the `package.json` file is not found.
  */
-export function getPackageJson(dir: string = process.cwd()): any {
+export function getPackageJson(dir: string = process.cwd()): PackageJson {
   const packageJsonPath = path.resolve(dir, 'package.json');
 
   if (!fs.existsSync(packageJsonPath)) {

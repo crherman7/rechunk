@@ -85,6 +85,7 @@
     "react-native": "^0.73.6",
     "release-it": "^17.3.0",
     "tsup": "^8.0.2",
+    "type-fest": "^4.19.0",
     "typescript": "^5.4.2"
   }
 }

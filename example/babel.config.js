@@ -14,6 +14,6 @@ module.exports = {
         },
       },
     ],
-    [path.resolve('../plugin')],
+    [path.resolve('../dist/babel')],
   ],
 };

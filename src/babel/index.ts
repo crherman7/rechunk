@@ -1,39 +1,27 @@
-const path = require('path');
+import type * as Babel from '@babel/core';
 
-/**
- * Babel plugin for dynamically generating a require function based on dependencies listed in package.json
- * and inserting it as a configuration object argument into ReChunk.addConfiguration(false, config).
- * @param {object} api - Babel plugin API object.
- * @param {object} options - Options passed to the plugin.
- * @returns {object} Babel visitor.
- */
-module.exports = function rechunkPlugin({types: t}) {
+import {getPackageJson, getRechunkConfig} from '../cli/lib/config';
+
+export default function ({types: t}: typeof Babel): Babel.PluginObj {
   return {
     visitor: {
-      /**
-       * Visits CallExpression nodes and inserts the dynamically generated require function
-       * as a configuration object argument into ReChunk.addConfiguration(false, config).
-       * @param {object} path - Babel path object.
-       */
       CallExpression(p) {
         // Check if the CallExpression is ReChunk.addConfiguration(false)
         if (
           p.get('callee').isMemberExpression() &&
-          p.get('callee.object').isIdentifier({name: 'ReChunk'}) &&
-          p.get('callee.property').isIdentifier({name: 'addConfiguration'})
+          (
+            p.get('callee.object') as Babel.NodePath<
+              Babel.types.V8IntrinsicIdentifier | Babel.types.Expression
+            >
+          ).isIdentifier({name: 'ReChunk'}) &&
+          (
+            p.get('callee.property') as Babel.NodePath<
+              Babel.types.V8IntrinsicIdentifier | Babel.types.Expression
+            >
+          ).isIdentifier({name: 'addConfiguration'})
         ) {
-          // Resolve the path to package.json
-          const packageJsonPath = path.resolve(process.cwd(), 'package.json');
-          // Read package.json to get dependencies
-          const packageJson = require(packageJsonPath);
-
-          // Resolve the path to rechunk.json
-          const rechunkConfigJsonPath = path.resolve(
-            process.cwd(),
-            'rechunk.json',
-          );
-          // Read rechunk.json to get external
-          const rechunkConfigJson = require(rechunkConfigJsonPath);
+          const packageJson = getPackageJson();
+          const rechunkConfigJson = getRechunkConfig();
 
           const external = rechunkConfigJson.external || [];
           const dependencies = packageJson.dependencies || {};
@@ -99,13 +87,8 @@ module.exports = function rechunkPlugin({types: t}) {
           return;
         }
 
-        // Resolve the path to rechunk.json
-        const rechunkConfigJsonPath = path.resolve(
-          process.cwd(),
-          'rechunk.json',
-        );
         // Read rechunk.json to get external
-        const rechunkConfigJson = require(rechunkConfigJsonPath);
+        const rechunkConfigJson = getRechunkConfig();
 
         // Destructure project and readKey used to replace process.env values
         const {host, project, readKey} = rechunkConfigJson;
@@ -115,7 +98,7 @@ module.exports = function rechunkPlugin({types: t}) {
           t.isIdentifier(parent.node.property, {
             name: 'RECHUNK_PROJECT',
           }) &&
-          !parent.parentPath.isAssignmentExpression()
+          !parent.parentPath?.isAssignmentExpression()
         ) {
           parent.replaceWith(t.stringLiteral(project));
         }
@@ -125,7 +108,7 @@ module.exports = function rechunkPlugin({types: t}) {
           t.isIdentifier(parent.node.property, {
             name: 'RECHUNK_READ_KEY',
           }) &&
-          !parent.parentPath.isAssignmentExpression()
+          !parent.parentPath?.isAssignmentExpression()
         ) {
           parent.replaceWith(t.stringLiteral(readKey));
         }
@@ -135,11 +118,11 @@ module.exports = function rechunkPlugin({types: t}) {
           t.isIdentifier(parent.node.property, {
             name: 'RECHUNK_HOST',
           }) &&
-          !parent.parentPath.isAssignmentExpression()
+          !parent.parentPath?.isAssignmentExpression()
         ) {
           parent.replaceWith(t.stringLiteral(host));
         }
       },
     },
   };
-};
+}
