@@ -32,7 +32,7 @@ export function getBabelConfig(dir: string = process.cwd()): any {
  * the parsed configuration object.
  *
  * @param {string} [dir=process.cwd()] - The directory to start searching for the ReChunk configuration. Defaults to the current working directory.
- * @returns {object} The ReChunk configuration object.
+ * @returns {ReChunkConfig} The ReChunk configuration object.
  * @throws Will throw an error if the `rechunk.json` file is not found.
  */
 export function getRechunkConfig(dir: string = process.cwd()): ReChunkConfig {
@@ -57,7 +57,7 @@ export function getRechunkConfig(dir: string = process.cwd()): ReChunkConfig {
  * the parsed configuration object.
  *
  * @param {string} [dir=process.cwd()] - The directory to start searching for the package.json. Defaults to the current working directory.
- * @returns {object} The package.json configuration object.
+ * @returns {PackageJson} The package.json configuration object.
  * @throws Will throw an error if the `package.json` file is not found.
  */
 export function getPackageJson(dir: string = process.cwd()): PackageJson {
