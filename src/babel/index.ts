@@ -11,17 +11,14 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
        * and process.env.RECHUNK_PASSWORD.
        * @param {object} path - Babel path object.
        */
-      MemberExpression(p) {
+      MemberExpression({node, parentPath: parent}) {
         // Check if the MemberExpression is accessing process.env
         if (
-          !t.isIdentifier(p.node.object, {name: 'process'}) ||
-          !t.isIdentifier(p.node.property, {name: 'env'})
+          !t.isIdentifier(node.object, {name: 'process'}) ||
+          !t.isIdentifier(node.property, {name: 'env'})
         ) {
           return;
         }
-
-        const parent = p.parentPath;
-
         // Ensure that the MemberExpression has a parent MemberExpression
         if (!t.isMemberExpression(parent.node)) {
           return;
