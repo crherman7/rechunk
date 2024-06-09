@@ -10,6 +10,8 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
        * as a configuration object argument into process.env.RECHUNK_USERNAME
        * and process.env.RECHUNK_PASSWORD.
        * @param {object} path - Babel path object.
+       * @param {Babel.types.MemberExpression} path.node - The current AST node member.
+       * @param {Babel.NodePath<Babel.types.Node>} path.parentPath - The parent path of the current AST node member.
        */
       MemberExpression({node, parentPath: parent}) {
         // Check if the MemberExpression is accessing process.env
@@ -60,6 +62,12 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
           parent.replaceWith(t.stringLiteral(host));
         }
       },
+      /**
+       * Visits ClassDeclaration nodes and updates the ChunkManager class
+       * for adding default configurations such as publicKey and custom require function.
+       * @param {object} path - Babel path object.
+       * @param {Babel.types.ClassDeclaration} path.node - The current AST node member.
+       */
       ClassDeclaration({node}) {
         if (t.isIdentifier(node.id, {name: 'ChunkManager'})) {
           const {body} = node.body;
