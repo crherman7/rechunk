@@ -5,66 +5,6 @@ import {getPackageJson, getRechunkConfig} from '../cli/lib/config';
 export default function ({types: t}: typeof Babel): Babel.PluginObj {
   return {
     visitor: {
-      CallExpression(p) {
-        // Check if the CallExpression is ReChunk.addConfiguration(false)
-        if (
-          p.get('callee').isMemberExpression() &&
-          (
-            p.get('callee.object') as Babel.NodePath<
-              Babel.types.V8IntrinsicIdentifier | Babel.types.Expression
-            >
-          ).isIdentifier({name: 'ReChunk'}) &&
-          (
-            p.get('callee.property') as Babel.NodePath<
-              Babel.types.V8IntrinsicIdentifier | Babel.types.Expression
-            >
-          ).isIdentifier({name: 'addConfiguration'})
-        ) {
-          const packageJson = getPackageJson();
-          const rechunkConfigJson = getRechunkConfig();
-
-          const external = rechunkConfigJson.external || [];
-          const dependencies = packageJson.dependencies || {};
-
-          // Generate requireStatements for each dependency
-          const requireStatements = [
-            ...Object.keys(dependencies),
-            ...external,
-          ].map(dependency => {
-            return t.ifStatement(
-              t.binaryExpression(
-                '===',
-                t.identifier('moduleId'),
-                t.stringLiteral(dependency),
-              ),
-              t.blockStatement([
-                t.returnStatement(
-                  t.callExpression(t.identifier('require'), [
-                    t.stringLiteral(dependency),
-                  ]),
-                ),
-              ]),
-            );
-          });
-
-          // Create the require function expression
-          const requireFunction = t.functionExpression(
-            null,
-            [t.identifier('moduleId')],
-            t.blockStatement([
-              ...requireStatements,
-              t.returnStatement(t.nullLiteral()),
-            ]),
-          );
-
-          // Add the configuration object as a second argument to ReChunk.addConfiguration
-          p.node.arguments.push(
-            t.objectExpression([
-              t.objectProperty(t.identifier('require'), requireFunction),
-            ]),
-          );
-        }
-      },
       /**
        * Visits MemberExpression nodes and inserts the rechunk project and readKey
        * as a configuration object argument into process.env.RECHUNK_USERNAME
@@ -121,6 +61,62 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
           !parent.parentPath?.isAssignmentExpression()
         ) {
           parent.replaceWith(t.stringLiteral(host));
+        }
+      },
+      ClassDeclaration({node}) {
+        if (t.isIdentifier(node.id, {name: 'ChunkManager'})) {
+          const {body} = node.body;
+
+          const packageJson = getPackageJson();
+          const rechunkConfigJson = getRechunkConfig();
+
+          body.forEach(property => {
+            if (t.isClassProperty(property) && t.isIdentifier(property.key)) {
+              if (property.key.name === 'publicKey') {
+                property.value = t.stringLiteral(rechunkConfigJson.publicKey);
+              }
+
+              if (property.key.name === 'global') {
+                const external = rechunkConfigJson.external || [];
+                const dependencies = packageJson.dependencies || {};
+
+                // Generate requireStatements for each dependency
+                const requireStatements = [
+                  ...Object.keys(dependencies),
+                  ...external,
+                ].map(dependency =>
+                  t.ifStatement(
+                    t.binaryExpression(
+                      '===',
+                      t.identifier('moduleId'),
+                      t.stringLiteral(dependency),
+                    ),
+                    t.blockStatement([
+                      t.returnStatement(
+                        t.callExpression(t.identifier('require'), [
+                          t.stringLiteral(dependency),
+                        ]),
+                      ),
+                    ]),
+                  ),
+                );
+
+                // Create the require function expression
+                const requireFunction = t.functionExpression(
+                  null,
+                  [t.identifier('moduleId')],
+                  t.blockStatement([
+                    ...requireStatements,
+                    t.returnStatement(t.nullLiteral()),
+                  ]),
+                );
+
+                property.value = t.objectExpression([
+                  t.objectProperty(t.identifier('require'), requireFunction),
+                ]);
+              }
+            }
+          });
         }
       },
     },

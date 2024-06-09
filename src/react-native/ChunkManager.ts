@@ -3,7 +3,7 @@ import {TinyEmitter} from 'tiny-emitter';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
 
-import type {CustomRequire, ResolverFunction} from './types';
+import type {Configuration, CustomRequire, ResolverFunction} from './types';
 
 /**
  * Manager class for handling chunk imports and caching.
@@ -31,12 +31,32 @@ export class ChunkManager extends TinyEmitter {
    * @type {ResolverFunction}
    * @protected
    */
-  protected resolver: ResolverFunction = async function () {
-    // Default resolver function throws error
-    throw new Error(
-      '[ReChunk]: resolver was not added.' +
-        (__DEV__ ? ' Did you forget to addConfiguration?' : ''),
-    );
+  protected resolver: ResolverFunction = async chunkId => {
+    try {
+      if (!chunkId || typeof chunkId !== 'string') {
+        throw new Error('[ReChunk]: Invalid chunkId provided');
+      }
+
+      const response = await fetch(
+        `${process.env.RECHUNK_HOST}/chunk/${chunkId}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Basic ${btoa(
+              `${process.env.RECHUNK_PROJECT}:${process.env.RECHUNK_READ_KEY}`,
+            )}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`[ReChunk]: Failed to fetch chunk with ID ${chunkId}`);
+      }
+
+      return response.json();
+    } catch (error: any) {
+      throw new Error(`[ReChunk]: Failed to fetch chunk: ${error.message}`);
+    }
   };
 
   /**
@@ -53,6 +73,13 @@ export class ChunkManager extends TinyEmitter {
    * @protected
    */
   protected verify: boolean = true;
+
+  /**
+   * The public key used to verify function.
+   * @type {string}
+   * @protected
+   */
+  protected publicKey: string = '';
 
   /**
    * Get the shared instance of ChunkManager.
@@ -129,26 +156,35 @@ export class ChunkManager extends TinyEmitter {
   /**
    * Adds configuration settings to the ChunkManager instance.
    * This method sets the public key, resolver function, verification flag, and global object for the ChunkManager instance.
-   * @param {ResolverFunction} resolver - The resolver function used to resolve chunk imports.
-   * @param {boolean} verify - Flag indicating whether verification is enabled.
-   * @param {object} global - Object representing protected global variables and functions.
+   * @param {Configuration} config - The configuration object for ChunkManager.
+   * @param {boolean} [config.verify] - Flag indicating whether verification is enabled.
+   * @param {CustomRequire} [config.global] - Object representing protected global variables and functions.
+   * @param {ResolverFunction} [config.resolver] - The resolver function used to resolve chunk imports.
+   * @param {ResolverFunction} [config.publicKey] - The publicKey for ChunkManager configuration.
    */
-  addConfiguration(
-    resolver: ResolverFunction,
-    verify: boolean,
-    global: object,
-  ) {
-    // Set the resolver function
-    this.resolver = resolver;
+  addConfiguration({resolver, verify, global, publicKey}: Configuration) {
+    if (resolver) {
+      // Set the resolver function
+      this.resolver = resolver;
+    }
 
-    // Issue a warning if verification is turned off
-    warning(verify, '[ReChunk]: verification is off; chunks are insecure.');
+    if (verify) {
+      // Issue a warning if verification is turned off
+      warning(verify, '[ReChunk]: verification is off; chunks are insecure.');
 
-    // Set the verification flag
-    this.verify = verify;
+      // Set the verification flag
+      this.verify = verify;
+    }
 
-    // Set the global require object
-    this.global = global;
+    if (global) {
+      // Set the global require object
+      this.global = global;
+    }
+
+    if (publicKey) {
+      // Set the publicKey
+      this.publicKey = publicKey;
+    }
   }
 
   /**
@@ -168,7 +204,12 @@ export class ChunkManager extends TinyEmitter {
     const chunk = await this.resolver(chunkId);
 
     if (this.verify) {
-      await this.nativeChunkManager.verify(chunk.data, chunk.hash, chunk.sig);
+      await this.nativeChunkManager.verify(
+        chunk.data,
+        chunk.hash,
+        chunk.sig,
+        this.publicKey,
+      );
 
       return {default: this.chunkToComponent(chunkId, atob(chunk.data))};
     }

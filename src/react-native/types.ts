@@ -1,8 +1,8 @@
 /**
- * Represents the return type of a resolver function, which is a Promise
+ * Represents the return type of resolver function, which is a Promise
  * resolving to an object containing data, hash, and sig properties.
  */
-type ResolverReturn = Promise<{
+export type ResolverReturn = Promise<{
   data: string;
   hash?: string;
   sig?: string;
@@ -13,7 +13,7 @@ type ResolverReturn = Promise<{
  * @param {string} chunkId - The ID of the chunk to resolve.
  * @returns {Promise<string>} A promise resolving to the chunk string.
  */
-export type ResolverFunction = (chunkId: string) => Promise<ResolverReturn>;
+export type ResolverFunction = (chunkId: string) => ResolverReturn;
 
 /**
  * Represents an interface for a custom require function to control module access.
@@ -33,3 +33,10 @@ export type CustomRequire = {
  * @template T - The type of module ID.
  */
 type RequireFunction<T extends string> = (moduleId: T) => object | null;
+
+export type Configuration = {
+  resolver?: ResolverFunction;
+  global?: CustomRequire;
+  publicKey?: string;
+  verify?: boolean;
+};
