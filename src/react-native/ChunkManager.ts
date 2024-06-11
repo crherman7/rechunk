@@ -168,7 +168,7 @@ export class ChunkManager extends TinyEmitter {
       this.resolver = resolver;
     }
 
-    if (verify) {
+    if (verify !== undefined) {
       // Issue a warning if verification is turned off
       warning(verify, '[ReChunk]: verification is off; chunks are insecure.');
 
