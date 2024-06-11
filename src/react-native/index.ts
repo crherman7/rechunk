@@ -6,10 +6,8 @@ import './polyfill';
 
 import {TinyEmitter} from 'tiny-emitter';
 
-// Importing ChunkManager class from './ChunkManager' file
 import {ChunkManager} from './ChunkManager';
-// Importing ResolverFunction type from '../@types' file
-import type {CustomRequire, ResolverFunction} from './types';
+import type {Configuration} from './types';
 
 /**
  * Asynchronously imports a chunk using the shared ChunkManager instance.
@@ -24,33 +22,11 @@ export async function importChunk(chunkId: string): Promise<any> {
 /**
  * Adds configuration settings to the ChunkManager.
  * This function is used to configure the ChunkManager with specified settings such as public key, resolver function, verification flag, and global object.
- * @param {ResolverFunction} resolver - The resolver function used to resolve chunk imports.
- * @param {boolean} verify - Flag indicating whether verification is enabled.
- * @param {object} global - Object representing protected global variables and functions.
+ * @param {Configuration} config - The configuration object for ChunkManager.
  */
-function addConfiguration(
-  resolver: ResolverFunction,
-  verify: boolean,
-  global: CustomRequire = {
-    /**
-     * Custom implementation of require function to control module access.
-     * @param {string} moduleId - The ID of the module to be required.
-     * @returns {Object|null} - The required module if allowed, otherwise null.
-     * @protected
-     */
-    require: (moduleId: string): object | null => {
-      if (moduleId === 'react') {
-        return require('react');
-      } else if (moduleId === 'react-native') {
-        return require('react-native');
-      }
-
-      return null;
-    },
-  },
-) {
+function addConfiguration(config: Configuration) {
   // Delegates the configuration addition to the shared instance of ChunkManager
-  ChunkManager.shared.addConfiguration(resolver, verify, global);
+  ChunkManager.shared.addConfiguration(config);
 }
 
 /**
