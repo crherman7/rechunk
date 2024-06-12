@@ -1,0 +1,54 @@
+---
+title: 'Try it out'
+---
+
+This guide demonstrates how to quickly evaluate the library to determine its suitability for your project.
+
+### Repository
+
+The first step is to clone the repository to your machine. Ensure you have followed the [environment setup](https://reactnative.dev/docs/0.73/getting-started) for at least React Native version 0.73.
+
+```sh
+git clone git@github.com:crherman7/rechunk.git
+```
+
+Next, navigate to the `rechunk` directory and install the dependencies using the Yarn package manager.
+
+```sh
+cd rechunk
+yarn install
+```
+
+After installing the dependencies, the package needs to be built, which involves compiling TypeScript into JavaScript.
+
+```sh
+yarn build
+```
+
+### App
+
+The example application can now be run successfully with the ReChunk development server. Before you can the iOS application, pods must be installed.
+
+```sh
+cd example/ios
+pod install
+cd ..
+```
+
+After all the pods have been installed, you can start the ReChunk development server.
+
+```sh
+yarn rechunk dev-server
+```
+
+In a separate terminal the iOS application can now be run.
+
+```sh
+yarn ios
+```
+
+The iOS mobile application should now be running and the remote chunk should be rendered. This can also be run for android as well.
+
+```sh
+yarn android
+```

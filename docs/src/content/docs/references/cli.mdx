@@ -1,0 +1,204 @@
+---
+title: 'Command-line Interface'
+---
+
+import {Tabs, TabItem} from '@astrojs/starlight/components';
+
+The command-line interface (CLI) provides the primary means to interact with the ReChunk service, enabling the hosting and distribution of your bundled chunks.
+
+### Initialize
+
+The `init` command initializes a new ReChunk project via the CLI. To create a new ReChunk project, you must provide the host, username, and password for basic authentication. Upon executing this command, a `rechunk.json` configuration file will be generated in the root directory of your React Native project. This configuration file will be used to automatically configure your React Native app with the ReChunk instance.
+
+<Tabs>
+<TabItem label="yarn">
+
+```sh
+yarn rechunk init --host http://localhost:3000 --username rechunk --password aC00Lpr0ject
+```
+
+</TabItem>
+<TabItem label="npm">
+
+```sh
+npm run rechunk init --host http://localhost:3000 --username rechunk --password aC00Lpr0ject
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm rechunk init --host http://localhost:3000 --username rechunk --password aC00Lpr0ject
+```
+
+</TabItem>
+<TabItem label="bun">
+
+```sh
+bun run rechunk init --host http://localhost:3000 --username rechunk --password aC00Lpr0ject
+```
+
+</TabItem>
+</Tabs>
+
+This command assumes that your ReChunk service is running on `localhost` at port `3000`. The username and password provided are used for basic authentication with the initialization endpoint.
+
+This command must be executed before running any other commands or utilizing this library in your React Native project.
+
+### Publish
+
+Chunks can only be bundled via the `publish` command. Only chunks that are registered in the `rechunk.json` can be published; this is required because the path must be defined for each chunk. The publish command will bundle all the non-registered dependencies into a single string of code to be pushed to the ReChunk service. If there are additional dependencies that should not be bundled that are not part of your `package.json` i.e. shared aliased source code that can be registered in the `rechunk.json` via the `external` attribute.
+
+```json title=rechunk.json ins={8,9}
+{
+  "$schema": "https://crherman7.github.io/rechunk/schema.json",
+  "project": "prototypical-pigs-interlay",
+  "readKey": "read-5456fcad-99bd-4328-bfc4-0cb597ffbc4d",
+  "writeKey": "write-9bd47fc2-323e-4f74-9082-2abfb86582b4",
+  "publicKey": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArk92wo3nc7AShy2c860h\nojRACKTnYGbB1NPRezyZ40Lk9p/myZ02ZpmVDGlMtWgqgIOoufUwPTa9LkmjFUgg\nYkhDHZzokiJjZ9PseRXr4+63p8MSvOmQvoQMqSO2mBEuXTks4tTNx/AySWqV9GDC\nMeM+VFKtQULuxgQSNJ1LDIu8ofpeKDB2bivV8phrLzRSM4TWuCu9u9gWxsUbTihR\nLyicJvmx44NBmdr9N0WIOh/15vAYieiY8MsZE7B8St0x5jgDT4taUzTd8R0RyDw/\nOtpCeOIDGwmz7h0Rx2r0Q+WOuRL4MSbGBJuT3TJoWkOPCrhfH3Sc6a61NyoPeiDZ\nXQIDAQAB\n-----END PUBLIC KEY-----\n",
+  "privateKey": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCuT3bCjedzsBKH\nLZzzrSGiNEAIpOdgZsHU09F7PJnjQuT2n+bJnTZmmZUMaUy1aCqAg6i59TA9Nr0u\nSaMVSCBiSEMdnOiSImNn0+x5Fevj7renwxK86ZC+hAypI7aYES5dOSzi1M3H8DJJ\napX0YMIx4z5UUq1BQu7GBBI0nUsMi7yh+l4oMHZuK9XymGsvNFIzhNa4K7272BbG\nxRtOKFEvKJwm+bHjg0GZ2v03RYg6H/Xm8BiJ6JjwyxkTsHxK3THmOANPi1pTNN3x\nHRHIPD862kJ44gMbCbPuHRHHavRD5Y65EvgxJsYEm5PdMmhaQ48KuF8fdJzprrU3\nKg96INldAgMBAAECggEAQfVhzAbkYRtsN2ikLnUB+B3raRn1T74ydHVenFJ3LM7g\nUw54xyvNLQ/KnbKuyypKguzPCOblxRQUjBJjOqdbUbVkaC06uCl5Eg3YOo14AH0R\nU9L2ITQEiILxQ4N3EZ3WvIHpIUBDSffzH2LMsXd3pGcH6+KJGtvX/GgH947Zmjoa\nXOiu3hw+E1qZaUTjWgGYmT+ph+8gHW34ner5JS4m8tqkNtP0U2DJIVD7MR5i/jp3\nzv19/foEUew8wvs4R4GcvS3xGETebg4H6DonxJ79HtXe3jzigreOLYybjyw4zRFv\nYHDh9qRCL20Qydq7Ogg963Yur1Ecys2faeehNp8pxQKBgQDUNreN8wMYU4/qyLmi\n7wHQ9rr/pqqcNsLsBRSlwXKsK7ffwSjvx+aUOzucnlHUrLpJtllT551aWw8EY4Rx\nGI7iTwCPCKK7s6laZeXSrSKWgXibTuCn/1FJ8dZbFHKhWaXQW2QFSSNRzqp41FhB\ncZXs9cS0Yf6issvtiP7hAX7N/wKBgQDSRqpdl/eX2t4vMYbdfHvvtzy01MccKrQ2\nhADX/PgVAe/8n1/vxftK5cKAUapq0gpS8/1mRuTeRZ9a7HAZvpNuYEKhlRsSOzNg\nYYqNmq9F33kxRjsdm6RrYMMyk8v8pIuyFTaZY+MdIRDt306a2VK4EAQxS5G+wTr6\nOgOM4fxQowKBgGawZ5gf7PJ7lRu2r+XBJC7bBdgp7UsUULRnLPucpYHc0ehLjySg\npdo643jBP7XbM3Xx8D3iyUjs4VJtWaxkhtfKBOox8pVDtgKRZmnQ7/jGg/cbbyi8\nKrjOdryyI1oiiFNPthG8t4OhruozTtW0QildMCddeBuAy5+Q+E0nLRY/AoGAFxXR\nAGN9uDs8J1w9nTVcee3ZCVVO4sXBcTa+zPel2NCUo1xv8OgAdbGRz/qnRgD3RzIo\nQMFJwSlNnHLWv8zPbM++oPS4uyCqvEsZJgC0e2xUZtd6B/8dZviBlZzqSTtbZtqz\nWtW/imQl8qeQfqmbTj/b5fmQ76tRKUWTPDVXORcCgYEArx0LII/G1luLj/z2bvhz\nA5OXyUL7ka2wJqmpb0XdFP+PPIsud5GXf2uG9GTkhBHnwuakXW8UdB/4pwEtAYRS\nGndITg+KPDwTvuz6P51MQM6wd1922UKjTl3BY+7CzaWCuBGV/yfFjpsWtoSQJvSY\nDCwpHpF7v/6fhQU/Y2ZnI84=\n-----END PRIVATE KEY-----\n",
+  "entry": {"foo": "./src/shared/remote-ui/Remote.tsx"},
+  "external": ["@/shared"],
+  "host": "http://localhost:3000"
+}
+```
+
+Once the chunks have been registered they can be published via the `publish` command and be utilized within the application.
+
+<Tabs>
+<TabItem label="yarn">
+
+```sh
+yarn rechunk publish --chunk foo
+```
+
+</TabItem>
+<TabItem label="npm">
+
+```sh
+npm run rechunk publish --chunk foo
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm rechunk publish --chunk foo
+```
+
+</TabItem>
+<TabItem label="bun">
+
+```sh
+bun run rechunk publish --chunk foo
+```
+
+</TabItem>
+</Tabs>
+
+### Unpublish
+
+If a chunk becomes unnecessary or needs to be removed, the `unpublish` command can be used to delete this chunk from the ReChunk service.
+
+<Tabs>
+<TabItem label="yarn">
+
+```sh
+yarn rechunk unpublish --chunk foo
+```
+
+</TabItem>
+<TabItem label="npm">
+
+```sh
+npm run rechunk unpublish --chunk foo
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm rechunk unpublish --chunk foo
+```
+
+</TabItem>
+<TabItem label="bun">
+
+```sh
+bun run rechunk unpublish --chunk foo
+```
+
+</TabItem>
+</Tabs>
+
+### List
+
+The `list` command can be utilized to visualize which chunks have been published and are available to use in the application.
+
+<Tabs>
+<TabItem label="yarn">
+
+```sh
+yarn rechunk list
+```
+
+</TabItem>
+<TabItem label="npm">
+
+```sh
+npm run rechunk list
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm rechunk list
+```
+
+</TabItem>
+<TabItem label="bun">
+
+```sh
+bun run rechunk list
+```
+
+</TabItem>
+</Tabs>
+
+### Development Server
+
+Before publishing a chunk, it can be beneficial to test and iterate quickly. The development server is particularly useful for this process. The development server uses your configuration file to bundle chunks on the fly, without interacting with a hosted ReChunk service. It employs the same bundling logic, providing a local experience that mirrors the hosted environment. The development server command will also temporarily update the `rechunk.json` configuration to point the host to the development server.
+
+<Tabs>
+<TabItem label="yarn">
+
+```sh
+yarn rechunk dev-server
+```
+
+</TabItem>
+<TabItem label="npm">
+
+```sh
+npm run rechunk dev-server
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm rechunk dev-server
+```
+
+</TabItem>
+<TabItem label="bun">
+
+```sh
+bun run rechunk dev-server
+```
+
+</TabItem>
+</Tabs>
+
+Once the `dev-server` command has been executed, you can start the React Native application.
