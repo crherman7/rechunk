@@ -67,60 +67,72 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
        * for adding default configurations such as publicKey and custom require function.
        * @param {object} path - Babel path object.
        * @param {Babel.types.ClassDeclaration} path.node - The current AST node member.
+       * @param {Babel.NodePath[traverse]} path.traverse - The method that navigates by AST to process node types using visitor functions
        */
-      ClassDeclaration({node}) {
+      ClassDeclaration({node, traverse}) {
         if (t.isIdentifier(node.id, {name: 'ChunkManager'})) {
-          const {body} = node.body;
-
           const packageJson = getPackageJson();
           const rechunkConfigJson = getRechunkConfig();
 
-          body.forEach(property => {
-            if (t.isClassProperty(property) && t.isIdentifier(property.key)) {
-              if (property.key.name === 'publicKey') {
-                property.value = t.stringLiteral(rechunkConfigJson.publicKey);
-              }
+          traverse({
+            ClassProperty(property) {
+              const classKey = property.node.key;
 
-              if (property.key.name === 'global') {
-                const external = rechunkConfigJson.external || [];
-                const dependencies = packageJson.dependencies || {};
+              if (t.isIdentifier(classKey)) {
+                if (classKey.name === 'publicKey') {
+                  property
+                    .get('value')
+                    .replaceWith(t.stringLiteral(rechunkConfigJson.publicKey));
+                }
 
-                // Generate requireStatements for each dependency
-                const requireStatements = [
-                  ...Object.keys(dependencies),
-                  ...external,
-                ].map(dependency =>
-                  t.ifStatement(
-                    t.binaryExpression(
-                      '===',
-                      t.identifier('moduleId'),
-                      t.stringLiteral(dependency),
-                    ),
-                    t.blockStatement([
-                      t.returnStatement(
-                        t.callExpression(t.identifier('require'), [
-                          t.stringLiteral(dependency),
-                        ]),
+                if (classKey.name === 'global') {
+                  const external = rechunkConfigJson.external || [];
+                  const dependencies = packageJson.dependencies || {};
+
+                  // Generate requireStatements for each dependency
+                  const requireStatements = [
+                    ...Object.keys(dependencies),
+                    ...external,
+                  ].map(dependency =>
+                    t.ifStatement(
+                      t.binaryExpression(
+                        '===',
+                        t.identifier('moduleId'),
+                        t.stringLiteral(dependency),
                       ),
+                      t.blockStatement([
+                        t.returnStatement(
+                          t.callExpression(t.identifier('require'), [
+                            t.stringLiteral(dependency),
+                          ]),
+                        ),
+                      ]),
+                    ),
+                  );
+
+                  // Create the require function expression
+                  const requireFunction = t.functionExpression(
+                    null,
+                    [t.identifier('moduleId')],
+                    t.blockStatement([
+                      ...requireStatements,
+                      t.returnStatement(t.nullLiteral()),
                     ]),
-                  ),
-                );
+                  );
 
-                // Create the require function expression
-                const requireFunction = t.functionExpression(
-                  null,
-                  [t.identifier('moduleId')],
-                  t.blockStatement([
-                    ...requireStatements,
-                    t.returnStatement(t.nullLiteral()),
-                  ]),
-                );
-
-                property.value = t.objectExpression([
-                  t.objectProperty(t.identifier('require'), requireFunction),
-                ]);
+                  property
+                    .get('value')
+                    .replaceWith(
+                      t.objectExpression([
+                        t.objectProperty(
+                          t.identifier('require'),
+                          requireFunction,
+                        ),
+                      ]),
+                    );
+                }
               }
-            }
+            },
           });
         }
       },
