@@ -9,7 +9,7 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
        * Visits MemberExpression nodes and inserts the rechunk project and readKey
        * as a configuration object argument into process.env.RECHUNK_USERNAME
        * and process.env.RECHUNK_PASSWORD.
-       * @param {object} path - Babel path object.
+       * @param {Babel.NodePath<Babel.types.MemberExpression>} path - Babel path object.
        * @param {Babel.types.MemberExpression} path.node - The current AST node member.
        * @param {Babel.NodePath<Babel.types.Node>} path.parentPath - The parent path of the current AST node member.
        */
@@ -65,7 +65,7 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
       /**
        * Visits ClassDeclaration nodes and updates the ChunkManager class
        * for adding default configurations such as publicKey and custom require function.
-       * @param {object} path - Babel path object.
+       * @param {Babel.NodePath<Babel.types.MemberExpression>} path - Babel path object.
        * @param {Babel.types.ClassDeclaration} path.node - The current AST node member.
        * @param {Babel.NodePath[traverse]} path.traverse - The method that navigates by AST to process node types using visitor functions
        */
