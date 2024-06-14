@@ -38,12 +38,12 @@ export class ChunkManager extends TinyEmitter {
       }
 
       const response = await fetch(
-        `${process.env.RECHUNK_HOST}/chunk/${chunkId}`,
+        `${process.env.__RECHUNK_HOST__}/chunk/${chunkId}`,
         {
           method: 'GET',
           headers: {
             Authorization: `Basic ${btoa(
-              `${process.env.RECHUNK_PROJECT}:${process.env.RECHUNK_READ_KEY}`,
+              `${process.env.__RECHUNK_PROJECT__}:${process.env.__RECHUNK_READ_KEY__}`,
             )}`,
           },
         },
@@ -65,7 +65,8 @@ export class ChunkManager extends TinyEmitter {
    * @type {Object}
    * @protected
    */
-  protected global: CustomRequire | object = {};
+  protected global: CustomRequire = process.env
+    .__RECHUNK_GLOBAL__ as unknown as CustomRequire;
 
   /**
    * Flag indicating whether verification is enabled.
@@ -79,7 +80,7 @@ export class ChunkManager extends TinyEmitter {
    * @type {string}
    * @protected
    */
-  protected publicKey: string = '';
+  protected publicKey: string = process.env.__RECHUNK_PUBLIC_KEY__ as string;
 
   /**
    * Get the shared instance of ChunkManager.

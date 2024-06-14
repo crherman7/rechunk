@@ -3,12 +3,18 @@ import type * as Babel from '@babel/core';
 import {getPackageJson, getRechunkConfig} from '../cli/lib/config';
 
 export default function ({types: t}: typeof Babel): Babel.PluginObj {
+  // Read rechunk.json to get external
+  const rechunkConfigJson = getRechunkConfig();
+
+  // Read package.json to get dependencies
+  const packageJson = getPackageJson();
+
   return {
     visitor: {
       /**
        * Visits MemberExpression nodes and inserts the rechunk project and readKey
-       * as a configuration object argument into process.env.RECHUNK_USERNAME
-       * and process.env.RECHUNK_PASSWORD.
+       * as a configuration object argument into process.env.__RECHUNK_USERNAME__
+       * and process.env.__RECHUNK_PASSWORD__.
        * @param {Babel.NodePath<Babel.types.MemberExpression>} path - Babel path object.
        * @param {Babel.types.MemberExpression} path.node - The current AST node member.
        * @param {Babel.NodePath<Babel.types.Node>} path.parentPath - The parent path of the current AST node member.
@@ -26,114 +32,95 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
           return;
         }
 
-        // Read rechunk.json to get external
-        const rechunkConfigJson = getRechunkConfig();
-
         // Destructure project and readKey used to replace process.env values
-        const {host, project, readKey} = rechunkConfigJson;
+        const {host, project, readKey, publicKey} = rechunkConfigJson;
 
-        // Replace process.env.RECHUNK_USERNAME with the rechunk project
+        // Replace process.env.__RECHUNK_USERNAME__ with the rechunk project
         if (
           t.isIdentifier(parent.node.property, {
-            name: 'RECHUNK_PROJECT',
+            name: '__RECHUNK_PROJECT__',
           }) &&
           !parent.parentPath?.isAssignmentExpression()
         ) {
           parent.replaceWith(t.stringLiteral(project));
         }
 
-        // Replace process.env.RECHUNK_PASSWORD with the rechunk readKey
+        // Replace process.env.__RECHUNK_PASSWORD__ with the rechunk readKey
         if (
           t.isIdentifier(parent.node.property, {
-            name: 'RECHUNK_READ_KEY',
+            name: '__RECHUNK_READ_KEY__',
           }) &&
           !parent.parentPath?.isAssignmentExpression()
         ) {
           parent.replaceWith(t.stringLiteral(readKey));
         }
 
-        // Replace process.env.RECHUNK_HOST with the rechunk host
+        // Replace process.env.__RECHUNK_HOST__ with the rechunk host
         if (
           t.isIdentifier(parent.node.property, {
-            name: 'RECHUNK_HOST',
+            name: '__RECHUNK_HOST__',
           }) &&
           !parent.parentPath?.isAssignmentExpression()
         ) {
           parent.replaceWith(t.stringLiteral(host));
         }
-      },
-      /**
-       * Visits ClassDeclaration nodes and updates the ChunkManager class
-       * for adding default configurations such as publicKey and custom require function.
-       * @param {Babel.NodePath<Babel.types.MemberExpression>} path - Babel path object.
-       * @param {Babel.types.ClassDeclaration} path.node - The current AST node member.
-       * @param {Babel.NodePath[traverse]} path.traverse - The method that navigates by AST to process node types using visitor functions
-       */
-      ClassDeclaration({node, traverse}) {
-        if (t.isIdentifier(node.id, {name: 'ChunkManager'})) {
-          const packageJson = getPackageJson();
-          const rechunkConfigJson = getRechunkConfig();
 
-          traverse({
-            ClassProperty(property) {
-              const classKey = property.node.key;
+        // Replace process.env.__RECHUNK_GLOBAL__ with the rechunk host
+        if (
+          t.isIdentifier(parent.node.property, {
+            name: '__RECHUNK_GLOBAL__',
+          }) &&
+          parent.parentPath?.isAssignmentExpression()
+        ) {
+          const external = rechunkConfigJson.external || [];
+          const dependencies = packageJson.dependencies || {};
 
-              if (t.isIdentifier(classKey)) {
-                if (classKey.name === 'publicKey') {
-                  property
-                    .get('value')
-                    .replaceWith(t.stringLiteral(rechunkConfigJson.publicKey));
-                }
+          // Generate requireStatements for each dependency
+          const requireStatements = [
+            ...Object.keys(dependencies),
+            ...external,
+          ].map(dependency =>
+            t.ifStatement(
+              t.binaryExpression(
+                '===',
+                t.identifier('moduleId'),
+                t.stringLiteral(dependency),
+              ),
+              t.blockStatement([
+                t.returnStatement(
+                  t.callExpression(t.identifier('require'), [
+                    t.stringLiteral(dependency),
+                  ]),
+                ),
+              ]),
+            ),
+          );
 
-                if (classKey.name === 'global') {
-                  const external = rechunkConfigJson.external || [];
-                  const dependencies = packageJson.dependencies || {};
+          // Create the require function expression
+          const requireFunction = t.functionExpression(
+            null,
+            [t.identifier('moduleId')],
+            t.blockStatement([
+              ...requireStatements,
+              t.returnStatement(t.nullLiteral()),
+            ]),
+          );
 
-                  // Generate requireStatements for each dependency
-                  const requireStatements = [
-                    ...Object.keys(dependencies),
-                    ...external,
-                  ].map(dependency =>
-                    t.ifStatement(
-                      t.binaryExpression(
-                        '===',
-                        t.identifier('moduleId'),
-                        t.stringLiteral(dependency),
-                      ),
-                      t.blockStatement([
-                        t.returnStatement(
-                          t.callExpression(t.identifier('require'), [
-                            t.stringLiteral(dependency),
-                          ]),
-                        ),
-                      ]),
-                    ),
-                  );
+          parent.replaceWith(
+            t.objectExpression([
+              t.objectProperty(t.identifier('require'), requireFunction),
+            ]),
+          );
+        }
 
-                  // Create the require function expression
-                  const requireFunction = t.functionExpression(
-                    null,
-                    [t.identifier('moduleId')],
-                    t.blockStatement([
-                      ...requireStatements,
-                      t.returnStatement(t.nullLiteral()),
-                    ]),
-                  );
-
-                  property
-                    .get('value')
-                    .replaceWith(
-                      t.objectExpression([
-                        t.objectProperty(
-                          t.identifier('require'),
-                          requireFunction,
-                        ),
-                      ]),
-                    );
-                }
-              }
-            },
-          });
+        // Replace process.env.__RECHUNK_PUBLIC_KEY__ with the rechunk host
+        if (
+          t.isIdentifier(parent.node.property, {
+            name: '__RECHUNK_PUBLIC_KEY__',
+          }) &&
+          parent.parentPath?.isAssignmentExpression()
+        ) {
+          parent.replaceWith(t.stringLiteral(publicKey));
         }
       },
     },
