@@ -1,6 +1,5 @@
 package com.rechunk
 
-import android.annotation.SuppressLint
 import android.util.Base64
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
@@ -25,10 +24,7 @@ class ReChunkModule(reactContext: ReactApplicationContext) :
 
     // ReactMethod to verify data with a digital signature
     @ReactMethod
-    fun verify(data: String, hash: String, signature: String, promise: Promise) {
-         val publicKeyStr: String = (getPublicKeyFromStringsIfExist()
-             ?: promise.reject("[ReChunk]: ","The bundle verification failed because PublicKey was not found in the bundle. Make sure you've added the PublicKey to the res/values/strings.xml under RechunkPublicKey key.")).toString()
-
+    fun verify(data: String, hash: String, signature: String, publicKeyStr: String, promise: Promise) {
         val publicKey = loadPublicKey(publicKeyStr)
         val isDataVerified = verifySignature(data, hash, signature, publicKey)
 
@@ -38,21 +34,6 @@ class ReChunkModule(reactContext: ReactApplicationContext) :
             promise.reject("[ReChunk]: ", "Unable to verify data")
         }
     }
-
-    @SuppressLint("DiscouragedApi")
-    private fun getPublicKeyFromStringsIfExist(): String? {
-        val packageName: String = reactApplicationContext.packageName
-        val resId: Int =
-            reactApplicationContext.resources.getIdentifier("ReChunkPublicKey", "string", packageName)
-        if (resId != 0) {
-            return reactApplicationContext.getString(resId).ifEmpty {
-                null
-            }
-        }
-
-        return null
-    }
-
 
     // Load public key from a string
     private fun loadPublicKey(publicKeyStr: String): PublicKey {

@@ -33,8 +33,6 @@
     </dict>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string/>
-    <key>ReChunkPublicKey</key>
-    <string>-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArk92wo3nc7AShy2c860hojRACKTnYGbB1NPRezyZ40Lk9p/myZ02ZpmVDGlMtWgqgIOoufUwPTa9LkmjFUggYkhDHZzokiJjZ9PseRXr4+63p8MSvOmQvoQMqSO2mBEuXTks4tTNx/AySWqV9GDCMeM+VFKtQULuxgQSNJ1LDIu8ofpeKDB2bivV8phrLzRSM4TWuCu9u9gWxsUbTihRLyicJvmx44NBmdr9N0WIOh/15vAYieiY8MsZE7B8St0x5jgDT4taUzTd8R0RyDw/OtpCeOIDGwmz7h0Rx2r0Q+WOuRL4MSbGBJuT3TJoWkOPCrhfH3Sc6a61NyoPeiDZXQIDAQAB-----END PUBLIC KEY-----</string>
     <key>UILaunchStoryboardName</key>
     <string>LaunchScreen</string>
     <key>UIRequiredDeviceCapabilities</key>
