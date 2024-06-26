@@ -32,7 +32,8 @@
   "workspaces": [
     "app",
     "docs",
-    "example"
+    "example",
+    "www"
   ],
   "publishConfig": {
     "access": "public",
