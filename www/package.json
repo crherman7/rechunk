@@ -8,14 +8,17 @@
     "build": "remix vite:build",
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "setup": "prisma generate && prisma migrate deploy",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@prisma/client": "5.16.0",
     "@remix-run/node": "^2.10.0",
     "@remix-run/react": "^2.10.0",
     "@remix-run/serve": "^2.10.0",
     "isbot": "^4.1.0",
+    "prisma": "^5.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
