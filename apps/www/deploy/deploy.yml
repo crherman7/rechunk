@@ -1,0 +1,26 @@
+- name: Deploy the app
+  hosts: all
+  remote_user: root
+  tasks:
+    - name: Copy app files to server
+      synchronize:
+        src: '{{ item.src }}'
+        dest: '{{ item.dest }}'
+      loop: '{{ deploy_files }}'
+
+    - name: Install pnpm deps
+      shell:
+        cmd: 'source ~/.nvm/nvm.sh && nvm exec default pnpm install'
+        chdir: /home/{{ domain }}
+      args:
+        executable: /bin/bash
+
+    - name: Run migrations
+      shell:
+        cmd: 'source ~/.nvm/nvm.sh && nvm exec default npx prisma migrate deploy'
+        chdir: /home/{{ domain }}
+      args:
+        executable: /bin/bash
+
+    - name: Start the app with systemd
+      shell: 'sudo systemctl restart {{ domain }}'

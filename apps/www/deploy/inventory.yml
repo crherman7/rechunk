@@ -1,0 +1,32 @@
+# Our production server.
+# Copy this whole block if you'd like to add a staging server
+Production:
+  # The IP address of your server.
+  # Add a second one if you'd like to deploy twice.
+  # You can add as many as you want.
+  hosts: 104.237.151.120
+  vars:
+    # Used for your app's domain name
+    domain: rechunk.xyz
+    # Used for your certbot email, note you'll be agreeing to the ToS.
+    email: crherman7@gmail.com
+    # Pick your node version
+    nodejs_version: 20
+    # List of files and folders to copy to the server on deploy.
+    # Change this to be the files your node app needs to run.
+    # Example set up for a remix.run indie stack app.
+    deploy_files:
+      # - src: ../prisma/migrations
+      #   dest: /home/{{ domain }}/prisma/
+      - src: ../prisma/schema.prisma
+        dest: /home/{{ domain }}/prisma/schema.prisma
+      - src: ../build/
+        dest: /home/{{ domain }}/build
+      - src: ../public/
+        dest: /home/{{ domain }}/public
+      - src: ../.env
+        dest: /home/{{ domain }}/
+      - src: ../package.json
+        dest: /home/{{ domain }}/
+      - src: ../../../pnpm-lock.yaml
+        dest: /home/{{ domain }}/
