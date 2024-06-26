@@ -42,6 +42,10 @@ export default defineConfig({
               label: 'Client',
               link: '/references/client/',
             },
+            {
+              label: 'Server',
+              link: '/references/server/',
+            },
           ],
         },
       ],
