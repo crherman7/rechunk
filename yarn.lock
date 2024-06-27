@@ -2578,6 +2578,11 @@
   resolved "https://registry.yarnpkg.com/@fontsource-variable/pixelify-sans/-/pixelify-sans-5.0.2.tgz#45a53a7210be9361476489054c294f087315d62c"
   integrity sha512-EYkm5s8IiiMT9/sHS+ZmPqPk7OnqRwX6uWUb9Bcu3ba+9nuEm83r68PoepAnEITkB1WQPvDJZHLAwi1uXI3+HQ==
 
+"@fontsource-variable/pixelify-sans@^5.0.3":
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/@fontsource-variable/pixelify-sans/-/pixelify-sans-5.0.3.tgz#259bd704c15040369eb2ad351bfc57b327459344"
+  integrity sha512-CiltwYYegtSC02N5h5BmQXQZOLtMxJERTUzkxnjIn3Nn6cS8mfVBhmfSvPWXsciP+Sf2vX4MM7UbrJrr3NmeOQ==
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"

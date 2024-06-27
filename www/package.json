@@ -18,6 +18,7 @@
   },
   "sideEffects": false,
   "dependencies": {
+    "@fontsource-variable/pixelify-sans": "^5.0.3",
     "@prisma/client": "5.16.0",
     "@remix-run/node": "^2.10.0",
     "@remix-run/react": "^2.10.0",
