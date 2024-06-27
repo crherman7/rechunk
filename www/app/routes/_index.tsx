@@ -12,7 +12,7 @@ export default function Index() {
   return (
     <div className="h-dvh w-dvw flex flex-col">
       <div className="absolute flex h-dvh w-dvw rechunk-background -z-10"></div>
-      <div className="flex p-12 w-[400px] md:w-[500px]">
+      <div className="flex p-12 max-w-[400px] md:max-w-[500px] text-wrap">
         <p className="text-md md:text-2xl font-thin italic">
           — Securely render remotely hosted chunks in your React Native
           application.

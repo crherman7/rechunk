@@ -11,5 +11,5 @@
 }
 
 .rechunk-font-size {
-  font-size: clamp(2rem, 22cqi, 40rem);
+  font-size: clamp(2rem, 18cqi, 40rem);
 }
