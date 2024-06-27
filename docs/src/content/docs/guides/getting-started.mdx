@@ -2,15 +2,15 @@
 title: 'Getting Started'
 ---
 
-ReChunk is an all-inclusive package that includes a command-line interface (CLI) and library designed for rendering encoded components with React Native. The command-line interface (CLI) is designed to work alongside an API that adheres to the interface specified in the library. You can use the Docker image right out of the box and deploy it wherever best suits your project, or alternatively, create your own server that conforms to the interface.
+ReChunk is an all-inclusive package that includes a command-line interface (CLI) and library designed for rendering encoded components with React Native. The CLI is designed to work alongside an API that adheres to the interface specified in the library. You can use the Docker image right out of the box and deploy it wherever best suits your project, or alternatively, create your own server that conforms to the interface.
 
-## Quickstart
+## Setup
 
 The CLI, React Native library and Babel plugin are included in the same package. This library does not require a particular React Native version but is more related to the React version as it is expected to be utilized with Suspense via lazy loading. Suspense was introduced into React 16.6.
 
-### Dependencies
+### Installation
 
-Use your favoriate package manager to install ReChunk.
+Use your current project package manager to install ReChunk.
 
 import {Tabs, TabItem} from '@astrojs/starlight/components';
 
@@ -58,66 +58,53 @@ This should have updated your `package.json` - verify it has been updated and Re
 }
 ```
 
-Additionally, be sure to update your `babel.config.js` or `.babelrc` configuration file.
+### Configuration
 
-```js ins={3} title="babel.config.js"
+To integrate ReChunk into your project, you must not only add it as a dependency but also update your Babel configuration. ReChunk relies heavily on Babel for source code generation, significantly reducing the amount of code developers need to write for ReChunk to function correctly.
+
+Update your Babel configuration in either the `babel.config.js` or `.babelrc` configuration file.
+
+<Tabs>
+  <TabItem label="babel.config.js">
+
+```js ins={3}
 module.exports = {
   presets: ['module:@react-native/babel-preset'],
-  plugins: ['@crherman7/rechunk/plugin'],
+  plugins: ['@crherman7/rechunk/dist/babel'],
 };
 ```
 
-### Configuration
+  </TabItem>
+  <TabItem label=".babelrc">
 
-As mentioned before, ReChunk is agnostic to the storage location of your chunks. ReChunk simply requires configuration to connect it to your server, which will then provide the requested chunk.
-
-In your application, it is essential to configure ReChunk before rendering any content. ReChunk is also independent of your navigation library; it just needs to be configured prior to rendering your app, regardless of the navigation setup.
-
-```js title="index.js" ins={2,4,7}
-import {AppRegistry} from 'react-native';
-import ReChunk from '@crherman7/rechunk';
-
-import {fetchChunk} from './src/api';
-import {App} from './src/components';
-
-ReChunk.addConfiguration(fetchChunk, true);
-
-AppRegistry.registerComponent('App', () => App);
+```json ins={3}
+{
+  "presets": ["module:@react-native/babel-preset"],
+  "plugins": ["@crherman7/rechunk/dist/babel"]
+}
 ```
 
-### Initialization
-
-To begin generating chunks, you first need to create a ReChunk project instance. You can achieve this easily using the CLI with a single command. By running the `init` command provided by ReChunk, you can generate a new ReChunk project.
-
-<Tabs>
-<TabItem label="yarn">
-
-```sh
-yarn rechunk init --host https://myrehunkserver.abc --username myrechunkusername --password myrechunkpassword
-```
-
-</TabItem>
-<TabItem label="npm">
-
-```sh
-npm run rechunk init --host http://myrehunkserver.abc --username myrechunkusername --password myrechunkpassword
-```
-
-</TabItem>
-<TabItem label="pnpm">
-
-```sh
-pnpm rechunk init --host http://myrehunkserver.abc --username myrechunkusername --password myrechunkpassword
-```
-
-</TabItem>
-<TabItem label="bun">
-
-```sh
-bun run rechunk init --host http://myrehunkserver.abc --username myrechunkusername --password myrechunkpassword
-```
-
-</TabItem>
+  </TabItem>
 </Tabs>
 
-Running the `init` command will generate a `rechunk.json` file at the root of your React Native project. This file contains private and public information related to your ReChunk project. Importantly, do not include this JSON configuration directly into your project, as it may bundle sensitive information into your app's build. The host refers to the server where your ReChunk instance is deployed. The username and password are used as basic authentication credentials to access this instance.
+Due to the critical reliance of the client on the `rechunk.json` configuration file and its manipulation during the ReChunk development server runtime, it is imperative to update your Metro configuration to consistently reset the cache upon starting the Metro bundler.
+
+```js title="metro.config.js" ins={14}
+const path = require('path');
+const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
+
+const root = path.resolve(__dirname, '..');
+
+/**
+ * Metro configuration
+ * https://facebook.github.io/metro/docs/configuration
+ *
+ * @type {import('metro-config').MetroConfig}
+ */
+const config = {
+  watchFolders: [root],
+  resetCache: true,
+};
+
+module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+```

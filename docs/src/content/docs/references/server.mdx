@@ -1,0 +1,43 @@
+---
+title: 'Server'
+---
+
+The default ReChunk instance is located in the `app` directory within this repository. You can run this server locally or host it remotely. This setup allows you to create a ReChunk project and generate a `rechunk.json` configuration file.
+
+Before running either serving the application locally or remotely a `.env` file must be created to host the basica authentication credentials. In the `app` directory create a `.env` file with your respective credentials.
+
+```title=".env"
+RECHUNK_USERNAME=rechunk
+RECHUNK_PASSWORD=aC00Lpr0ject
+```
+
+### Run Locally
+
+Serving the application locally is an excellent way to understand how the ReChunk instance works. It also provides a great opportunity to test the integration with your React Native application independently of the development server.
+
+After following the [Try it out](/rechunk/guides/try-it-out/) guide, the ReChunk instance can be started.
+
+```sh
+cd app
+yarn dev
+```
+
+The ReChunk instance should now be running on `localhost:3000`.
+
+### Hosting
+
+Remotely hosting the application is an excellent way to serve it in a production environment behind a reverse proxy. The best method to expose this server is via a Docker container. A Dockerfile has already been created in this repository to generate a Docker image that can be run as a Docker container.
+
+To build the docker image use the following command.
+
+```sh
+docker build . -t rechunk
+```
+
+Finally to run the image locally use the following command.
+
+```sh
+docker run -d -p 3000:3000 rechunk
+```
+
+This setup enables you to utilize the CLI with http://localhost:3000 or at a custom domain behind a reverse proxy. The Docker image can be deployed and run anywhere; however, it is essential to persist the volume where this service is hosted, as the SQLite database will be created in that location.

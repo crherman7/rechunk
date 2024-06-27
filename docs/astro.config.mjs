@@ -1,6 +1,6 @@
-import {defineConfig} from 'astro/config';
 import starlight from '@astrojs/starlight';
 import tailwind from '@astrojs/tailwind';
+import {defineConfig} from 'astro/config';
 
 export default defineConfig({
   integrations: [
@@ -20,24 +20,31 @@ export default defineConfig({
         {
           label: 'Overview',
           items: [
-            {label: 'Overview', link: '/overview/overview/'},
+            {label: 'Motivation', link: '/overview/motivation/'},
             {label: 'How it works', link: '/overview/how-it-works/'},
           ],
         },
         {
           label: 'Guides',
           items: [
+            {label: 'Try it out', link: '/guides/try-it-out/'},
             {
               label: 'Getting Started',
               link: '/guides/getting-started/',
             },
+          ],
+        },
+        {
+          label: 'References',
+          items: [
+            {label: 'Command-line Interface', link: '/references/cli/'},
             {
-              label: 'Chunks',
-              link: '/guides/chunks',
+              label: 'Client',
+              link: '/references/client/',
             },
             {
-              label: 'Hosting',
-              link: '/guides/hosting',
+              label: 'Server',
+              link: '/references/server/',
             },
           ],
         },

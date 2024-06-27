@@ -1,0 +1,94 @@
+---
+title: 'Client'
+---
+
+The `client` is the ReChunk React Native library to configure and import chunks.
+
+### Add Configuration
+
+The `client` is already auto-configured based on your `rechunk.json` configuration - but there may be a need to additionally customize the `client`.
+
+The `resolver`, a function to fetch the hosted chunk and it's relevant data, can be customized to your own implementation. The default `resolver` utilizes the `rechunk.json` configuration for the `host`, `project` and `readKey` attributes.
+
+```ts
+import ReChunk from '@crherman7/rechunk';
+
+ReChunk.addConfiguration({
+  resolver: async function (chunkId: string) {
+    // custom implementation
+  },
+});
+```
+
+The `global` require function can be customized to configure how imports should be resolved. The default implementation utilizes the `package.json` `dependencies` and the `rechunk.json` `external` configurations to resovle dependencies.
+
+```ts
+import ReChunk from '@crherman7/rechunk';
+
+ReChunk.addConfiguration({
+  global: {
+    require: (moduleId: string): object | null => {
+      if (moduleId === 'react') {
+        return require('react');
+      } else if (moduleId === 'react-native') {
+        return require('react-native');
+      }
+
+      return null;
+    },
+  },
+});
+```
+
+The `publicKey` can be customized to a different public key. The default implementation utilizes the `rechunk.json` `publicKey` attribute.
+
+```ts
+import ReChunk from '@crherman7/rechunk';
+
+ReChunk.addConfiguration({
+  publicKey: 'asdf23adf234rsdfasdf3',
+});
+```
+
+The `verify` conditional can be custoimzed to disable or enable digital signature verification. The default implementation enables verification.
+
+```ts
+import ReChunk from '@crherman7/rechunk';
+
+ReChunk.addConfiguration({
+  verify: false,
+});
+```
+
+These configurations while can be useful are discouraged for most case scenarios.
+
+### Import Chunk
+
+Many developers are familiar with [lazy-loading + suspense](https://react.dev/reference/react/lazy#suspense-for-code-splitting) in React. The `importChunk` function serves as a direct substitute for the `import` function when implementing lazy-loading.
+
+```ts
+import React, {Suspense} from 'react';
+import {importChunk} from '@crherman7/rechunk';
+import {ErrorBoundary} from 'react-error-boundary';
+import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+
+const Foo = React.lazy(() => importChunk('foo'));
+
+function Error404() {
+  return (
+    <View style={styles.container}>
+      <Text>404 Page Not Found</Text>
+    </View>
+  );
+}
+
+export default function App(): React.JSX.Element {
+  return (
+    <ErrorBoundary FallbackComponent={Error404}>
+      <Suspense fallback={<ActivityIndicator />}>
+        <Foo />
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
+```
