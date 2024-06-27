@@ -2,16 +2,21 @@
   "name": "www",
   "version": "0.0.1",
   "private": true,
-  "sideEffects": false,
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "type": "module",
   "scripts": {
     "build": "remix vite:build",
+    "deploy": "yarn build && ansible-playbook -i deployinventory.yml deploy/deploy.yml",
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "provision": "ansible-playbook -i deploy/inventory.yml deploy/provision.yml",
     "setup": "prisma generate && prisma migrate deploy",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
+  "sideEffects": false,
   "dependencies": {
     "@prisma/client": "5.16.0",
     "@remix-run/node": "^2.10.0",
@@ -40,8 +45,5 @@
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
     "vite-tsconfig-paths": "^4.2.1"
-  },
-  "engines": {
-    "node": ">=20.0.0"
   }
 }
