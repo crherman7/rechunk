@@ -23,7 +23,9 @@
     "@remix-run/node": "^2.10.0",
     "@remix-run/react": "^2.10.0",
     "@remix-run/serve": "^2.10.0",
+    "framer-motion": "^11.2.12",
     "isbot": "^4.1.0",
+    "lucide-react": "^0.397.0",
     "prisma": "^5.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
