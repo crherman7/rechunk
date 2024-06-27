@@ -20,8 +20,13 @@ export default function Index() {
       </div>
       <div className="flex-1 flex justify-center items-center flex-col">
         <h1 className="font-pixelify rechunk-font-size">ReChunk</h1>
-        <a href="/" className="px-6 rounded-full border-2 border-black">
-          <MoveRight className="h-6 md:h-16 w-6 md:w-16" strokeWidth={1} />
+        <a
+          href="/"
+          className="px-6 rounded-full border-2 border-black group hover:bg-black">
+          <MoveRight
+            className="h-6 md:h-16 w-6 md:w-16 group-hover:text-white group-hover:bg-black"
+            strokeWidth={1}
+          />
         </a>
       </div>
     </div>
