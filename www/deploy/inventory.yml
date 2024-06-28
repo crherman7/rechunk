@@ -16,8 +16,8 @@ Production:
     # Change this to be the files your node app needs to run.
     # Example set up for a remix.run indie stack app.
     deploy_files:
-      - src: ../prisma/migrations
-        dest: /home/{{ domain }}/prisma/
+      # - src: ../prisma/migrations
+      #   dest: /home/{{ domain }}/prisma/
       - src: ../prisma/schema.prisma
         dest: /home/{{ domain }}/prisma/schema.prisma
       - src: ../build/
@@ -25,8 +25,6 @@ Production:
       - src: ../public/
         dest: /home/{{ domain }}/public
       - src: ../.env
-        dest: /home/{{ domain }}/
-      - src: ../.npmrc
         dest: /home/{{ domain }}/
       - src: ../package.json
         dest: /home/{{ domain }}/

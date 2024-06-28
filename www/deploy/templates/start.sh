@@ -1,3 +1,3 @@
 #!/bin/bash
-. /home/deploy/.nvm/nvm.sh
-npm start
+. ~/.nvm/nvm.sh
+yarn start

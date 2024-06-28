@@ -114,6 +114,6 @@
         executable: /bin/bash
     - name: Install yarn
       shell: >
-        npm install --global yarn
+        source ~/.nvm/nvm.sh && nvm exec default npm install --global yarn
       args:
         executable: /bin/bash
