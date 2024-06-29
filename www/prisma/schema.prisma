@@ -11,7 +11,7 @@ model Project {
   id         String   @id @default(cuid())
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  name       String
+  name       String   @unique
   readKey    String
   writeKey   String
   privateKey String
@@ -23,7 +23,7 @@ model Chunk {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  name      String
+  name      String   @unique
   data      String
   projectId String
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)

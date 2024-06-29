@@ -28,7 +28,8 @@
     "lucide-react": "^0.397.0",
     "prisma": "^5.16.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tiny-invariant": "^1.3.3"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.10.0",
