@@ -51,7 +51,7 @@ export default function Index() {
         </h1>
         <a
           href="/"
-          className="px-6 rounded-full border-2 border-foreground group hover:bg-foreground">
+          className="px-6 rounded-full border-[1px] border-foreground group hover:bg-foreground">
           <CaretRightIcon className="h-6 md:h-10 w-6 md:w-10 group-hover:text-background group-hover:bg-foreground" />
         </a>
       </div>
