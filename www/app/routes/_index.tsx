@@ -47,7 +47,7 @@ export default function Index() {
         </a>
       </div>
       <div className="w-full text-center mb-5">
-        <p className="text-xs font-light opacity-70 text-muted">
+        <p className="text-xs opacity-70 text-muted-foreground">
           © All rights reserved.
         </p>
       </div>
