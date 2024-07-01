@@ -23,7 +23,7 @@ export default function Index() {
             application.
           </p>
         </div>
-        <div className="flex flex-row mt-2 gap-4">
+        <div className="flex flex-row gap-4">
           <a
             href="https://github.com/crherman7/rechunk"
             className="hover:bg-gray-100 p-3 rounded-full">
