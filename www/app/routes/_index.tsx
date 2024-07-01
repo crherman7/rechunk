@@ -5,6 +5,8 @@ import {
 } from '@radix-ui/react-icons';
 import type {MetaFunction} from '@remix-run/node';
 
+import * as Text from '~/components/text';
+
 export const meta: MetaFunction = () => {
   return [
     {title: 'ReChunk | Remote Chunks'},
@@ -18,10 +20,10 @@ export default function Index() {
       <div className="absolute flex h-dvh w-dvw rechunk-background -z-10"></div>
       <div className="p-12 flex w-full justify-between items-start">
         <div className="max-w-[400px] md:max-w-[500px] text-wrap pr-12">
-          <p className="text-md text-foreground md:text-2xl font-thin italic">
+          <Text.P className="text-md text-foreground md:text-2xl font-thin italic">
             — Securely render remotely hosted chunks in your React Native
             application.
-          </p>
+          </Text.P>
         </div>
         <div className="flex flex-row">
           <a
@@ -47,9 +49,9 @@ export default function Index() {
         </a>
       </div>
       <div className="w-full text-center mb-5">
-        <p className="text-xs opacity-70 text-muted-foreground">
+        <Text.Muted className="text-xs opacity-70 text-muted-foreground">
           © All rights reserved.
-        </p>
+        </Text.Muted>
       </div>
     </div>
   );
