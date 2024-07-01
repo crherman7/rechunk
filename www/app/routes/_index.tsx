@@ -2,6 +2,7 @@ import {
   CaretRightIcon,
   GitHubLogoIcon,
   DiscordLogoIcon,
+  ReaderIcon,
 } from '@radix-ui/react-icons';
 import type {MetaFunction} from '@remix-run/node';
 
@@ -27,14 +28,20 @@ export default function Index() {
         </div>
         <div className="flex flex-row">
           <a
-            href="https://github.com/crherman7/rechunk"
-            className="hover:bg-gray-100 p-3 rounded-full">
-            <GitHubLogoIcon className="h-4 w-4 md:h-6 md:w-6" />
-          </a>
-          <a
             href="https://discord.gg/xFhuxjwhss"
             className="hover:bg-gray-100 p-3 rounded-full">
-            <DiscordLogoIcon className="h-4 w-4 md:h-6 md:w-6" />
+            <DiscordLogoIcon className="h-4 w-4 md:h-5 md:w-5" />
+          </a>
+          <a
+            href="https://github.com/crherman7/rechunk"
+            className="hover:bg-gray-100 p-3 rounded-full">
+            <GitHubLogoIcon className="h-4 w-4 md:h-5 md:w-5" />
+          </a>
+
+          <a
+            href="https://crherman7.github.io/rechunk/"
+            className="hover:bg-gray-100 p-3 rounded-full">
+            <ReaderIcon className="h-4 w-4 md:h-5 md:w-5" />
           </a>
         </div>
       </div>
@@ -49,9 +56,7 @@ export default function Index() {
         </a>
       </div>
       <div className="w-full text-center mb-5">
-        <Text.Muted className="text-xs opacity-70 text-muted-foreground">
-          © All rights reserved.
-        </Text.Muted>
+        <Text.Muted className="opacity-70">© All rights reserved.</Text.Muted>
       </div>
     </div>
   );
