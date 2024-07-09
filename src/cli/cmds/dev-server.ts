@@ -1,4 +1,3 @@
-import {getBabelOutputPlugin} from '@rollup/plugin-babel';
 import image from '@rollup/plugin-image';
 import typescript from '@rollup/plugin-typescript';
 import chalk from 'chalk';
@@ -12,6 +11,7 @@ import {rollup} from 'rollup';
 import url from 'url';
 
 import {getBabelConfig, getPackageJson, getRechunkConfig, LOGO} from '../lib';
+import {getBabelOutputPlugin} from '@rollup/plugin-babel';
 
 /**
  * Defines a command for the "dev-server" operation using the "commander" library.
@@ -128,9 +128,6 @@ program
           external: [...Object.keys(pak.dependencies || {}), ...rcExternal],
           plugins: [
             image(),
-            getBabelOutputPlugin({
-              ...babelConfig,
-            }),
             typescript({
               compilerOptions: {
                 jsx: 'react',
@@ -148,7 +145,13 @@ program
           output: {
             0: {code},
           },
-        } = await rollupBuild.generate({});
+        } = await rollupBuild.generate({
+          plugins: [
+            getBabelOutputPlugin({
+              ...babelConfig,
+            }),
+          ],
+        });
 
         // Encode code as base64
         const data = btoa(code);

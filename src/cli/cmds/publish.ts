@@ -1,6 +1,5 @@
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
 import image from '@rollup/plugin-image';
-import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import {program} from 'commander';
 import path from 'path';
@@ -69,16 +68,14 @@ program
       external: [...Object.keys(pak.dependencies || {}), ...rcExternal],
       plugins: [
         image(),
-        getBabelOutputPlugin({
-          ...babelConfig,
-        }),
         typescript({
           compilerOptions: {
             jsx: 'react',
+            module: 'commonjs',
+            esModuleInterop: true,
             allowSyntheticDefaultImports: true,
           },
         }),
-        terser(),
       ],
       logLevel: 'silent',
     });
@@ -88,7 +85,13 @@ program
       output: {
         0: {code},
       },
-    } = await rollupBuild.generate({format: 'cjs', exports: 'auto'});
+    } = await rollupBuild.generate({
+      plugins: [
+        getBabelOutputPlugin({
+          ...babelConfig,
+        }),
+      ],
+    });
 
     // Encode code as base64
     const data = btoa(code);
