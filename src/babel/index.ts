@@ -79,6 +79,7 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
           const requireStatements = [
             ...Object.keys(dependencies),
             ...external,
+            'tslib',
           ].map(dependency =>
             t.ifStatement(
               t.binaryExpression(
