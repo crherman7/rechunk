@@ -1,6 +1,5 @@
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
 import image from '@rollup/plugin-image';
-import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import chalk from 'chalk';
 import {program} from 'commander';
@@ -135,10 +134,11 @@ program
             typescript({
               compilerOptions: {
                 jsx: 'react',
+                module: 'commonjs',
+                esModuleInterop: true,
                 allowSyntheticDefaultImports: true,
               },
             }),
-            terser(),
           ],
           logLevel: 'silent',
         });
@@ -148,7 +148,7 @@ program
           output: {
             0: {code},
           },
-        } = await rollupBuild.generate({format: 'cjs', exports: 'auto'});
+        } = await rollupBuild.generate({});
 
         // Encode code as base64
         const data = btoa(code);
