@@ -74,6 +74,7 @@ program
             module: 'commonjs',
             esModuleInterop: true,
             allowSyntheticDefaultImports: true,
+            downlevelIteration: true,
           },
         }),
       ],
