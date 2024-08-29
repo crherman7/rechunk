@@ -1,28 +1,6 @@
-import findBabelConfig from 'find-babel-config';
 import fs from 'fs';
 import path from 'path';
 import type {PackageJson} from 'type-fest';
-
-/**
- * Retrieves the Babel configuration for the given directory.
- *
- * This function synchronously searches for a Babel configuration file
- * starting from the provided directory and moving up the directory tree.
- * If a Babel configuration file is found, it returns the parsed configuration object.
- *
- * @param {string} [dir=process.cwd()] - The directory to start searching for the Babel configuration. Defaults to the current working directory.
- * @returns {object} The Babel configuration object.
- * @throws Will throw an error if no Babel configuration file is found.
- */
-export function getBabelConfig(dir: string = process.cwd()): any {
-  const {file, config} = findBabelConfig.sync(dir);
-
-  if (!file || !config) {
-    throw new Error('[ReChunk]: cannot find babel configuration');
-  }
-
-  return config;
-}
 
 /**
  * Retrieves the ReChunk configuration from the project root.

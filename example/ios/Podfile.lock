@@ -1113,7 +1113,7 @@ PODS:
     - React-jsi (= 0.73.6)
     - React-logger (= 0.73.6)
     - React-perflogger (= 0.73.6)
-  - rechunk (1.1.0):
+  - rechunk (2.0.0-rc.0):
     - React-Core
   - RNSVG (15.3.0):
     - React-Core
@@ -1380,7 +1380,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 9636eee762c699ca7c85751a359101797e4c8b3b
   React-utils: d16c1d2251c088ad817996621947d0ac8167b46c
   ReactCommon: 2aa35648354bd4c4665b9a5084a7d37097b89c10
-  rechunk: 1844c019739f032a8e567131088ec5ddebd1428c
+  rechunk: 6e8a2e6bacec0843074760f4cab5d3df110d45b7
   RNSVG: a48668fd382115bc89761ce291a81c4ca5f2fd2e
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 805bf71192903b20fc14babe48080582fee65a80
