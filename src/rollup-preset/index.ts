@@ -208,8 +208,6 @@ async function processOptions(options: RollupOptions) {
     );
   }
 
-  // TODO: exclude module-resolver for bundling purposes and add enableBabelRuntime: false to babelConfig
-
   // Define the default Rollup options with plugins for images, TypeScript, and Babel
   const defaultOptions = {
     external,
