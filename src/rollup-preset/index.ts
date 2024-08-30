@@ -14,6 +14,18 @@ import typescript from '@rollup/plugin-typescript';
 import {RollupOptions} from 'rollup';
 
 /**
+ * Represents a modification to a Babel plugin or preset.
+ *
+ * This type is used to define changes that should be made to Babel plugins or presets.
+ * - The key is the name or identifier of the plugin or preset.
+ * - The value can either be `null` to indicate that the plugin or preset should be removed,
+ *   or a function that receives the current `PluginOptions` and returns the modified `PluginOptions`.
+ */
+type PluginModification = {
+  [key: string]: null | ((options: PluginOptions) => PluginOptions);
+};
+
+/**
  * Modifications to be applied to the Babel configuration.
  *
  * This object defines modifications to Babel plugins and presets.
@@ -55,12 +67,8 @@ const BABEL_MODIFICATIONS = {
 function modifyBabelConfig(
   babelConfig: TransformOptions | null,
   modifications: {
-    plugins?: {
-      [key: string]: null | ((options: PluginOptions) => PluginOptions);
-    };
-    presets?: {
-      [key: string]: null | ((options: PluginOptions) => PluginOptions);
-    };
+    plugins?: PluginModification;
+    presets?: PluginModification;
   },
 ): TransformOptions | null {
   if (!babelConfig) {
@@ -71,9 +79,7 @@ function modifyBabelConfig(
 
   const processItems = (
     items: PluginItem[],
-    modificationRules?: {
-      [key: string]: null | ((options: PluginOptions) => PluginOptions);
-    },
+    modificationRules?: PluginModification,
   ): PluginItem[] => {
     return items
       .map(item => {
