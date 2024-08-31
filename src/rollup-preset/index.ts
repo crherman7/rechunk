@@ -75,7 +75,8 @@ function modifyBabelConfig(
     return null;
   }
 
-  const {plugins = [], presets = []} = babelConfig;
+  const plugins = babelConfig.plugins || [];
+  const presets = babelConfig.presets || [];
 
   const processItems = (
     items: PluginItem[],
@@ -141,12 +142,8 @@ function modifyBabelConfig(
   };
 
   // Apply modifications to plugins and presets
-  if (plugins) {
-    babelConfig.plugins = processItems(plugins, modifications.plugins);
-  }
-  if (presets) {
-    babelConfig.presets = processItems(presets, modifications.presets);
-  }
+  babelConfig.plugins = processItems(plugins, modifications.plugins);
+  babelConfig.presets = processItems(presets, modifications.presets);
 
   return babelConfig;
 }
