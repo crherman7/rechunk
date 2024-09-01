@@ -1,8 +1,9 @@
 import chalk from 'chalk';
 import {program} from 'commander';
-import {createHash, createSign} from 'crypto';
+import {createHash} from 'crypto';
 import fs from 'fs';
 import http from 'http';
+import {KEYUTIL, KJUR, RSAKey} from 'jsrsasign';
 import path from 'path';
 import prettier from 'prettier';
 import {rollup} from 'rollup';
@@ -112,22 +113,19 @@ program
           },
         } = await rollupBuild.generate({});
 
-        // Encode code as base64
-        const data = btoa(code);
-
-        // Calculate SHA-256 hash of the code
-        const hash = createHash('sha256').update(data).digest('hex');
-
-        // Generate signature using private key
-        const sig = createSign('SHA256')
-          .update(hash)
-          .sign(rc.privateKey, 'base64');
+        const prvKey = KEYUTIL.getKey(rc.privateKey) as RSAKey;
+        const sPayload = createHash('sha256').update(code).digest('hex');
+        const token = KJUR.jws.JWS.sign(
+          'RS256',
+          JSON.stringify({alg: 'RS256'}),
+          sPayload,
+          prvKey,
+        );
 
         // Prepare response data
         const responseData = {
-          data,
-          hash,
-          sig,
+          token,
+          data: code,
         };
 
         // Set response headers

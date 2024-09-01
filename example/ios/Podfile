@@ -40,8 +40,6 @@ target 'example' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  pod 'rechunk', :modular_headers => true, :path => '../..'
-
   target 'exampleTests' do
     inherit! :complete
     # Pods for testing

@@ -1,8 +1,8 @@
-import {NativeModules} from 'react-native';
 import {TinyEmitter} from 'tiny-emitter';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
 
+import {createIntegrityChecker} from './jws';
 import type {Configuration, CustomRequire, ResolverFunction} from './types';
 
 /**
@@ -99,20 +99,13 @@ export class ChunkManager extends TinyEmitter {
    * @param {Object} nativeChunkManager - Native chunk manager module.
    * @throws {Error} Throws error if instance is already created or if native chunk manager module is not found.
    */
-  protected constructor(private nativeChunkManager = NativeModules.ReChunk) {
+  protected constructor() {
     super();
 
     // Ensure only one instance of ChunkManager is created
     invariant(
       !ChunkManager.instance,
       '[ReChunk]: ChunkManager was already instantiated. Use ChunkManager.shared instead.',
-    );
-
-    // Throw error if nativeChunkManager is not found
-    invariant(
-      this.nativeChunkManager,
-      '[ReChunk]: rechunk react-native module was not found.' +
-        (__DEV__ ? ' Did you forget to update native dependencies?' : ''),
     );
   }
 
@@ -204,19 +197,24 @@ export class ChunkManager extends TinyEmitter {
     // Resolve the chunk
     const chunk = await this.resolver(chunkId);
 
-    if (this.verify) {
-      await this.nativeChunkManager.verify(
-        chunk.data,
-        chunk.hash,
-        chunk.sig,
-        this.publicKey,
-      );
+    const integrityChecker = createIntegrityChecker(
+      'sha256',
+      'RS256',
+      this.publicKey,
+    );
 
-      return {default: this.chunkToComponent(chunkId, atob(chunk.data))};
+    if (this.verify) {
+      const verified = integrityChecker.verify(chunk.data, chunk.token);
+
+      if (!verified) {
+        throw new Error('cannot verify hash');
+      }
+
+      return {default: this.chunkToComponent(chunkId, chunk.data)};
     }
 
     return {
-      default: this.chunkToComponent(chunkId, atob(chunk.data)),
+      default: this.chunkToComponent(chunkId, chunk.data),
     };
   }
 }

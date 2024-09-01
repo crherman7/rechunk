@@ -4,8 +4,7 @@
  */
 export type ResolverReturn = Promise<{
   data: string;
-  hash?: string;
-  sig?: string;
+  token: string;
 }>;
 
 /**

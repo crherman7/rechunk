@@ -48,9 +48,6 @@ program
       },
     } = await rollupBuild.generate({});
 
-    // Encode code as base64
-    const data = btoa(code);
-
     console.log(`🚀 Publishing ${chunk}...\n`);
 
     const res = await fetch(`${rc.host}/chunk/${chunk}`, {
@@ -58,7 +55,7 @@ program
       headers: {
         Authorization: `Basic ${btoa(`${rc.project}:${rc.writeKey}`)}`,
       },
-      body: data,
+      body: code,
     });
 
     if (!res.ok) {
