@@ -50,7 +50,19 @@ const BABEL_MODIFICATIONS = {
      * @param options - The existing options for the preset.
      * @returns The modified options with `enableBabelRuntime` set to `false`.
      */
-    '@react-native/babel-preset': (options: any) => ({
+    'module:@react-native/babel-preset': (options: any) => ({
+      ...options,
+      enableBabelRuntime: false,
+    }),
+    /**
+     * Updates the options for the `babel-preset-expo` preset.
+     *
+     * This modification function disables the `enableBabelRuntime` option in the preset.
+     *
+     * @param options - The existing options for the preset.
+     * @returns The modified options with `enableBabelRuntime` set to `false`.
+     */
+    'babel-preset-expo': (options: any) => ({
       ...options,
       enableBabelRuntime: false,
     }),
@@ -128,10 +140,7 @@ function modifyBabelConfig(
             if (rule === null) {
               return null; // Remove the plugin/preset
             } else if (typeof rule === 'function') {
-              return {
-                ...item,
-                options: rule((item as any).options || {}),
-              } as PluginItem; // Update options
+              return [nameOrPath, rule((item as any).options || {})];
             }
           }
         }
@@ -209,6 +218,7 @@ async function processOptions(options: RollupOptions) {
   const defaultOptions = {
     external,
     plugins: [
+      getBabelOutputPlugin({...babelConfigOptions}),
       image(),
       typescript({
         compilerOptions: {
@@ -220,13 +230,6 @@ async function processOptions(options: RollupOptions) {
         },
       }),
     ],
-    output: {
-      plugins: [
-        getBabelOutputPlugin({
-          ...babelConfigOptions,
-        }),
-      ],
-    },
     logLevel: 'silent',
   } satisfies RollupOptions;
 

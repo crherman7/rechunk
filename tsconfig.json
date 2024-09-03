@@ -1,11 +1,6 @@
 {
   "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@crherman7/rechunk": ["./src/react-native/index"],
-      "@/*": ["./example/src/*"]
-    },
     "types": ["react-native", "node"],
     "module": "ESNext"
   },
