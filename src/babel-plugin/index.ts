@@ -69,21 +69,16 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
    * Retrieves and caches the JSON content for a given key. If the content is not already cached, it finds
    * the closest JSON file with the provided filename and caches the result.
    *
-   * @param {Map<string, any>} cache - The cache map to store and retrieve JSON content.
    * @param {string} key - The key under which the JSON content is stored in the cache.
    * @param {string} jsonFilename - The filename of the JSON file to find and cache.
    * @returns {any} The JSON content retrieved from the cache or found by the `findClosestJSON` function.
    */
-  function getCachedJson(
-    cache: Map<string, any>,
-    key: string,
-    jsonFilename: string,
-  ): any {
-    let jsonData = cache.get(key);
+  function getCachedJson(key: string, jsonFilename: string): any {
+    let jsonData = fileCache.get(key);
 
     if (!jsonData) {
       jsonData = findClosestJSON(jsonFilename);
-      cache.set(key, jsonData);
+      fileCache.set(key, jsonData);
     }
 
     return jsonData;
@@ -112,16 +107,8 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
           return;
         }
 
-        const rechunkJson = getCachedJson(
-          fileCache,
-          RECHUNK_CONFIG_KEY,
-          'rechunk.json',
-        );
-        const packageJson = getCachedJson(
-          fileCache,
-          RECHUNK_PACKAGE_KEY,
-          'package.json',
-        );
+        const rechunkJson = getCachedJson(RECHUNK_CONFIG_KEY, 'rechunk.json');
+        const packageJson = getCachedJson(RECHUNK_PACKAGE_KEY, 'package.json');
 
         // Destructure project and readKey used to replace process.env values
         const {host, project, readKey, publicKey} = rechunkJson;
