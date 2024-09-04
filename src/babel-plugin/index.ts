@@ -1,13 +1,93 @@
 import type * as Babel from '@babel/core';
+import {readFileSync} from 'fs';
+import {dirname, resolve} from 'path';
+import {cwd} from 'process';
 
-import {getPackageJson, getRechunkConfig} from '../cli/lib/config';
+/**
+ * Identifier used to represent the Node.js `process` object in the plugin.
+ * Typically used to identify or manipulate references to the global `process` object.
+ */
+const NODE_PROCESS_IDENTIFIER = 'process';
+
+/**
+ * Identifier used to represent the `process.env` object in Node.js.
+ * This is often used to access environment variables within the plugin.
+ */
+const NODE_PROCESS_ENV_IDENTIFIER = 'env';
+
+/**
+ * Cache key used to store and retrieve the content of the `rechunk.json` file.
+ * This key is used in conjunction with a caching mechanism to avoid re-reading the file.
+ */
+const RECHUNK_CONFIG_KEY = '@crherman7+rechunk+config+json';
+
+/**
+ * Cache key used to store and retrieve the content of the `package.json` file.
+ * This key is used in conjunction with a caching mechanism to avoid re-reading the file.
+ */
+const RECHUNK_PACKAGE_KEY = '@crherman7+rechunk+package+json';
+
+/**
+ * An array of dependencies that should be considered as extra dependencies for the project.
+ * These dependencies might need special handling or inclusion in certain processes.
+ *
+ * @link {https://github.com/rollup/plugins/tree/master/packages/typescript#tslib}
+ */
+const EXTRA_DEPENDENCIES = ['tslib'];
 
 export default function ({types: t}: typeof Babel): Babel.PluginObj {
-  // Read rechunk.json to get external
-  const rechunkConfigJson = getRechunkConfig();
+  /**
+   * A cache that stores the content of files, keyed by their filenames.
+   * This ensures that a file's content is only read once and reused on subsequent plugin runs.
+   *
+   * @type {Map<string, object>}
+   */
+  const fileCache = new Map();
 
-  // Read package.json to get dependencies
-  const packageJson = getPackageJson();
+  /**
+   * Recursively searches for the closest JSON file, starting from a given directory.
+   *
+   * @param filename - The name of the JSON file to search for.
+   * @param start - The directory to start searching from, defaults to the current working directory.
+   * @param level - The current depth of the recursive search, used to limit recursion.
+   * @returns The parsed JSON content, or an empty object if the file is not found after 10 levels.
+   */
+  function findClosestJSON(filename: string, start = cwd(), level = 0): any {
+    try {
+      const path = resolve(start, filename);
+      const content = readFileSync(path, {encoding: 'utf8'});
+      return JSON.parse(content);
+    } catch {
+      // Limit recursion to 10 levels to prevent potential infinite loops
+      return level >= 10
+        ? {}
+        : findClosestJSON(filename, dirname(start), level + 1);
+    }
+  }
+
+  /**
+   * Retrieves and caches the JSON content for a given key. If the content is not already cached, it finds
+   * the closest JSON file with the provided filename and caches the result.
+   *
+   * @param {Map<string, any>} cache - The cache map to store and retrieve JSON content.
+   * @param {string} key - The key under which the JSON content is stored in the cache.
+   * @param {string} jsonFilename - The filename of the JSON file to find and cache.
+   * @returns {any} The JSON content retrieved from the cache or found by the `findClosestJSON` function.
+   */
+  function getCachedJson(
+    cache: Map<string, any>,
+    key: string,
+    jsonFilename: string,
+  ): any {
+    let jsonData = cache.get(key);
+
+    if (!jsonData) {
+      jsonData = findClosestJSON(jsonFilename);
+      cache.set(key, jsonData);
+    }
+
+    return jsonData;
+  }
 
   return {
     visitor: {
@@ -22,8 +102,8 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
       MemberExpression({node, parentPath: parent}) {
         // Check if the MemberExpression is accessing process.env
         if (
-          !t.isIdentifier(node.object, {name: 'process'}) ||
-          !t.isIdentifier(node.property, {name: 'env'})
+          !t.isIdentifier(node.object, {name: NODE_PROCESS_IDENTIFIER}) ||
+          !t.isIdentifier(node.property, {name: NODE_PROCESS_ENV_IDENTIFIER})
         ) {
           return;
         }
@@ -32,8 +112,19 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
           return;
         }
 
+        const rechunkJson = getCachedJson(
+          fileCache,
+          RECHUNK_CONFIG_KEY,
+          'rechunk.json',
+        );
+        const packageJson = getCachedJson(
+          fileCache,
+          RECHUNK_PACKAGE_KEY,
+          'package.json',
+        );
+
         // Destructure project and readKey used to replace process.env values
-        const {host, project, readKey, publicKey} = rechunkConfigJson;
+        const {host, project, readKey, publicKey} = rechunkJson;
 
         // Replace process.env.__RECHUNK_USERNAME__ with the rechunk project
         if (
@@ -72,14 +163,14 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
           }) &&
           parent.parentPath?.isAssignmentExpression()
         ) {
-          const external = rechunkConfigJson.external || [];
+          const external = rechunkJson.external || [];
           const dependencies = packageJson.dependencies || {};
 
           // Generate requireStatements for each dependency
           const requireStatements = [
             ...Object.keys(dependencies),
             ...external,
-            'tslib',
+            ...EXTRA_DEPENDENCIES,
           ].map(dependency =>
             t.ifStatement(
               t.binaryExpression(

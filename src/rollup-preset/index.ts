@@ -174,7 +174,7 @@ function findClosestJSON(filename: string, start = cwd(), level = 0): any {
     // Limit recursion to 10 levels to prevent potential infinite loops
     return level >= 10
       ? {}
-      : findClosestJSON(dirname(start), filename, level + 1);
+      : findClosestJSON(filename, dirname(start), level + 1);
   }
 }
 
