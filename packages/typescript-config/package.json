@@ -6,8 +6,10 @@
   "private": true,
   "author": "Chris Herman",
   "keywords": [],
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  "files": [
+    "base.json",
+    "expo.json",
+    "common-js.json",
+    "react-native.json"
+  ]
 }
