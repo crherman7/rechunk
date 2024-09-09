@@ -118,47 +118,7 @@ importers:
         specifier: ^5.4.3
         version: 5.4.3
 
-  app:
-    dependencies:
-      '@hono/node-server':
-        specifier: ^1.10.1
-        version: 1.10.1
-      better-sqlite3:
-        specifier: ^9.4.3
-        version: 9.4.3
-      dotenv:
-        specifier: ^16.4.5
-        version: 16.4.5
-      drizzle-orm:
-        specifier: ^0.30.5
-        version: 0.30.5(@types/better-sqlite3@7.6.9)(@types/react@18.2.65)(better-sqlite3@9.4.3)(react@18.2.0)
-      hono:
-        specifier: ^4.2.7
-        version: 4.2.7
-      namor:
-        specifier: ^3.0.1
-        version: 3.0.1
-    devDependencies:
-      '@types/better-sqlite3':
-        specifier: ^7.6.9
-        version: 7.6.9
-      '@types/node':
-        specifier: ^20.11.17
-        version: 20.11.30
-      drizzle-kit:
-        specifier: ^0.20.14
-        version: 0.20.14
-      tsup:
-        specifier: ^8.0.2
-        version: 8.0.2(postcss@8.4.38)(typescript@5.4.3)
-      tsx:
-        specifier: ^3.12.2
-        version: 3.14.0
-      typescript:
-        specifier: ^5.4.3
-        version: 5.4.3
-
-  docs:
+  apps/docs:
     dependencies:
       '@astrojs/check':
         specifier: ^0.5.9
@@ -191,7 +151,44 @@ importers:
         specifier: ^5.4.3
         version: 5.4.3
 
-  examples/react-native-cli:
+  apps/expo:
+    dependencies:
+      expo:
+        specifier: ~51.0.28
+        version: 51.0.32(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(encoding@0.1.13)
+      expo-linear-gradient:
+        specifier: ^13.0.2
+        version: 13.0.2(expo@51.0.32(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(encoding@0.1.13))
+      expo-status-bar:
+        specifier: ~1.12.1
+        version: 1.12.1
+      react:
+        specifier: 18.2.0
+        version: 18.2.0
+      react-native:
+        specifier: 0.74.5
+        version: 0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(@types/react@18.2.65)(encoding@0.1.13)(react@18.2.0)
+      react-native-card-flip:
+        specifier: ^1.0.7
+        version: 1.0.7(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(@types/react@18.2.65)(encoding@0.1.13)(react@18.2.0))(react@18.2.0)
+      react-native-chart-kit:
+        specifier: ^6.12.0
+        version: 6.12.0(react-native-svg@15.6.0(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(@types/react@18.2.65)(encoding@0.1.13)(react@18.2.0))(react@18.2.0))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(@types/react@18.2.65)(encoding@0.1.13)(react@18.2.0))(react@18.2.0)
+      react-native-svg:
+        specifier: ^15.6.0
+        version: 15.6.0(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(@types/react@18.2.65)(encoding@0.1.13)(react@18.2.0))(react@18.2.0)
+    devDependencies:
+      '@babel/core':
+        specifier: ^7.25.2
+        version: 7.25.2
+      '@types/react':
+        specifier: ~18.2.45
+        version: 18.2.65
+      typescript:
+        specifier: ^5.4.3
+        version: 5.4.3
+
+  apps/react-native:
     dependencies:
       react:
         specifier: 18.2.0
@@ -232,7 +229,7 @@ importers:
         version: 0.73.2(eslint@8.57.0)(prettier@2.8.8)(typescript@5.4.3)
       '@react-native/metro-config':
         specifier: 0.73.5
-        version: 0.73.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(encoding@0.1.13)
+        version: 0.73.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))
       '@react-native/typescript-config':
         specifier: 0.73.1
         version: 0.73.1
@@ -252,39 +249,42 @@ importers:
         specifier: ^5.4.3
         version: 5.4.3
 
-  examples/react-native-expo:
+  apps/server:
     dependencies:
-      expo:
-        specifier: ~51.0.28
-        version: 51.0.32(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(encoding@0.1.13)
-      expo-linear-gradient:
-        specifier: ^13.0.2
-        version: 13.0.2(expo@51.0.32(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(encoding@0.1.13))
-      expo-status-bar:
-        specifier: ~1.12.1
-        version: 1.12.1
-      react:
-        specifier: 18.2.0
-        version: 18.2.0
-      react-native:
-        specifier: 0.74.5
-        version: 0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(@types/react@18.2.65)(encoding@0.1.13)(react@18.2.0)
-      react-native-card-flip:
-        specifier: ^1.0.7
-        version: 1.0.7(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(@types/react@18.2.65)(encoding@0.1.13)(react@18.2.0))(react@18.2.0)
-      react-native-chart-kit:
-        specifier: ^6.12.0
-        version: 6.12.0(react-native-svg@15.6.0(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(@types/react@18.2.65)(encoding@0.1.13)(react@18.2.0))(react@18.2.0))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(@types/react@18.2.65)(encoding@0.1.13)(react@18.2.0))(react@18.2.0)
-      react-native-svg:
-        specifier: ^15.6.0
-        version: 15.6.0(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(@types/react@18.2.65)(encoding@0.1.13)(react@18.2.0))(react@18.2.0)
+      '@hono/node-server':
+        specifier: ^1.10.1
+        version: 1.10.1
+      better-sqlite3:
+        specifier: ^9.4.3
+        version: 9.4.3
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
+      drizzle-orm:
+        specifier: ^0.30.5
+        version: 0.30.5(@types/better-sqlite3@7.6.9)(@types/react@18.2.65)(better-sqlite3@9.4.3)(react@18.2.0)
+      hono:
+        specifier: ^4.2.7
+        version: 4.2.7
+      namor:
+        specifier: ^3.0.1
+        version: 3.0.1
     devDependencies:
-      '@babel/core':
-        specifier: ^7.25.2
-        version: 7.25.2
-      '@types/react':
-        specifier: ~18.2.45
-        version: 18.2.65
+      '@types/better-sqlite3':
+        specifier: ^7.6.9
+        version: 7.6.9
+      '@types/node':
+        specifier: ^20.11.17
+        version: 20.11.30
+      drizzle-kit:
+        specifier: ^0.20.14
+        version: 0.20.14
+      tsup:
+        specifier: ^8.0.2
+        version: 8.0.2(postcss@8.4.38)(typescript@5.4.3)
+      tsx:
+        specifier: ^3.12.2
+        version: 3.14.0
       typescript:
         specifier: ^5.4.3
         version: 5.4.3
@@ -10591,7 +10591,7 @@ snapshots:
       - '@babel/preset-env'
       - supports-color
 
-  '@react-native/metro-config@0.73.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(encoding@0.1.13)':
+  '@react-native/metro-config@0.73.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))':
     dependencies:
       '@react-native/js-polyfills': 0.73.1
       '@react-native/metro-babel-transformer': 0.73.15(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))
@@ -10600,10 +10600,7 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/preset-env'
-      - bufferutil
-      - encoding
       - supports-color
-      - utf-8-validate
 
   '@react-native/normalize-colors@0.73.2': {}
 

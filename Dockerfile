@@ -11,7 +11,7 @@ FROM node:20-alpine3.18
 WORKDIR /app
 
 # Copy the package.json file from the local directory to /app in the container
-COPY ./app/package.json ./
+COPY ./apps/server/package.json ./
 
 # Copy the pnpm-lock.yaml file from the local directory to /app in the container
 COPY pnpm-lock.yaml ./

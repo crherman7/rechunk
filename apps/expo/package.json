@@ -4,11 +4,11 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web",
-    "rechunk": "node ../../dist/cli/index.js"
+    "rechunk": "node ../../dist/cli/index.js",
+    "start": "expo start",
+    "web": "expo start --web"
   },
   "dependencies": {
     "expo": "~51.0.28",
