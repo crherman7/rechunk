@@ -2,7 +2,7 @@
   "name": "@repo/eslint-config",
   "version": "1.0.0",
   "description": "",
-  "license": "ISC",
+  "license": "MIT",
   "private": true,
   "author": "Chris Herman",
   "keywords": [],

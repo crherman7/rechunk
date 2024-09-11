@@ -1,9 +1,19 @@
+import {
+  Chunk,
+  Configuration as ReChunkApiConfiguration,
+  DefaultApi as ReChunkApi,
+} from '@crherman7/rechunk-api-client';
 import {TinyEmitter} from 'tiny-emitter';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
 
 import {createIntegrityChecker} from './jws';
-import type {Configuration, CustomRequire, ResolverFunction} from './types';
+import type {
+  Configuration,
+  CustomRequire,
+  DeepRequired,
+  ResolverFunction,
+} from './types';
 
 /**
  * Manager class for handling chunk imports and caching.
@@ -26,6 +36,16 @@ export class ChunkManager extends TinyEmitter {
   protected cache: Record<string, React.ComponentType<any>> = {};
 
   /**
+   * An instance of the ReChunkApi class that is used to make requests to the API.
+   *
+   * @type {ReChunkApi}
+   * @protected
+   */
+  protected request: ReChunkApi = new ReChunkApi(
+    new ReChunkApiConfiguration({basePath: process.env.__RECHUNK_HOST__}),
+  );
+
+  /**
    * Resolver function used to resolve chunk imports.
    * This function is responsible for dynamically loading and resolving imported chunks.
    * @type {ResolverFunction}
@@ -37,10 +57,12 @@ export class ChunkManager extends TinyEmitter {
         throw new Error('[ReChunk]: Invalid chunkId provided');
       }
 
-      const response = await fetch(
-        `${process.env.__RECHUNK_HOST__}/chunk/${chunkId}`,
+      const response = await this.request.projectsProjectIdChunksChunkIdGet(
         {
-          method: 'GET',
+          projectId: process.env.__RECHUNK_PROJECT__ as string,
+          chunkId,
+        },
+        {
           headers: {
             Authorization: `Basic ${btoa(
               `${process.env.__RECHUNK_PROJECT__}:${process.env.__RECHUNK_READ_KEY__}`,
@@ -49,11 +71,11 @@ export class ChunkManager extends TinyEmitter {
         },
       );
 
-      if (!response.ok) {
+      if (!response.data || !response.token) {
         throw new Error(`[ReChunk]: Failed to fetch chunk with ID ${chunkId}`);
       }
 
-      return response.json();
+      return response as DeepRequired<Chunk>;
     } catch (error: any) {
       throw new Error(`[ReChunk]: Failed to fetch chunk: ${error.message}`);
     }

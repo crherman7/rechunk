@@ -1,10 +1,12 @@
+import {Chunk} from '@crherman7/rechunk-api-client';
+
 /**
- * Represents the return type of resolver function, which is a Promise
- * resolving to an object containing data, hash, and sig properties.
+ * Makes all properties of a type and its nested types required recursively.
+ *
+ * @template T - The type to make all properties required for.
  */
-export type ResolverReturn = Promise<{
-  data: string;
-  token: string;
+export type DeepRequired<T> = Required<{
+  [K in keyof T]: T[K] extends Required<T[K]> ? T[K] : DeepRequired<T[K]>;
 }>;
 
 /**
@@ -12,7 +14,9 @@ export type ResolverReturn = Promise<{
  * @param {string} chunkId - The ID of the chunk to resolve.
  * @returns {Promise<string>} A promise resolving to the chunk string.
  */
-export type ResolverFunction = (chunkId: string) => ResolverReturn;
+export type ResolverFunction = (
+  chunkId: string,
+) => Promise<DeepRequired<Chunk>>;
 
 /**
  * Represents an interface for a custom require function to control module access.

@@ -1,0 +1,9 @@
+.openapi-generator-ignore
+apis/DefaultApi.ts
+apis/index.ts
+index.ts
+models/Chunk.ts
+models/Project.ts
+models/ProjectsProjectIdChunksChunkIdPost200Response.ts
+models/index.ts
+runtime.ts

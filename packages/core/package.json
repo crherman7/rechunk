@@ -1,8 +1,8 @@
 {
-  "name": "core",
+  "name": "@crherman7/rechunk",
   "version": "1.0.0",
   "description": "",
-  "license": "ISC",
+  "license": "MIT",
   "author": "Chris Herman",
   "keywords": [],
   "main": "index.js",

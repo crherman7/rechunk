@@ -84,18 +84,21 @@ program
       const parsedUrl = url.parse(req.url as any, true);
 
       // Check if the path is "/"
-      if (/\/chunk\/(\w+)/.test(parsedUrl.pathname || '')) {
+      if (/\/projects\/.*\/chunks\/(\w+)/.test(parsedUrl.pathname || '')) {
         // Get the search parameters
-        const matches = parsedUrl.path?.match(/\/chunk\/(\w+)/);
+        const matches = parsedUrl.path?.match(
+          /\/projects\/(.*)\/chunks\/(\w+)/,
+        );
 
         if (!matches) {
           throw new Error('[ReChunk]: cannot parse url');
         }
 
-        const chunkId = matches[1];
+        const projectId = matches[1];
+        const chunkId = matches[2];
 
         console.log(
-          `${chalk.green`    ⑇`} ${new Date().toISOString()}: serving /chunk/${chunkId}`,
+          `${chalk.green`    ⑇`} ${new Date().toISOString()}: serving /projects/${projectId}/chunk/${chunkId}`,
         );
 
         if (typeof chunkId !== 'string') {
@@ -147,7 +150,7 @@ program
       console.log(
         `    ${chalk.green`→`} host: http://localhost
     ${chalk.green`→`} port: ${port}
-    ${chalk.green`→`} path: /chunk/:chunkId`,
+    ${chalk.green`→`} path: /projects/:project/chunk/:chunkId`,
       );
       console.log();
     });
