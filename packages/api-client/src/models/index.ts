@@ -1,5 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './Chunk';
+export * from './CreateChunkForProject200Response';
 export * from './Project';
-export * from './ProjectsProjectIdChunksChunkIdPost200Response';

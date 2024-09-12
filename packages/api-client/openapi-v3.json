@@ -14,6 +14,7 @@
   "paths": {
     "/projects/{projectId}": {
       "post": {
+        "operationId": "createProject",
         "summary": "Create a new project.",
         "parameters": [
           {
@@ -51,6 +52,7 @@
         ]
       },
       "get": {
+        "operationId": "getProjectById",
         "summary": "Get project details.",
         "parameters": [
           {
@@ -90,6 +92,7 @@
     },
     "/projects/{projectId}/chunks": {
       "get": {
+        "operationId": "getChunksByProjectId",
         "summary": "Get details of all chunks in the project.",
         "parameters": [
           {
@@ -132,6 +135,7 @@
     },
     "/projects/{projectId}/chunks/{chunkId}": {
       "post": {
+        "operationId": "createChunkForProject",
         "summary": "Create a chunk in the project.",
         "parameters": [
           {
@@ -193,6 +197,7 @@
         ]
       },
       "get": {
+        "operationId": "getChunkById",
         "summary": "Get details of a chunk in the project.",
         "parameters": [
           {
@@ -239,6 +244,7 @@
         ]
       },
       "delete": {
+        "operationId": "deleteChunkById",
         "summary": "Delete a chunk from the project.",
         "parameters": [
           {

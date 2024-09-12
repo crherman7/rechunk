@@ -57,7 +57,7 @@ export class ChunkManager extends TinyEmitter {
         throw new Error('[ReChunk]: Invalid chunkId provided');
       }
 
-      const response = await this.request.projectsProjectIdChunksChunkIdGet(
+      const response = await this.request.getChunkById(
         {
           projectId: process.env.__RECHUNK_PROJECT__ as string,
           chunkId,
