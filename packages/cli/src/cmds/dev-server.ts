@@ -1,3 +1,4 @@
+import withRechunk from '@crherman7/rechunk-rollup-preset';
 import chalk from 'chalk';
 import {program} from 'commander';
 import {createHash} from 'crypto';
@@ -9,7 +10,6 @@ import prettier from 'prettier';
 import {rollup} from 'rollup';
 import url from 'url';
 
-import withRechunk from '../../rollup-preset';
 import {getRechunkConfig, LOGO} from '../lib';
 
 /**
@@ -37,10 +37,10 @@ program
     const port = await getPort();
     const rc = getRechunkConfig();
 
-    function updateRechunkConfig(config: Object) {
+    async function updateRechunkConfig(config: Object) {
       fs.writeFileSync(
         path.resolve(process.cwd(), 'rechunk.json'),
-        prettier.format(JSON.stringify(config), {
+        await prettier.format(JSON.stringify(config), {
           parser: 'json',
           bracketSpacing: false,
         }),
@@ -48,25 +48,25 @@ program
       );
     }
 
-    updateRechunkConfig({...rc, host: `http://localhost:${port}`});
+    await updateRechunkConfig({...rc, host: `http://localhost:${port}`});
 
     // CTRL+C
-    process.on('SIGINT', () => {
-      updateRechunkConfig(rc);
+    process.on('SIGINT', async () => {
+      await updateRechunkConfig(rc);
 
       process.exit(0);
     });
 
     // Keyboard quit
-    process.on('SIGQUIT', () => {
-      updateRechunkConfig(rc);
+    process.on('SIGQUIT', async () => {
+      await updateRechunkConfig(rc);
 
       process.exit(0);
     });
 
     // `kill` command
-    process.on('SIGTERM', () => {
-      updateRechunkConfig(rc);
+    process.on('SIGTERM', async () => {
+      await updateRechunkConfig(rc);
 
       process.exit(0);
     });

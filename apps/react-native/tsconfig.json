@@ -3,7 +3,6 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@crherman7/rechunk": ["../../src/react-native"],
       "@/*": ["./src/*"]
     }
   }

@@ -6,7 +6,7 @@ import chalk from 'chalk';
 import {program} from 'commander';
 import process from 'process';
 
-import pak from '../../package.json';
+import pak from '../package.json';
 
 /**
  * The main program object for the command-line interface.

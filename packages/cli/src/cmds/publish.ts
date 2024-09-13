@@ -1,8 +1,8 @@
+import withRechunk from '@crherman7/rechunk-rollup-preset';
 import {program} from 'commander';
 import path from 'path';
 import {rollup} from 'rollup';
 
-import withRechunk from '../../rollup-preset';
 import {getRechunkConfig, LOGO} from '../lib';
 
 /**

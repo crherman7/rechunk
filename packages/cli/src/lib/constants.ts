@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 
-import pak from '../../../package.json';
+import pak from '../../package.json';
 
 export const LOGO = chalk.green`
               ████████████                   

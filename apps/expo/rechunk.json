@@ -11,5 +11,5 @@
     "transactions": "./src/components/remote/Transactions.tsx"
   },
   "external": ["@/components"],
-  "host": "http://localhost:52437"
+  "host": "http://localhost:3000"
 }

@@ -10,10 +10,10 @@
     "ios": "react-native run-ios",
     "lint": "pnpm eslint .",
     "lint:fix": "pnpm eslint . --fix",
-    "rechunk": "node ../../dist/cli/index.js",
     "start": "react-native start"
   },
   "dependencies": {
+    "@crherman7/rechunk": "workspace:*",
     "react": "18.2.0",
     "react-error-boundary": "4.0.13",
     "react-native": "0.73.6",
@@ -29,6 +29,8 @@
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.2",
     "@babel/runtime": "^7.25.2",
+    "@crherman7/rechunk-babel-plugin": "workspace:*",
+    "@crherman7/rechunk-cli": "workspace:*",
     "@react-native/babel-preset": "0.73.21",
     "@react-native/metro-config": "0.73.5",
     "@types/react": "^18.2.6",

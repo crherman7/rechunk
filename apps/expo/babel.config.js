@@ -1,6 +1,3 @@
-const path = require('path');
-const pak = require('../../package.json');
-
 module.exports = {
   presets: ['babel-preset-expo'],
   plugins: [
@@ -9,11 +6,10 @@ module.exports = {
       {
         extensions: ['.tsx', '.ts', '.js', '.json'],
         alias: {
-          [pak.name]: path.join(__dirname, '../..', pak.source),
           '@': './src',
         },
       },
     ],
-    [path.resolve('../../dist/babel-plugin')],
+    ['@crherman7/rechunk-babel-plugin'],
   ],
 };

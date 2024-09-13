@@ -3,12 +3,9 @@
   "version": "1.0.0",
   "description": "ESLint configuration",
   "license": "MIT",
+  "private": true,
   "author": "Chris Herman",
   "keywords": [],
-  "private": true,
-  "scripts": {
-    "build": "pnpm tsc"
-  },
   "exports": {
     "./base": {
       "types": "./dist/base.d.ts",
@@ -18,6 +15,9 @@
       "types": "./dist/react.d.ts",
       "require": "./dist/react.js"
     }
+  },
+  "scripts": {
+    "build": "pnpm tsc"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
@@ -31,6 +31,6 @@
     "eslint-plugin-only-warn": "^1.1.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-import-resolver-typescript": "^3.6.1",
-    "typescript": "^5.5.4"
+    "typescript": "^5.4.3"
   }
 }

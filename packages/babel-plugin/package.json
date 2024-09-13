@@ -1,12 +1,26 @@
 {
   "name": "@crherman7/rechunk-babel-plugin",
-  "version": "1.0.0",
+  "version": "2.0.0-rc.0",
   "description": "",
   "license": "MIT",
   "author": "Chris Herman",
   "keywords": [],
-  "main": "index.js",
+  "main": "dist/index.js",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf dist && tsup",
+    "release": "release-it"
+  },
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@babel/core": "^7.25.2"
+  },
+  "devDependencies": {
+    "@types/babel__core": "^7.20.5",
+    "release-it": "^17.3.0",
+    "typescript": "^5.4.3"
   }
 }

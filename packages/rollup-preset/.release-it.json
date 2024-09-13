@@ -1,0 +1,13 @@
+{
+  "git": {
+    "commitMessage": "chore: release v${version}",
+    "requireBranch": "develop",
+    "requireCleanWorkingDir": true
+  },
+  "github": {
+    "release": true
+  },
+  "npm": {
+    "release": true
+  }
+}

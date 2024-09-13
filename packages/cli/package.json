@@ -1,12 +1,37 @@
 {
   "name": "@crherman7/rechunk-cli",
-  "version": "1.0.0",
+  "version": "2.0.0-rc.0",
   "description": "",
   "license": "MIT",
   "author": "Chris Herman",
   "keywords": [],
-  "main": "index.js",
+  "bin": {
+    "rechunk": "bin/rechunk"
+  },
+  "main": "dist/index.js",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf dist && tsup",
+    "release": "release-it"
+  },
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@crherman7/rechunk-rollup-preset": "workspace:*",
+    "chalk": "^4.0.0",
+    "cli-table3": "^0.6.4",
+    "commander": "^12.0.0",
+    "get-port": "^7.1.0",
+    "jsrsasign": "^11.1.0",
+    "prettier": "^2.8.8",
+    "rollup": "^4.13.0"
+  },
+  "devDependencies": {
+    "@types/jsrsasign": "^10.5.14",
+    "release-it": "^17.3.0",
+    "type-fest": "^4.19.0",
+    "typescript": "^5.4.3"
   }
 }

@@ -3,17 +3,17 @@
   "version": "1.0.0",
   "description": "Prettier configuration",
   "license": "MIT",
+  "private": true,
   "author": "Chris Herman",
   "keywords": [],
-  "private": true,
-  "scripts": {
-    "build": "pnpm tsc"
-  },
   "exports": {
     "./base": {
       "types": "./dist/base.d.ts",
       "require": "./dist/base.js"
     }
+  },
+  "scripts": {
+    "build": "pnpm tsc"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",

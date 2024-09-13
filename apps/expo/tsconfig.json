@@ -4,7 +4,6 @@
     "strict": true,
     "baseUrl": "./",
     "paths": {
-      "@crherman7/rechunk": ["../../src/react-native"],
       "@/*": ["./src/*"]
     }
   }

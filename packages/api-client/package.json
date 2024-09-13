@@ -1,18 +1,24 @@
 {
   "name": "@crherman7/rechunk-api-client",
-  "version": "1.0.0",
+  "version": "2.0.0-rc.0",
   "description": "",
   "license": "MIT",
   "author": "Chris Herman",
   "keywords": [],
   "main": "dist/index.js",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "scripts": {
-    "build": "tsc --project ./tsconfig.json",
-    "generate": "openapi-generator-cli generate -i ./openapi-v3.json -g typescript-fetch -o ./src"
+    "build": "rm -rf dist && tsup",
+    "generate": "openapi-generator-cli generate -i ./openapi-v3.json -g typescript-fetch -o ./src",
+    "release": "release-it"
   },
   "types": "dist/index.d.ts",
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.13.5",
+    "release-it": "^17.3.0",
     "typescript": "^5.4.3"
   }
 }

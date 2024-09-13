@@ -6,13 +6,14 @@
   "scripts": {
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "rechunk": "node ../../dist/cli/index.js",
-    "start": "expo start",
     "lint": "pnpm eslint .",
     "lint:fix": "pnpm eslint . --fix",
+    "start": "expo start",
     "web": "expo start --web"
   },
   "dependencies": {
+    "@crherman7/rechunk": "workspace:*",
+    "@crherman7/rechunk-api-client": "workspace:*",
     "expo": "~50.0.17",
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",
@@ -26,6 +27,8 @@
     "@repo/eslint-config": "workspace:*",
     "@repo/prettier-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@crherman7/rechunk-babel-plugin": "workspace:*",
+    "@crherman7/rechunk-cli": "workspace:*",
     "@babel/core": "^7.25.2",
     "@types/react": "~18.2.45",
     "typescript": "^5.4.3"

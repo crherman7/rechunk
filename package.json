@@ -1,6 +1,5 @@
 {
-  "name": "@crherman7/rechunk",
-  "version": "2.0.0-rc.0",
+  "name": "rechunk",
   "description": "🚀 Securely render externally hosted components in React Native",
   "license": "MIT",
   "private": true,
@@ -18,10 +17,6 @@
     "sdui",
     "hosted-components"
   ],
-  "bin": {
-    "rechunk": "dist/cli/index.js"
-  },
-  "main": "dist/react-native/index.js",
   "files": [
     "android",
     "dist",
@@ -29,61 +24,10 @@
     "plugin",
     "rechunk.podspec"
   ],
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org"
-  },
   "scripts": {
-    "build": "cd packages/api-client && pnpm build && cd ../../ && tsup && pnpm --filter '@repo/*' recursive run --sort build",
-    "dev": "tsup --watch",
+    "build": "pnpm --filter '@repo/*' --filter '@crherman7/*' recursive run --sort build",
     "prepare": "husky",
-    "release": "release-it"
-  },
-  "source": "src/react-native/index",
-  "types": "dist/react-native/index.d.ts",
-  "dependencies": {
-    "@babel/core": "^7.25.2",
-    "@crherman7/rechunk-api-client": "workspace:*",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-image": "^3.0.3",
-    "@rollup/plugin-typescript": "^11.1.6",
-    "base-64": "^1.0.0",
-    "chalk": "^4.0.0",
-    "cli-table3": "^0.6.4",
-    "commander": "^12.0.0",
-    "get-port": "^7.1.0",
-    "jsrsasign": "^11.1.0",
-    "merge-anything": "^6.0.2",
-    "prettier": "^2.8.8",
-    "rollup": "^4.13.0",
-    "tiny-emitter": "^2.1.0",
-    "tiny-invariant": "^1.3.3",
-    "tiny-warning": "^1.0.3",
-    "tslib": "^2.6.3"
-  },
-  "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
-  },
-  "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/prettier-config": "workspace:*",
-    "@commitlint/cli": "^19.3.0",
-    "@commitlint/config-conventional": "^19.2.2",
-    "@react-native/typescript-config": "^0.74.0",
-    "@types/babel__core": "^7.20.5",
-    "@types/base-64": "^1.0.2",
-    "@types/jsrsasign": "^10.5.14",
-    "@types/node": "^20.11.17",
-    "@types/prettier": "^2.7.3",
-    "format-package": "^7.0.0",
-    "husky": "^9.0.11",
-    "react": "^18.2.0",
-    "react-native": "^0.73.6",
-    "release-it": "^17.3.0",
-    "tsup": "^8.0.2",
-    "type-fest": "^4.19.0",
-    "typescript": "^5.4.3"
+    "release": "pnpm --filter '@crherman7/*' recursive run --sort release --"
   },
   "pnpm": {
     "overrides": {
@@ -99,5 +43,14 @@
       "serve-static@<1.16.0": ">=1.16.0",
       "eslint-plugin-prettier@<5.2.1": ">=5.2.1"
     }
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "husky": "^9.0.11",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.3"
   }
 }
