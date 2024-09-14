@@ -1,8 +1,8 @@
 import React, {memo, type PropsWithChildren} from 'react';
 import {
   Pressable,
-  StyleSheet,
   type StyleProp,
+  StyleSheet,
   type ViewStyle,
 } from 'react-native';
 import LinearGradient, {

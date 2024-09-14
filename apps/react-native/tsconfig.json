@@ -1,11 +1,10 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json",
+  "extends": "@repo/typescript-config/react-native.json",
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
       "@crherman7/rechunk": ["../../src/react-native"],
       "@/*": ["./src/*"]
-    },
-    "types": ["react-native", "node"]
+    }
   }
 }

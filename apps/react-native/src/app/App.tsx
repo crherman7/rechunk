@@ -1,7 +1,8 @@
-import React, {Suspense, lazy} from 'react';
-import {ErrorBoundary} from 'react-error-boundary';
-import {ActivityIndicator, StyleSheet, SafeAreaView, View} from 'react-native';
 import {importChunk} from '@crherman7/rechunk';
+import React, {lazy, Suspense} from 'react';
+import {ErrorBoundary} from 'react-error-boundary';
+import {ActivityIndicator, SafeAreaView, StyleSheet, View} from 'react-native';
+
 import {Error404} from '@/components';
 import {balanceData, transactionsData} from '@/lib';
 
