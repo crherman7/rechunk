@@ -34,7 +34,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "cd packages/api-client && pnpm build && cd ../../ && tsup && pnpm --filter '@repo/*' recursive run --sort build",
     "dev": "tsup --watch",
     "prepare": "husky",
     "release": "release-it"
@@ -66,17 +66,16 @@
     "react-native": "*"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
-    "@react-native/eslint-config": "^0.73.2",
     "@react-native/typescript-config": "^0.74.0",
     "@types/babel__core": "^7.20.5",
     "@types/base-64": "^1.0.2",
     "@types/jsrsasign": "^10.5.14",
     "@types/node": "^20.11.17",
     "@types/prettier": "^2.7.3",
-    "eslint": "^8.19.0",
-    "eslint-plugin-simple-import-sort": "^12.1.0",
     "format-package": "^7.0.0",
     "husky": "^9.0.11",
     "react": "^18.2.0",
@@ -97,7 +96,8 @@
       "pagefind@<1.1.1": ">=1.1.1",
       "path-to-regexp@>=0.2.0 <8.0.0": ">=8.0.0",
       "send@<0.19.0": ">=0.19.0",
-      "serve-static@<1.16.0": ">=1.16.0"
+      "serve-static@<1.16.0": ">=1.16.0",
+      "eslint-plugin-prettier@<5.2.1": ">=5.2.1"
     }
   }
 }
