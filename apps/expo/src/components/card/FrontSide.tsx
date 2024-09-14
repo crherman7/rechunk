@@ -1,5 +1,6 @@
 import React, {memo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+
 import CardWrapper from './CardWrapper';
 
 type FrontSideProps = {

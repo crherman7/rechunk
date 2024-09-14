@@ -1,11 +1,11 @@
+import {LinearGradient, type LinearGradientProps} from 'expo-linear-gradient';
 import React, {memo, type PropsWithChildren} from 'react';
 import {
   Pressable,
-  StyleSheet,
   type StyleProp,
+  StyleSheet,
   type ViewStyle,
 } from 'react-native';
-import {LinearGradient, type LinearGradientProps} from 'expo-linear-gradient';
 
 interface CardWrapperProps {
   colors: LinearGradientProps['colors'];

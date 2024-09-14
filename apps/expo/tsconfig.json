@@ -1,12 +1,11 @@
 {
-  "extends": "expo/tsconfig.base",
+  "extends": "@repo/typescript-config/expo.json",
   "compilerOptions": {
     "strict": true,
     "baseUrl": "./",
     "paths": {
       "@crherman7/rechunk": ["../../src/react-native"],
       "@/*": ["./src/*"]
-    },
-    "types": ["react-native", "node"]
+    }
   }
 }

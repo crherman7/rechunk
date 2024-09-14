@@ -1,9 +1,10 @@
 import React, {memo} from 'react';
-import {StyleSheet, FlatList, type FlatListProps} from 'react-native';
+import {FlatList, type FlatListProps, StyleSheet} from 'react-native';
+
 import {
-  TransactionsHeader,
   TransactionItem,
   type TransactionItemType,
+  TransactionsHeader,
 } from '@/components';
 
 interface TransactionsProps

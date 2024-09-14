@@ -8,6 +8,8 @@
     "ios": "expo start --ios",
     "rechunk": "node ../../dist/cli/index.js",
     "start": "expo start",
+    "lint": "pnpm eslint .",
+    "lint:fix": "pnpm eslint . --fix",
     "web": "expo start --web"
   },
   "dependencies": {
@@ -21,6 +23,9 @@
     "expo-linear-gradient": "^13.0.2"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@babel/core": "^7.25.2",
     "@types/react": "~18.2.45",
     "typescript": "^5.4.3"

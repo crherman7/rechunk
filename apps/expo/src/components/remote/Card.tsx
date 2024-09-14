@@ -1,13 +1,13 @@
 import React, {
   forwardRef,
-  useRef,
   useCallback,
   useImperativeHandle,
+  useRef,
 } from 'react';
 import {StyleSheet} from 'react-native';
 import CardFlip, {type FlipCardProps} from 'react-native-card-flip';
 
-import {FrontSide, BackSide, type CardFlipEvents} from '@/components';
+import {BackSide, type CardFlipEvents, FrontSide} from '@/components';
 
 export default forwardRef<CardFlipEvents, FlipCardProps>(function Card(
   props,

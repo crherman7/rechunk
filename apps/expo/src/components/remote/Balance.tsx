@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {StyleSheet, Text, View, Dimensions} from 'react-native';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import type {AbstractChartConfig} from 'react-native-chart-kit/dist/AbstractChart';
 import type {LineChartProps} from 'react-native-chart-kit/dist/line-chart/LineChart';
