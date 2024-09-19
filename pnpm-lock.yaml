@@ -181,7 +181,7 @@ importers:
         version: 0.73.21(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))
       '@react-native/metro-config':
         specifier: 0.73.5
-        version: 0.73.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(encoding@0.1.13)
+        version: 0.73.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -246,6 +246,9 @@ importers:
       '@openapitools/openapi-generator-cli':
         specifier: ^2.13.5
         version: 2.13.5
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
       release-it:
         specifier: ^17.3.0
         version: 17.3.0(typescript@5.4.3)
@@ -259,6 +262,9 @@ importers:
         specifier: ^7.25.2
         version: 7.25.2
     devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
       '@types/babel__core':
         specifier: ^7.20.5
         version: 7.20.5
@@ -296,6 +302,9 @@ importers:
         specifier: ^4.13.0
         version: 4.13.0
     devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
       '@types/jsrsasign':
         specifier: ^10.5.14
         version: 10.5.14
@@ -333,6 +342,9 @@ importers:
         specifier: ^2.6.3
         version: 2.6.3
     devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
       '@types/base-64':
         specifier: ^1.0.2
         version: 1.0.2
@@ -421,6 +433,9 @@ importers:
         specifier: ^4.13.0
         version: 4.13.0
     devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
       '@types/babel__core':
         specifier: ^7.20.5
         version: 7.20.5
@@ -10780,7 +10795,7 @@ snapshots:
       - '@babel/preset-env'
       - supports-color
 
-  '@react-native/metro-config@0.73.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(encoding@0.1.13)':
+  '@react-native/metro-config@0.73.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))':
     dependencies:
       '@react-native/js-polyfills': 0.73.1
       '@react-native/metro-babel-transformer': 0.73.15(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))
@@ -10789,10 +10804,7 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/preset-env'
-      - bufferutil
-      - encoding
       - supports-color
-      - utf-8-validate
 
   '@react-native/normalize-color@2.1.0': {}
 

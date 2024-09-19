@@ -11,7 +11,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "build": "rm -rf dist && tsup",
+    "build": "tsup",
     "release": "release-it"
   },
   "types": "dist/index.d.ts",
@@ -29,6 +29,7 @@
     "react-native": "*"
   },
   "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
     "@types/base-64": "^1.0.2",
     "@types/jsrsasign": "^10.5.14",
     "react": "18.2.0",

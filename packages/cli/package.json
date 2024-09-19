@@ -14,7 +14,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "build": "rm -rf dist && tsup",
+    "build": "tsup",
     "release": "release-it"
   },
   "types": "dist/index.d.ts",
@@ -29,6 +29,7 @@
     "rollup": "^4.13.0"
   },
   "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
     "@types/jsrsasign": "^10.5.14",
     "release-it": "^17.3.0",
     "type-fest": "^4.19.0",
