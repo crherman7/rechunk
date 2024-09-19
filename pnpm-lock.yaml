@@ -139,6 +139,9 @@ importers:
       '@crherman7/rechunk':
         specifier: workspace:*
         version: link:../../packages/core
+      '@crherman7/rechunk-api-client':
+        specifier: workspace:*
+        version: link:../../packages/api-client
       react:
         specifier: 18.2.0
         version: 18.2.0
