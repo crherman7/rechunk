@@ -3,6 +3,8 @@ import {readFileSync} from 'fs';
 import {dirname, resolve} from 'path';
 import {cwd} from 'process';
 
+import {findWorkspaceDir, nonWindowsCall} from './lib';
+
 /**
  * Identifier used to represent the Node.js `process` object in the plugin.
  * Typically used to identify or manipulate references to the global `process` object.
@@ -34,6 +36,55 @@ const RECHUNK_PACKAGE_KEY = '@crherman7+rechunk+package+json';
  * @link {https://github.com/rollup/plugins/tree/master/packages/typescript#tslib}
  */
 const EXTRA_DEPENDENCIES = ['tslib'];
+
+/**
+ * The default host used by the Rechunk development server.
+ */
+const RECHUNK_DEV_SERVER_HOST = 'http://localhost:49904';
+
+/**
+ * The identifier for Node.js processes, used to filter processes running on the system.
+ */
+const NODE_IDENTIFIER = 'node';
+
+/**
+ * The relative path to the `node_modules` directory.
+ */
+const NODE_MODULES_RELATIVE_PATH = './node_modules';
+
+/**
+ * The command used to start the Rechunk development server.
+ */
+const RECHUNK_DEV_SERVER_COMMAND = 'rechunk dev-server';
+
+/**
+ * Checks if the Rechunk development server is currently running.
+ *
+ * @returns {boolean} - Returns `true` if the Rechunk development server is running, otherwise `false`.
+ *
+ * @remarks
+ * - This function checks the list of processes running on the system, specifically
+ *   searching for processes that match the command for running the Rechunk development server.
+ * - The check includes processes that either start with `node ./node_modules` or `node <workspaceDir>`.
+ *
+ * @example
+ * ```typescript
+ * const isRunning = isRechunkDevServerRunning();
+ * console.log(isRunning); // true or false
+ * ```
+ */
+function isRechunkDevServerRunning(): boolean {
+  const processes = nonWindowsCall();
+  const workspaceDir = findWorkspaceDir(cwd());
+
+  return processes.some(
+    it =>
+      typeof it.cmd === 'string' &&
+      it.cmd.includes(RECHUNK_DEV_SERVER_COMMAND) &&
+      (it.cmd.startsWith(`${NODE_IDENTIFIER} ${NODE_MODULES_RELATIVE_PATH}`) ||
+        it.cmd.startsWith(`${NODE_IDENTIFIER} ${workspaceDir}`)),
+  );
+}
 
 export default function ({types: t}: typeof Babel): Babel.PluginObj {
   /**
@@ -140,7 +191,11 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
           }) &&
           !parent.parentPath?.isAssignmentExpression()
         ) {
-          parent.replaceWith(t.stringLiteral(host));
+          parent.replaceWith(
+            isRechunkDevServerRunning()
+              ? t.stringLiteral(RECHUNK_DEV_SERVER_HOST)
+              : t.stringLiteral(host),
+          );
         }
 
         // Replace process.env.__RECHUNK_GLOBAL__ with the rechunk host

@@ -2,15 +2,47 @@ import withRechunk from '@crherman7/rechunk-rollup-preset';
 import chalk from 'chalk';
 import {program} from 'commander';
 import {createHash} from 'crypto';
-import fs from 'fs';
 import http from 'http';
 import {KEYUTIL, KJUR, RSAKey} from 'jsrsasign';
 import path from 'path';
-import prettier from 'prettier';
 import {rollup} from 'rollup';
 import url from 'url';
 
 import {getRechunkConfig, LOGO} from '../lib';
+
+/**
+ * Generates a port number based on the string "rechunk" by mapping it to an ephemeral port.
+ *
+ * The port selection process involves the following steps:
+ *
+ * 1. **ASCII Value Conversion**: Each character in the string "rechunk" is converted to its corresponding
+ *    ASCII value:
+ *    - 'r' -> 114
+ *    - 'e' -> 101
+ *    - 'c' -> 99
+ *    - 'h' -> 104
+ *    - 'u' -> 117
+ *    - 'n' -> 110
+ *    - 'k' -> 107
+ *
+ * 2. **Summation**: The ASCII values are summed together:
+ *    - Total = 114 + 101 + 99 + 104 + 117 + 110 + 107 = 752
+ *
+ * 3. **Modulo Operation**: The sum is then mapped to the ephemeral port range (49152 to 65535) using
+ *    the modulo operation:
+ *    - Size of the ephemeral port range = 65535 - 49152 = 16383
+ *    - Remainder = 752 % 16383 = 752 (since 752 is less than 16383)
+ *
+ * 4. **Port Calculation**: The final port number is obtained by adding the remainder to the start of
+ *    the ephemeral port range:
+ *    - Final Port = 49152 + 752 = 49904
+ *
+ * The chosen port number (49904) falls within the ephemeral port range and is derived uniquely
+ * from the string "rechunk".
+ *
+ * @returns {number} The generated ephemeral port number based on the string "rechunk".
+ */
+const PORT = '49904';
 
 /**
  * Defines a command for the "dev-server" operation using the "commander" library.
@@ -32,44 +64,7 @@ program
     'ReChunk development server to serve and sign React Native chunks.',
   )
   .action(async () => {
-    const {default: getPort} = await import('get-port');
-
-    const port = await getPort();
     const rc = getRechunkConfig();
-
-    async function updateRechunkConfig(config: Object) {
-      fs.writeFileSync(
-        path.resolve(process.cwd(), 'rechunk.json'),
-        await prettier.format(JSON.stringify(config), {
-          parser: 'json',
-          bracketSpacing: false,
-        }),
-        'utf-8',
-      );
-    }
-
-    await updateRechunkConfig({...rc, host: `http://localhost:${port}`});
-
-    // CTRL+C
-    process.on('SIGINT', async () => {
-      await updateRechunkConfig(rc);
-
-      process.exit(0);
-    });
-
-    // Keyboard quit
-    process.on('SIGQUIT', async () => {
-      await updateRechunkConfig(rc);
-
-      process.exit(0);
-    });
-
-    // `kill` command
-    process.on('SIGTERM', async () => {
-      await updateRechunkConfig(rc);
-
-      process.exit(0);
-    });
 
     /**
      * Create a basic HTTP server.
@@ -144,12 +139,12 @@ program
     });
 
     // Start the server and listen on port 18538
-    server.listen(port, () => {
+    server.listen(PORT, () => {
       console.log();
       console.log(LOGO);
       console.log(
         `    ${chalk.green`→`} host: http://localhost
-    ${chalk.green`→`} port: ${port}
+    ${chalk.green`→`} port: ${PORT}
     ${chalk.green`→`} path: /projects/:project/chunk/:chunkId`,
       );
       console.log();
