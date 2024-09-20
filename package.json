@@ -27,7 +27,12 @@
   "scripts": {
     "build": "pnpm --filter '@repo/*' --filter '@crherman7/*' recursive run --sort build",
     "prepare": "husky",
-    "release": "pnpm --filter '@crherman7/*' recursive run --sort release --"
+    "release": "pnpm --filter '@crherman7/*' recursive run --sort release --ci",
+    "release:dry-run": "pnpm release --dry-run",
+    "release:pre-release": "pnpm release --preRelease=rc",
+    "release:patch": "pnpm release --increment patch",
+    "release:minor": "pnpm release --increment minor",
+    "release:major": "pnpm release --increment major"
   },
   "pnpm": {
     "overrides": {
