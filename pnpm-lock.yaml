@@ -184,7 +184,7 @@ importers:
         version: 0.73.21(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))
       '@react-native/metro-config':
         specifier: 0.73.5
-        version: 0.73.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))
+        version: 0.73.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(encoding@0.1.13)
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -292,15 +292,9 @@ importers:
       commander:
         specifier: ^12.0.0
         version: 12.0.0
-      get-port:
-        specifier: ^7.1.0
-        version: 7.1.0
       jsrsasign:
         specifier: ^11.1.0
         version: 11.1.0
-      prettier:
-        specifier: ^2.8.8
-        version: 2.8.8
       rollup:
         specifier: ^4.13.0
         version: 4.13.0
@@ -314,9 +308,6 @@ importers:
       release-it:
         specifier: ^17.3.0
         version: 17.3.0(typescript@5.6.2)
-      type-fest:
-        specifier: ^4.19.0
-        version: 4.19.0
       typescript:
         specifier: ^5.4.3
         version: 5.6.2
@@ -4595,10 +4586,6 @@ packages:
     resolution: {integrity: sha512-x5UJKlgeUiNT8nyo/AcnwLnZuZNcSjSw0kogRB+Whd1fjjFq4B1hySFxSFWWSn4mIBzg3sRNUDFYc4g5gjPoLg==}
     engines: {node: '>=4'}
 
-  get-port@7.1.0:
-    resolution: {integrity: sha512-QB9NKEeDg3xxVwCCwJQ9+xycaz6pBB6iQ76wiWMl1927n0Kir6alPiP+yuiICLLU4jpMe08dXfpebuQppFA2zw==}
-    engines: {node: '>=16'}
-
   get-stream@4.1.0:
     resolution: {integrity: sha512-GMat4EJ5161kIy2HevLlr4luNjBgvmj413KaQA7jt4V8B4RDsfpHk7WQ9GVqfYyyx8OS/L66Kox+rJRNklLK7w==}
     engines: {node: '>=6'}
@@ -6623,11 +6610,6 @@ packages:
     resolution: {integrity: sha512-GbK2cP9nraSSUF9N2XwUwqfzlAFlMNYYl+ShE/V+H8a9uNl/oUqB1w2EL54Jh0OlyRSd8RfWYJ3coVS4TROP2w==}
     engines: {node: '>=6.0.0'}
 
-  prettier@2.8.8:
-    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
-    engines: {node: '>=10.13.0'}
-    hasBin: true
-
   prettier@3.3.3:
     resolution: {integrity: sha512-i2tDNA0O5IrMO757lfrdQZCc2jPNDVntV0m/+4whiDfWaTKfMNgR7Qz0NAeGz/nRqF4m5/6CLzbP4/liHt12Ew==}
     engines: {node: '>=14'}
@@ -7671,10 +7653,6 @@ packages:
   type-fest@2.19.0:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
-
-  type-fest@4.19.0:
-    resolution: {integrity: sha512-CN2l+hWACRiejlnr68vY0/7734Kzu+9+TOslUXbSCQ1ruY9XIHDBSceVXCcHm/oXrdzhtLMMdJEKfemf1yXiZQ==}
-    engines: {node: '>=16'}
 
   type@2.7.2:
     resolution: {integrity: sha512-dzlvlNlt6AXU7EBSfpAscydQ7gXB+pPGsPnfJnZpiNJBDj7IaJzQlBZYGdEi4R9HmPdBv2XmWJ6YUtoTa7lmCw==}
@@ -10798,7 +10776,7 @@ snapshots:
       - '@babel/preset-env'
       - supports-color
 
-  '@react-native/metro-config@0.73.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))':
+  '@react-native/metro-config@0.73.5(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))(encoding@0.1.13)':
     dependencies:
       '@react-native/js-polyfills': 0.73.1
       '@react-native/metro-babel-transformer': 0.73.15(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2))
@@ -10807,7 +10785,10 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/preset-env'
+      - bufferutil
+      - encoding
       - supports-color
+      - utf-8-validate
 
   '@react-native/normalize-color@2.1.0': {}
 
@@ -13529,8 +13510,6 @@ snapshots:
 
   get-port@3.2.0: {}
 
-  get-port@7.1.0: {}
-
   get-stream@4.1.0:
     dependencies:
       pump: 3.0.0
@@ -16089,8 +16068,6 @@ snapshots:
     dependencies:
       fast-diff: 1.3.0
 
-  prettier@2.8.8: {}
-
   prettier@3.3.3: {}
 
   pretty-bytes@5.6.0: {}
@@ -17371,8 +17348,6 @@ snapshots:
   type-fest@1.4.0: {}
 
   type-fest@2.19.0: {}
-
-  type-fest@4.19.0: {}
 
   type@2.7.2: {}
 
