@@ -12,21 +12,10 @@
     }
   ],
   "paths": {
-    "/projects/{projectId}": {
+    "/projects": {
       "post": {
         "operationId": "createProject",
         "summary": "Create a new project.",
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "The unique identifier for the project."
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successfully created a new project.",
@@ -50,7 +39,9 @@
             "basicAuth": []
           }
         ]
-      },
+      }
+    },
+    "/projects/{projectId}": {
       "get": {
         "operationId": "getProjectById",
         "summary": "Get project details.",

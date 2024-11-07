@@ -1,28 +1,38 @@
-// app/routes/api/v1/projects/$projectId/chunks/$chunkId.ts
+import crypto from 'crypto';
 import type {LoaderFunction, ActionFunction} from '@remix-run/node';
 import {json} from '@remix-run/node';
-import {requireAuth} from '~/utils/auth';
+
+import {requireReadAccess, requireWriteAccess} from '~/utils/auth';
 import {handleError} from '~/utils/error';
 import {
   getChunkById,
   createOrUpdateChunk,
   deleteChunkById,
 } from '~/models/chunk.server';
+import {getProjectById} from '~/models/project.server';
 
 export const loader: LoaderFunction = async ({params, request}) => {
   try {
-    await requireAuth(request);
+    await requireReadAccess(request);
+
     const {projectId, chunkId} = params;
     if (!projectId || !chunkId) {
       return json({error: 'projectId and chunkId are required'}, {status: 400});
     }
 
     const chunk = await getChunkById(projectId, chunkId);
-    if (!chunk) {
+    const project = await getProjectById(projectId);
+    if (!chunk || !project) {
       return json({error: 'Project or chunk not found'}, {status: 404});
     }
 
-    return json(chunk);
+    const hash = crypto.createHash('sha256').update(chunk.data).digest('hex');
+    const sig = crypto
+      .createSign('SHA256')
+      .update(hash)
+      .sign(project.privateKey, 'base64');
+
+    return json({data: chunk.data, sig, hash}, {status: 200});
   } catch (error) {
     return handleError(error);
   }
@@ -30,7 +40,7 @@ export const loader: LoaderFunction = async ({params, request}) => {
 
 export const action: ActionFunction = async ({params, request}) => {
   try {
-    await requireAuth(request);
+    await requireWriteAccess(request);
     const {projectId, chunkId} = params;
     if (!projectId || !chunkId) {
       return json({error: 'projectId and chunkId are required'}, {status: 400});

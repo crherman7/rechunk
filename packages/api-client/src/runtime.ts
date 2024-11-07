@@ -304,21 +304,30 @@ function isFormData(value: any): value is FormData {
 
 export class ResponseError extends Error {
   override name: 'ResponseError' = 'ResponseError';
-  constructor(public response: Response, msg?: string) {
+  constructor(
+    public response: Response,
+    msg?: string,
+  ) {
     super(msg);
   }
 }
 
 export class FetchError extends Error {
   override name: 'FetchError' = 'FetchError';
-  constructor(public cause: Error, msg?: string) {
+  constructor(
+    public cause: Error,
+    msg?: string,
+  ) {
     super(msg);
   }
 }
 
 export class RequiredError extends Error {
   override name: 'RequiredError' = 'RequiredError';
-  constructor(public field: string, msg?: string) {
+  constructor(
+    public field: string,
+    msg?: string,
+  ) {
     super(msg);
   }
 }
@@ -415,9 +424,7 @@ function querystringSingleKey(
     return querystringSingleKey(key, valueAsArray, keyPrefix);
   }
   if (value instanceof Date) {
-    return `${encodeURIComponent(fullKey)}=${encodeURIComponent(
-      value.toISOString(),
-    )}`;
+    return `${encodeURIComponent(fullKey)}=${encodeURIComponent(value.toISOString())}`;
   }
   if (value instanceof Object) {
     return querystring(value as HTTPQuery, fullKey);

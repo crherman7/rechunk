@@ -33,10 +33,6 @@ export interface CreateChunkForProjectRequest {
   body: string;
 }
 
-export interface CreateProjectRequest {
-  projectId: string;
-}
-
 export interface DeleteChunkByIdRequest {
   projectId: string;
   chunkId: string;
@@ -144,16 +140,8 @@ export class DefaultApi extends runtime.BaseAPI {
    * Create a new project.
    */
   async createProjectRaw(
-    requestParameters: CreateProjectRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Project>> {
-    if (requestParameters['projectId'] == null) {
-      throw new runtime.RequiredError(
-        'projectId',
-        'Required parameter "projectId" was null or undefined when calling createProject().',
-      );
-    }
-
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
@@ -169,10 +157,7 @@ export class DefaultApi extends runtime.BaseAPI {
     }
     const response = await this.request(
       {
-        path: `/projects/{projectId}`.replace(
-          `{${'projectId'}}`,
-          encodeURIComponent(String(requestParameters['projectId'])),
-        ),
+        path: `/projects`,
         method: 'POST',
         headers: headerParameters,
         query: queryParameters,
@@ -189,13 +174,9 @@ export class DefaultApi extends runtime.BaseAPI {
    * Create a new project.
    */
   async createProject(
-    requestParameters: CreateProjectRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Project> {
-    const response = await this.createProjectRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.createProjectRaw(initOverrides);
     return await response.value();
   }
 

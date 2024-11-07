@@ -1,45 +1,79 @@
 import type {Chunk} from '@prisma/client';
 
+import {prisma} from '~/db.server';
+
 /**
- * Deletes a chunk by its ID.
+ * Creates or updates a chunk associated with a project.
  *
- * @param {Chunk['id']} id - The ID of the chunk to delete.
+ * @param {string} projectId - The ID of the associated project.
+ * @param {string} chunkId - The ID of the chunk (optional, use to update existing).
+ * @param {Chunk['data']} data - Data for the chunk.
+ * @returns {Promise<Chunk>} A promise that resolves to the created or updated chunk.
+ */
+export async function createOrUpdateChunk(
+  projectId: string,
+  chunkId: string,
+  data: Chunk['data'],
+): Promise<Chunk> {
+  return prisma.chunk.upsert({
+    where: {id: chunkId, projectId},
+    create: {
+      id: chunkId,
+      projectId,
+      data,
+    },
+    update: {data},
+  });
+}
+
+/**
+ * Deletes a chunk by its ID and associated project ID.
+ *
+ * @param {string} projectId - The ID of the associated project.
+ * @param {string} chunkId - The ID of the chunk to delete.
  * @returns {Promise<void>} A promise that resolves when the chunk is deleted.
  */
 export async function deleteChunkById(
-  projectId: Chunk['projectId'],
-  chunkId: Chunk['id'],
-): Promise<void> {}
+  projectId: string,
+  chunkId: string,
+): Promise<void> {
+  await prisma.chunk.deleteMany({
+    where: {
+      id: chunkId,
+      projectId,
+    },
+  });
+}
 
 /**
  * Retrieves all chunks for a given project ID.
  *
- * @param {Chunk['projectId']} projectId - The ID of the project to retrieve chunks for.
+ * @param {string} projectId - The ID of the project to retrieve chunks for.
  * @returns {Promise<Chunk[]>} A promise that resolves with an array of chunks.
  */
 export async function getChunksByProjectId(
-  projectId: Chunk['projectId'],
-): Promise<Chunk[] | null> {}
+  projectId: string,
+): Promise<Chunk[]> {
+  return prisma.chunk.findMany({
+    where: {projectId},
+  });
+}
 
 /**
- * Retrieves a chunk by its ID.
+ * Retrieves a single chunk by its ID and project ID.
  *
- * @param {Chunk['id']} id - The ID of the chunk to retrieve.
+ * @param {string} projectId - The ID of the associated project.
+ * @param {string} chunkId - The ID of the chunk to retrieve.
  * @returns {Promise<Chunk | null>} A promise that resolves with the chunk if found, or null if not found.
  */
 export async function getChunkById(
-  projectId: Chunk['projectId'],
-  chunkId: Chunk['id'],
-): Promise<Chunk | null> {}
-
-/**
- * Updates a chunk by its ID.
- *
- * @param {Chunk['id']} id - The ID of the chunk to update.
- * @returns {Promise<void>} A promise that resolves when the chunk is updated.
- */
-export async function createOrUpdateChunk(
-  projectId: Chunk['projectId'],
-  chunkId: Chunk['id'],
-  data: any,
-): Promise<void> {}
+  projectId: string,
+  chunkId: string,
+): Promise<Chunk | null> {
+  return prisma.chunk.findFirst({
+    where: {
+      id: chunkId,
+      projectId,
+    },
+  });
+}
