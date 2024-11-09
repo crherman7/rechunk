@@ -10,9 +10,22 @@ export const action: ActionFunction = async ({request}) => {
     await requireBasicAuth(request);
 
     // Assuming the project data is sent in the request body
-    const newProject = await createProject();
+    const {id, readKey, writeKey, publicKey, privateKey} =
+      await createProject();
 
-    return json(newProject, {status: 200});
+    return json(
+      {
+        $schema: 'https://crherman7.github.io/rechunk/schema.json',
+        project: id,
+        readKey,
+        writeKey,
+        publicKey,
+        privateKey,
+        entry: {},
+        external: [],
+      },
+      {status: 200},
+    );
   } catch (error) {
     return handleError(error);
   }
