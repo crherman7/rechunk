@@ -19,6 +19,7 @@
   },
   "types": "dist/index.d.ts",
   "dependencies": {
+    "@crherman7/rechunk-api-client": "workspace:*",
     "@crherman7/rechunk-rollup-preset": "workspace:*",
     "chalk": "^4.0.0",
     "cli-table3": "^0.6.4",
