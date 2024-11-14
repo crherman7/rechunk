@@ -1,7 +1,8 @@
 import type * as Babel from '@babel/core';
-import {readFileSync} from 'fs';
-import {dirname, resolve} from 'path';
-import {cwd} from 'process';
+import chalk from 'chalk';
+import dedent from 'dedent';
+import {existsSync, readFileSync} from 'fs';
+import path, {dirname, resolve} from 'path';
 
 import {findWorkspaceDir, nonWindowsCall} from './lib';
 
@@ -75,7 +76,7 @@ const RECHUNK_DEV_SERVER_COMMAND = 'rechunk dev-server';
  */
 function isRechunkDevServerRunning(): boolean {
   const processes = nonWindowsCall();
-  const workspaceDir = findWorkspaceDir(cwd());
+  const workspaceDir = findWorkspaceDir(process.cwd());
 
   return processes.some(
     it =>
@@ -103,7 +104,11 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
    * @param level - The current depth of the recursive search, used to limit recursion.
    * @returns The parsed JSON content, or an empty object if the file is not found after 10 levels.
    */
-  function findClosestJSON(filename: string, start = cwd(), level = 0): any {
+  function findClosestJSON(
+    filename: string,
+    start = process.cwd(),
+    level = 0,
+  ): any {
     try {
       const path = resolve(start, filename);
       const content = readFileSync(path, {encoding: 'utf8'});
@@ -138,6 +143,149 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
   return {
     visitor: {
       /**
+       * Transforms calls to `importChunk` into dynamic imports.
+       *
+       * For calls to `importChunk('chunkName')`, this visitor replaces:
+       *
+       * ```javascript
+       * lazy(() => importChunk('chunkName'));
+       * ```
+       *
+       * With:
+       *
+       * ```javascript
+       * lazy(() => import('../path/to/chunk'));
+       * ```
+       *
+       * @param {Babel.NodePath<Babel.types.CallExpression>} path - Babel AST node for the `CallExpression`.
+       * @param {Babel.PluginPass} state - Babel state object containing metadata like the current filename.
+       */
+      CallExpression(
+        {node}: Babel.NodePath<Babel.types.CallExpression>,
+        state: Babel.PluginPass,
+      ) {
+        /**
+         * Environment variable that defines the server mode for the ReChunk project.
+         *
+         * `RECHUNK_ENVIRONMENT` controls how the project fetches and loads components, providing options for
+         * remote, local, and offline modes. This flexibility allows for different loading behaviors based
+         * on development needs or deployment conditions.
+         *
+         * Available options:
+         * - **`prod`**: Uses the server configuration in `rechunk.json` to fetch components from a
+         *   remote server. This mode is ideal for production or testing in an environment where a
+         *   centralized server is available.
+         *
+         * - **`dev`**: Uses a local development server to serve components, allowing for fast,
+         *   iterative development. This mode is optimized for local testing and development and
+         *   expects the dev server to be running locally.
+         *
+         * - **`offline`**: Bypasses any server and lazily imports components directly within the app,
+         *   suitable for environments where no server connection is available. This mode provides a
+         *   self-contained experience by loading components without external dependencies.
+         *
+         * @example
+         * ```typescript
+         * // Set the environment variable to "prod | undefined", "dev", or "offline"
+         * process.env.RECHUNK_ENVIRONMENT = "prod";
+         * ```
+         *
+         * @remarks
+         * This variable should be set before the application initializes, as it will dictate the loading
+         * behavior for ReChunk components throughout the app lifecycle.
+         */
+        if (process.env.RECHUNK_ENVIRONMENT !== 'offline') return;
+
+        // Ensure it's an `importChunk` call with a string literal argument
+        if (
+          t.isIdentifier(node.callee, {name: 'importChunk'}) &&
+          t.isStringLiteral(node.arguments[0])
+        ) {
+          // Replace `importChunk` with `import`
+          node.callee = t.import();
+
+          // Get the current file path and project root
+          const currentFilePath = state.file.opts.filename;
+          const projectRoot = process.cwd();
+
+          // Retrieve the `rechunk.json` configuration
+          const rechunkJson = getCachedJson(RECHUNK_CONFIG_KEY, 'rechunk.json');
+          const chunkKey = node.arguments[0].value;
+          const targetFileRelativeToRoot = rechunkJson.entry[chunkKey];
+
+          if (!targetFileRelativeToRoot) {
+            throw new Error(
+              chalk.yellow(dedent`\n\nChunk entry for '${chunkKey}' not found in rechunk.json.
+
+                  This error occurs because the specified chunk key ('${chunkKey}') does not have a corresponding
+                  entry in the 'entry' section of rechunk.json. Each chunk must be explicitly defined in this file
+                  to be processed.
+
+                  Steps to resolve this issue:
+                  1. Open rechunk.json in the root of your project.
+                  2. Verify that an entry exists for the chunk key '${chunkKey}' under the 'entry' field.
+                     Example:
+                     {
+                       "entry": {
+                         "${chunkKey}": "./path/to/your/chunk-file.ts"
+                       }
+                     }
+                  3. If the entry is missing, add it and ensure the file path is correct and relative to the project
+                     root directory.
+
+                  For more information on configuring rechunk.json, refer to the ReChunk documentation.
+                `),
+            );
+          }
+
+          // Resolve the target file path
+          const targetFilePath = path.join(
+            projectRoot,
+            targetFileRelativeToRoot,
+          );
+
+          if (!existsSync(targetFilePath)) {
+            throw new Error(
+              chalk.yellow(dedent`
+              Error: The file for the chunk '${chunkKey}' could not be found at the expected location:
+              ${targetFilePath}
+
+              This error occurs because the specified chunk key ('${chunkKey}') does not have a corresponding
+              file at the resolved path. This typically happens if:
+
+              1. The 'entry' field in your rechunk.json is incorrect or missing for the chunk key '${chunkKey}'.
+              2. The file path specified for the chunk key '${chunkKey}' is invalid or the file has been moved or deleted.
+              3. The working directory of your build process has changed, causing the resolved path to be incorrect.
+
+              To resolve this issue:
+              1. Open your rechunk.json file and ensure that the 'entry' field for '${chunkKey}' points to a valid
+                 file path relative to the project root.
+                 Example:
+                 {
+                   "entry": {
+                     "${chunkKey}": "./src/components/MyComponent.ts"
+                   }
+                 }
+              2. Verify that the file exists at the specified path and is correctly named.
+              3. If the file path is correct, ensure that your build process is running in the correct working directory.
+                 For example, the current working directory should be the root of your project.
+
+              For more information about configuring rechunk.json, refer to the ReChunk documentation.
+            `),
+            );
+          }
+
+          // Calculate the relative path from the current file to the target file
+          const relativePath = path.relative(
+            path.dirname(currentFilePath),
+            targetFilePath,
+          );
+
+          // Update the arguments with the new relative path
+          node.arguments = [t.stringLiteral(relativePath)];
+        }
+      },
+      /**
        * Visits MemberExpression nodes and inserts the rechunk project and readKey
        * as a configuration object argument into process.env.__RECHUNK_USERNAME__
        * and process.env.__RECHUNK_PASSWORD__.
@@ -145,7 +293,10 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
        * @param {Babel.types.MemberExpression} path.node - The current AST node member.
        * @param {Babel.NodePath<Babel.types.Node>} path.parentPath - The parent path of the current AST node member.
        */
-      MemberExpression({node, parentPath: parent}) {
+      MemberExpression({
+        node,
+        parentPath: parent,
+      }: Babel.NodePath<Babel.types.MemberExpression>) {
         // Check if the MemberExpression is accessing process.env
         if (
           !t.isIdentifier(node.object, {name: NODE_PROCESS_IDENTIFIER}) ||
@@ -191,11 +342,34 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
           }) &&
           !parent.parentPath?.isAssignmentExpression()
         ) {
-          parent.replaceWith(
-            isRechunkDevServerRunning()
-              ? t.stringLiteral(RECHUNK_DEV_SERVER_HOST)
-              : t.stringLiteral(host),
-          );
+          if (
+            process.env.RECHUNK_ENVIRONMENT === 'prod' ||
+            !process.env.RECHUNK_ENVIRONMENT
+          ) {
+            parent.replaceWith(t.stringLiteral(host));
+          }
+
+          if (process.env.RECHUNK_ENVIRONMENT === 'dev') {
+            if (!isRechunkDevServerRunning())
+              throw Error(
+                chalk.yellow(dedent`\n\nRECHUNK_ENVIRONMENT is set to "dev", but no development server was detected.
+
+                To use the "dev" environment, please ensure that the development server is running.
+                You can start it by executing the following command:
+
+                    rechunk dev-server
+
+                If you intended to use a different environment:
+                - Set RECHUNK_ENVIRONMENT to "prod" to fetch components from a remote server using 'rechunk.json'.
+                - Set RECHUNK_ENVIRONMENT to "offline" to load components directly without a server connection.
+
+                For example:
+                    export RECHUNK_ENVIRONMENT="prod"   # For remote server
+                    export RECHUNK_ENVIRONMENT="offline"  # For offline mode`),
+              );
+
+            parent.replaceWith(t.stringLiteral(RECHUNK_DEV_SERVER_HOST));
+          }
         }
 
         // Replace process.env.__RECHUNK_GLOBAL__ with the rechunk host

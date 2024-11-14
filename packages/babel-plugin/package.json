@@ -16,7 +16,9 @@
   },
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@babel/core": "^7.25.2"
+    "@babel/core": "^7.25.2",
+    "chalk": "^4.0.0",
+    "dedent": "^1.5.3"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
