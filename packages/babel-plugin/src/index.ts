@@ -4,7 +4,7 @@ import dedent from 'dedent';
 import {existsSync, readFileSync} from 'fs';
 import path, {dirname, resolve} from 'path';
 
-import {findWorkspaceDir, nonWindowsCall} from './lib';
+import {getCacheVersion, isRechunkDevServerRunning} from './lib';
 
 /**
  * Identifier used to represent the Node.js `process` object in the plugin.
@@ -42,50 +42,6 @@ const EXTRA_DEPENDENCIES = ['tslib'];
  * The default host used by the Rechunk development server.
  */
 const RECHUNK_DEV_SERVER_HOST = 'http://localhost:49904';
-
-/**
- * The identifier for Node.js processes, used to filter processes running on the system.
- */
-const NODE_IDENTIFIER = 'node';
-
-/**
- * The relative path to the `node_modules` directory.
- */
-const NODE_MODULES_RELATIVE_PATH = './node_modules';
-
-/**
- * The command used to start the Rechunk development server.
- */
-const RECHUNK_DEV_SERVER_COMMAND = 'rechunk dev-server';
-
-/**
- * Checks if the Rechunk development server is currently running.
- *
- * @returns {boolean} - Returns `true` if the Rechunk development server is running, otherwise `false`.
- *
- * @remarks
- * - This function checks the list of processes running on the system, specifically
- *   searching for processes that match the command for running the Rechunk development server.
- * - The check includes processes that either start with `node ./node_modules` or `node <workspaceDir>`.
- *
- * @example
- * ```typescript
- * const isRunning = isRechunkDevServerRunning();
- * console.log(isRunning); // true or false
- * ```
- */
-function isRechunkDevServerRunning(): boolean {
-  const processes = nonWindowsCall();
-  const workspaceDir = findWorkspaceDir(process.cwd());
-
-  return processes.some(
-    it =>
-      typeof it.cmd === 'string' &&
-      it.cmd.includes(RECHUNK_DEV_SERVER_COMMAND) &&
-      (it.cmd.startsWith(`${NODE_IDENTIFIER} ${NODE_MODULES_RELATIVE_PATH}`) ||
-        it.cmd.startsWith(`${NODE_IDENTIFIER} ${workspaceDir}`)),
-  );
-}
 
 export default function ({types: t}: typeof Babel): Babel.PluginObj {
   /**
@@ -434,3 +390,23 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
     },
   };
 }
+
+/**
+ * Cache version string generated for the Metro Bundler.
+ *
+ * @remarks
+ * This constant is derived by calling the `getCacheVersion` function, which generates
+ * a deterministic hash based on:
+ * - The last modified time of the `rechunk.json` file.
+ * - The `RECHUNK_ENVIRONMENT` environment variable.
+ * - The running status of the Rechunk development server.
+ *
+ * The cache version helps ensure that Metro uses the correct cache when bundling,
+ * avoiding stale or inconsistent builds.
+ *
+ * @example
+ * ```typescript
+ * console.log(cacheVersion); // e.g., "3d94d1c0f..."
+ * ```
+ */
+export const cacheVersion = getCacheVersion();
