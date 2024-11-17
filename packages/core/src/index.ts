@@ -7,14 +7,16 @@ import './polyfill';
 import {TinyEmitter} from 'tiny-emitter';
 
 import {ChunkManager} from './ChunkManager';
-import type {Configuration} from './types';
+import type {Configuration, ValidateReChunkEntry} from './types';
 
 /**
  * Asynchronously imports a chunk using the shared ChunkManager instance.
  * @param {string} chunkId - The ID of the chunk to import.
  * @returns {Promise<*>} A promise resolving to the imported JavaScript component.
  */
-export async function importChunk(chunkId: string): Promise<any> {
+export async function importChunk<T extends string>(
+  chunkId: ValidateReChunkEntry<T>,
+): Promise<any> {
   // Using shared ChunkManager instance to import the chunk
   return ChunkManager.shared.importChunk(chunkId);
 }
