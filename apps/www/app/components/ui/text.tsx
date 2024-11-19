@@ -10,7 +10,7 @@ export function H1({className, children, ...props}: H1Props) {
   return (
     <h1
       className={cn(
-        'scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-6xl',
+        'scroll-m-20 text-6xl font-extrabold tracking-tight lg:text-8xl',
         className,
       )}
       {...props}>
