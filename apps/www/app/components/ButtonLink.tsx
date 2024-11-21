@@ -61,6 +61,8 @@ export function ButtonLink({
       <Button>{sharedContent}</Button>
     </a>
   ) : (
-    <Button>{sharedContent}</Button>
+    <a href={to} className="flex items-center" aria-label={label} role="button">
+      <Button>{sharedContent}</Button>
+    </a>
   );
 }

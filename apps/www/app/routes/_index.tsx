@@ -8,12 +8,6 @@ import Iphone15Pro from '~/components/ui/iphone-15-pro';
 import Safari from '~/components/ui/safari';
 import * as Text from '~/components/ui/text';
 import {ShinyDiv} from '~/components/ui/shiny-div';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '~/components/ui/tooltip';
 import {useEffect} from 'react';
 import {ButtonLink} from '~/components/ButtonLink';
 
@@ -67,20 +61,11 @@ export default function Index() {
 
         {/* Call to Actions */}
         <div className="flex flex-row gap-4 justify-center mt-6 opacity-0 animate-opacity">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <ButtonLink
-                  to="/chunks"
-                  label="Get Started"
-                  icon={<CaretRightIcon className="size-5" />}
-                />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Coming Soon</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <ButtonLink
+            to="/chunks"
+            label="Get Started"
+            icon={<CaretRightIcon className="size-5" />}
+          />
           <ButtonLink
             to="https://crherman7.github.io/rechunk/"
             label="Docs"
@@ -97,6 +82,7 @@ export default function Index() {
           className="absolute w-full bottom-0 pointer-events-none">
           <Safari
             url="https://rechunk.xyz"
+            src="/screenshot_browser.png"
             className="mx-auto relative w-[80vw] h-[100vh] inset-y-[450px] sm:h-[90vh] sm:inset-y-[500px]"
           />
         </div>
@@ -105,7 +91,7 @@ export default function Index() {
           className="absolute w-full bottom-0 pointer-events-none">
           <Iphone15Pro
             className="mx-auto relative w-[30vw] h-[100vh] inset-y-[400px] inset-x-[27vw] sm:inset-y-[450px]"
-            src="/screenshot.png"
+            src="/screenshot_mobile.png"
           />
         </div>
       </div>

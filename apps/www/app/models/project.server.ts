@@ -43,3 +43,33 @@ export async function getProjectById(id: string): Promise<Project | null> {
     where: {id},
   });
 }
+
+/**
+ * Verifies the provided project credentials and returns the project ID if valid.
+ *
+ * @param id - The unique identifier of the project to verify.
+ * @param writeKey - The write key associated with the project for authentication.
+ * @returns The project ID if the credentials are valid, or `null` if invalid.
+ *
+ * @example
+ * ```typescript
+ * const projectId = await getVerifiedProjectId('project-id', 'write-key');
+ * if (projectId) {
+ *   console.log('Authentication successful:', projectId);
+ * } else {
+ *   console.log('Invalid project credentials');
+ * }
+ * ```
+ */
+export async function getVerifiedProjectId(
+  id: string,
+  writeKey: string,
+): Promise<string | null> {
+  const project = await prisma.project.findUnique({where: {id}});
+
+  if (!project) {
+    return null;
+  }
+
+  return project.writeKey === writeKey ? project.id : null;
+}

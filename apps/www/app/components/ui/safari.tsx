@@ -1,4 +1,4 @@
-import { SVGProps } from "react";
+import {SVGProps} from 'react';
 
 export interface SafariProps extends SVGProps<SVGSVGElement> {
   url?: string;
@@ -21,8 +21,7 @@ export default function Safari({
       viewBox={`0 0 ${width} ${height}`}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+      {...props}>
       <g clipPath="url(#path0)">
         <path
           d="M0 52H1202V741C1202 747.627 1196.63 753 1190 753H12C5.37258 753 0 747.627 0 741V52Z"
@@ -74,8 +73,7 @@ export default function Safari({
             y="30"
             fill="#A3A3A3"
             fontSize="12"
-            fontFamily="Arial, sans-serif"
-          >
+            fontFamily="Arial, sans-serif">
             {url}
           </text>
         </g>
@@ -127,15 +125,7 @@ export default function Safari({
             fill="#A3A3A3"
           />
         </g>
-        <image
-          href={src}
-          width="1200"
-          height="700"
-          x="1"
-          y="52"
-          preserveAspectRatio="xMidYMid slice"
-          clipPath="url(#roundedBottom)"
-        />
+        <image href={src} width="1200" height="700" x="1" y="15" />
       </g>
       <defs>
         <clipPath id="path0">
