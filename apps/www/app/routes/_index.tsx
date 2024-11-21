@@ -7,7 +7,6 @@ import {GridPattern} from '~/components/ui/grid-pattern';
 import Iphone15Pro from '~/components/ui/iphone-15-pro';
 import Safari from '~/components/ui/safari';
 import * as Text from '~/components/ui/text';
-import {Button} from '~/components/ui/button';
 import {ShinyDiv} from '~/components/ui/shiny-div';
 import {
   Tooltip,
@@ -16,6 +15,7 @@ import {
   TooltipTrigger,
 } from '~/components/ui/tooltip';
 import {useEffect} from 'react';
+import {ButtonLink} from '~/components/ButtonLink';
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,7 +26,7 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   useEffect(() => {
-    animate('#myElement', {opacity: 1}, {delay: stagger(0.2)});
+    animate('.animate-opacity', {opacity: 1}, {delay: stagger(0.2)});
   }, []);
 
   return (
@@ -46,7 +46,7 @@ export default function Index() {
 
       {/* Main Content */}
       <main className="flex flex-col items-center px-6 py-6 mt-6">
-        <ShinyDiv id="myElement" className="mb-12 rounded-full opacity-0">
+        <ShinyDiv className="mb-12 rounded-full opacity-0 animate-opacity">
           <div className="flex flex-row justify-center items-center gap-3">
             <p>🎉</p>
             <div className="h-4 w-[0.1px] bg-gray-300" />
@@ -55,12 +55,10 @@ export default function Index() {
             </Text.Small>
           </div>
         </ShinyDiv>
-        <Text.H1 id="myElement" className="text-center opacity-0">
+        <Text.H1 className="text-center opacity-0 animate-opacity">
           Launch without limits.
         </Text.H1>
-        <Text.P
-          id="myElement"
-          className="text-center font-thin mt-6 max-w-2xl opacity-0">
+        <Text.P className="text-center font-thin mt-6 max-w-2xl opacity-0 animate-opacity">
           Effortlessly bundle, sign, and serve code with blazing-fast
           performance and built-in security. Simplify your React Native
           app&apos;s lifecycle with modular delivery and dynamic updates that
@@ -68,9 +66,7 @@ export default function Index() {
         </Text.P>
 
         {/* Call to Actions */}
-        <div
-          id="myElement"
-          className="flex flex-row gap-4 justify-center mt-6 opacity-0">
+        <div className="flex flex-row gap-4 justify-center mt-6 opacity-0 animate-opacity">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -95,7 +91,7 @@ export default function Index() {
       </main>
 
       {/* Visual Elements */}
-      <div id="myElement" className="opacity-0">
+      <div className="opacity-0 animate-opacity">
         <div
           aria-hidden="true"
           className="absolute w-full bottom-0 pointer-events-none">
@@ -114,40 +110,5 @@ export default function Index() {
         </div>
       </div>
     </div>
-  );
-}
-
-/**
- * ButtonLink Component
- * Reusable component for navigation buttons.
- */
-function ButtonLink({
-  to,
-  label,
-  icon,
-  external = false,
-}: {
-  to: string;
-  label: string;
-  icon?: React.ReactNode;
-  external?: boolean;
-}) {
-  return external ? (
-    <a
-      href={to}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center"
-      aria-label={label}>
-      <Button>
-        <Text.P>{label}</Text.P>
-        {icon}
-      </Button>
-    </a>
-  ) : (
-    <Button>
-      <Text.P>{label}</Text.P>
-      {icon}
-    </Button>
   );
 }
