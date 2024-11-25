@@ -49,6 +49,22 @@ async function main(): Promise<void> {
     },
   });
 
+  const items = Array.from({length: 10}, (_, index) => ({
+    id: `chunk-${index + 1}`,
+    projectId: 'cm38wkhur0000yseh1beq2hpx',
+    data: `"use strict";var React=require("react"),ReactNative=require("react-native");function CustomComponent${index + 1}({label,onPress,style}){return React.createElement(ReactNative.TouchableOpacity,{onPress,onPress,style:[styles.button,style]},React.createElement(ReactNative.Text,{style:styles.label},label));}const styles=ReactNative.StyleSheet.create({button:{backgroundColor:"#007BFF",borderRadius:8,padding:10},label:{color:"#FFF",fontSize:16,textAlign:"center"}});module.exports=CustomComponent${index + 1};`,
+  }));
+
+  for (const i of items) {
+    await prisma.chunk.create({
+      data: {
+        id: i.id,
+        projectId: i.projectId,
+        data: i.data,
+      },
+    });
+  }
+
   // Log the seeded project's ID for confirmation
   console.log(`Seeded ${project.id} project`);
 }

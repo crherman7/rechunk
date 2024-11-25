@@ -1,6 +1,7 @@
 import type {ActionFunction, LoaderFunction} from '@remix-run/node';
 import {json} from '@remix-run/node';
 import crypto from 'crypto';
+import {KEYUTIL, KJUR, RSAKey} from 'jsrsasign';
 
 import {
   createOrUpdateChunk,
@@ -10,6 +11,25 @@ import {
 import {getProjectById} from '~/models/project.server';
 import {requireReadAccess, requireWriteAccess} from '~/utils/auth';
 import {handleError} from '~/utils/error';
+
+/**
+ * Generates a signed token for the chunk using the private key.
+ *
+ * @param code - The bundled code for which to generate the token.
+ * @param privateKey - The private key to sign the token.
+ * @returns The signed token.
+ */
+function generateToken(code: string, privateKey: string): string {
+  const prvKey = KEYUTIL.getKey(privateKey) as RSAKey;
+  const sPayload = crypto.createHash('sha256').update(code).digest('hex');
+
+  return KJUR.jws.JWS.sign(
+    'RS256',
+    JSON.stringify({alg: 'RS256'}),
+    sPayload,
+    prvKey,
+  );
+}
 
 export const loader: LoaderFunction = async ({params, request}) => {
   try {
@@ -26,13 +46,13 @@ export const loader: LoaderFunction = async ({params, request}) => {
       return json({error: 'Project or chunk not found'}, {status: 404});
     }
 
-    const hash = crypto.createHash('sha256').update(chunk.data).digest('hex');
-    const sig = crypto
-      .createSign('SHA256')
-      .update(hash)
-      .sign(project.privateKey, 'base64');
-
-    return json({data: chunk.data, sig, hash}, {status: 200});
+    return json(
+      {
+        data: chunk.data,
+        token: generateToken(chunk.data, project.privateKey),
+      },
+      {status: 200},
+    );
   } catch (error) {
     return handleError(error);
   }
@@ -49,8 +69,7 @@ export const action: ActionFunction = async ({params, request}) => {
     const method = request.method.toUpperCase();
 
     if (method === 'POST') {
-      const formData = await request.json();
-      const data = formData.data;
+      const data = await request.json();
       if (typeof data !== 'string') {
         return json({error: 'Invalid data format'}, {status: 400});
       }

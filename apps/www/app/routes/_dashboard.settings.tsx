@@ -24,6 +24,7 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
     },
   });
 };
+
 export default function Settings() {
   const {project} = useLoaderData<typeof loader>();
 
@@ -32,22 +33,22 @@ export default function Settings() {
       initial={{opacity: 0}}
       animate={{opacity: 1}}
       transition={{duration: 1}}
-      className="space-y-6 overflow-x-auto p-10">
-      <div className="space-y-0.5">
+      className="overflow-x-auto py-6">
+      <div className="pb-1 pl-4">
         <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
-        <p className="text-sm text-muted-foreground">
-          Manage your account settings.
+        <p className="text-xs text-muted-foreground">
+          View your account settings
         </p>
       </div>
-      <Separator className="my-6" />
-      <div className="space-y-4">
+      <Separator className="mb-6" />
+      <div className="space-y-4 pl-4">
         <h3 className="text-xl font-bold tracking-tight">Project</h3>
         <LabeledInput label="Identifier" value={project.id} />
         <LabeledInput label="Created At" value={project.createdAtFormatted} />
         <LabeledInput label="Updated At" value={project.updatedAtFormatted} />
       </div>
       <Separator className="my-6" />
-      <div className="space-y-4 pr-4">
+      <div className="space-y-4 pl-4 pr-4">
         <h3 className="text-xl font-bold tracking-tight">
           Authentication Keys
         </h3>
@@ -55,7 +56,7 @@ export default function Settings() {
         <LabeledInput label="Write Key" value={project.writeKey} />
       </div>
       <Separator className="my-6" />
-      <div className="space-y-4">
+      <div className="space-y-4 pl-4">
         <h3 className="text-xl font-bold tracking-tight">Cryptographic Keys</h3>
         <LabeledTextarea label="Public Key" value={project.publicKey} />
         <LabeledTextarea label="Private Key" value={project.privateKey} />

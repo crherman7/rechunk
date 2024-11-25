@@ -27,7 +27,6 @@ export function Header({disableIcon = false}: HeaderProps) {
             </a>
           </div>
         )}
-
         <h1 className="ml-4 font-pixelify text-2xl">ReChunk</h1>
       </div>
       <div className="flex flex-row items-center">
@@ -37,7 +36,7 @@ export function Header({disableIcon = false}: HeaderProps) {
             size="icon"
             className="rounded-lg hover:bg-muted"
             aria-label="Settings">
-            <GitHubLogoIcon className="size-5" />
+            <GitHubLogoIcon className="size-4" />
           </Button>
         </a>
         <a href="https://discord.gg/xFhuxjwhss">
@@ -46,7 +45,7 @@ export function Header({disableIcon = false}: HeaderProps) {
             size="icon"
             className="rounded-lg hover:bg-muted"
             aria-label="Settings">
-            <DiscordLogoIcon className="size-5" />
+            <DiscordLogoIcon className="size-4" />
           </Button>
         </a>
         {!!projectId && (
@@ -57,7 +56,7 @@ export function Header({disableIcon = false}: HeaderProps) {
               size="icon"
               className="rounded-lg hover:bg-muted"
               aria-label="Settings">
-              <ExitIcon className="size-5" />
+              <ExitIcon className="size-4" />
             </Button>
           </Form>
         )}

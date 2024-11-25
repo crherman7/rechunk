@@ -1,3 +1,4 @@
+import {Chunk} from '@prisma/client';
 import {useMatches} from '@remix-run/react';
 import {useMemo} from 'react';
 
@@ -51,4 +52,64 @@ export function useProjectId(): string | undefined {
   }
 
   return data.projectId as string;
+}
+
+/**
+ * Custom hook to retrieve a single chunk by its ID from the route loader data.
+ *
+ * This hook extracts the `chunks` array from the specified route loader data,
+ * checks its validity, and searches for a chunk with a matching `chunkId`.
+ *
+ * @param {string} chunkId - The ID of the chunk to retrieve.
+ * @returns {Chunk | undefined} The matching chunk if found, or `undefined` if not.
+ *
+ * @example
+ * ```tsx
+ * const chunk = useChunk('chunk-id-123');
+ * if (chunk) {
+ *   console.log(chunk.data); // Output the chunk's data
+ * }
+ * ```
+ */
+export function useChunk(chunkId: string): Chunk | undefined {
+  // Replace with your actual route ID
+  const data = useMatchesData('routes/_dashboard.chunks');
+
+  // Ensure data is available and `chunks` is an array
+  if (!data?.chunks || !Array.isArray(data.chunks)) {
+    return undefined;
+  }
+
+  // Safely find and return the chunk with the matching ID
+  return data.chunks.find(
+    (item): item is Chunk =>
+      item && typeof item === 'object' && item.id === chunkId,
+  );
+}
+
+/**
+ * A custom hook that retrieves an array of chunk IDs from the `routes/_dashboard.chunks` match data.
+ * This hook uses the `useMatchesData` utility to access route-specific data and extracts the `id` property
+ * from the `chunks` array if it exists.
+ *
+ * @returns {string[] | undefined} An array of chunk IDs if available, otherwise `undefined`.
+ *
+ * @example
+ * ```tsx
+ * const chunkIds = useChunkIds();
+ * if (chunkIds) {
+ *   console.log('Chunk IDs:', chunkIds);
+ * } else {
+ *   console.log('No chunks found');
+ * }
+ * ```
+ */
+export function useChunkIds(): string[] | undefined {
+  const data = useMatchesData('routes/_dashboard.chunks');
+
+  if (!data?.chunks || !Array.isArray(data.chunks)) {
+    return undefined;
+  }
+
+  return data.chunks.map(it => it.id);
 }

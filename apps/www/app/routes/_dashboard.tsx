@@ -1,4 +1,4 @@
-import {GearIcon, TokensIcon} from '@radix-ui/react-icons';
+import {GearIcon, LayersIcon} from '@radix-ui/react-icons';
 import {json, LoaderFunctionArgs} from '@remix-run/node';
 import {Outlet} from '@remix-run/react';
 
@@ -21,7 +21,7 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
 export default function Dashboard() {
   return (
     <div className="grid h-screen grid-cols-1">
-      <aside className="inset-y fixed flex h-full w-[56px] flex-col border-r">
+      <aside className="inset-y fixed z-20 flex h-full w-[56px] flex-col border-r bg-white">
         <div className="h-[57px] border-b p-2">
           <a href="/">
             <Button variant="outline" size="icon" aria-label="Home">
@@ -39,7 +39,7 @@ export default function Dashboard() {
                     size="icon"
                     className="rounded-lg hover:bg-muted"
                     aria-label="Chunks">
-                    <TokensIcon className="size-5" />
+                    <LayersIcon className="size-4" />
                   </Button>
                 </a>
               </TooltipTrigger>
@@ -55,7 +55,7 @@ export default function Dashboard() {
                     size="icon"
                     className="rounded-lg hover:bg-muted"
                     aria-label="Editor">
-                    <Pencil1Icon className="size-5" />
+                    <Pencil1Icon className="size-4" />
                   </Button>
                 </a>
               </TooltipTrigger>
@@ -71,7 +71,7 @@ export default function Dashboard() {
                     size="icon"
                     className="rounded-lg hover:bg-muted"
                     aria-label="Settings">
-                    <GearIcon className="size-5" />
+                    <GearIcon className="size-4" />
                   </Button>
                 </a>
               </TooltipTrigger>
