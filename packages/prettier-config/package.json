@@ -10,6 +10,10 @@
     "./base": {
       "types": "./dist/base.d.ts",
       "require": "./dist/base.js"
+    },
+    "./remix": {
+      "types": "./dist/remix.d.ts",
+      "require": "./dist/remix.js"
     }
   },
   "scripts": {
@@ -17,6 +21,7 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.9"
   }
 }

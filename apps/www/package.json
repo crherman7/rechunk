@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
     "@remix-run/dev": "^2.10.0",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
