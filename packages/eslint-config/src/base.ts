@@ -22,7 +22,7 @@ export = defineConfig({
       files: ['*.js?(x)', '*.ts?(x)'],
     },
   ],
-  ignorePatterns: ['node_modules/', 'dist/', '__tests__/'],
+  ignorePatterns: ['node_modules/', 'dist/', '__tests__/', 'build/'],
   rules: {
     /*
      * base
