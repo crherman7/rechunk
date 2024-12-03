@@ -125,7 +125,7 @@ export default function Safari({
             fill="#A3A3A3"
           />
         </g>
-        <image href={src} width="1200" height="700" x="1" y="15" />
+        <image href={src} width="1200" height="700" x="1" y="13" />
       </g>
       <defs>
         <clipPath id="path0">

@@ -14,7 +14,10 @@ import * as Text from '~/components/ui/text';
 export const meta: MetaFunction = () => {
   return [
     {title: 'ReChunk | Remote Chunks'},
-    {name: 'description', content: 'Welcome to ReChunk!'},
+    {
+      name: 'description',
+      content: 'Seamless Code Chunking for Optimized React Native Apps.',
+    },
   ];
 };
 

@@ -1,4 +1,4 @@
-import {ActionFunction, redirect} from '@remix-run/node';
+import {ActionFunction, MetaFunction, redirect} from '@remix-run/node';
 import {useParams} from '@remix-run/react';
 import {format} from 'date-fns/format';
 
@@ -15,6 +15,17 @@ import {DATE_FORMAT} from '~/lib/constants';
 import {deleteChunkById} from '~/models/chunk.server';
 import {requireProjectId} from '~/session.server';
 import {useChunk, useChunkIds} from '~/utils/data';
+
+export const meta: MetaFunction = ({params}) => {
+  return [
+    {title: `Rechunk | Chunk ${params?.chunkId}`},
+    {
+      name: 'description',
+      content:
+        'Retrieve detailed information about a specific chunk within a project.',
+    },
+  ];
+};
 
 export const action: ActionFunction = async ({request}) => {
   const projectId = await requireProjectId(request);
@@ -60,7 +71,7 @@ export default function Chunk() {
             </div>
           </div>
         </div>
-        <ScrollArea className="h-[calc(100vh-140px)]">
+        <ScrollArea className="h-[calc(100vh-132px)]">
           <div className="space-y-4 px-4 py-2">
             <h3 className="text-xl font-bold tracking-tight">Metadata</h3>
             <LabeledInput

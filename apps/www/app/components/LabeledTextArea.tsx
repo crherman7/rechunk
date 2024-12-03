@@ -13,7 +13,7 @@ export const LabeledTextarea = ({
     <p className="text-sm text-muted-foreground">{label}</p>
     <AutoResizeTextarea
       disabled
-      className={`pointer-events-none w-fit min-w-[525px] resize-none font-mono text-xs text-slate-500 ${className}`}
+      className={`pointer-events-none w-fit min-w-[525px] resize-none font-mono text-[10px] text-slate-500 ${className}`}
       value={value}
     />
   </div>

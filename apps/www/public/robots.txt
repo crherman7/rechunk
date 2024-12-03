@@ -1,0 +1,16 @@
+# robots.txt for ReChunk Remix App
+
+# Allow all robots to crawl the site
+User-agent: *
+Disallow:
+
+# Disallow crawling of specific sensitive or internal areas
+Disallow: /api/v1/
+
+# Allow specific assets to be crawled
+Allow: /public/
+Allow: /chunks/
+Allow: /settings/
+
+# Specify the location of the sitemap
+Sitemap: https://rechunk.xyz/sitemap.xml

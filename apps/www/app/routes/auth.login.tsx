@@ -2,6 +2,7 @@ import {
   ActionFunctionArgs,
   json,
   LoaderFunctionArgs,
+  MetaFunction,
   redirect,
 } from '@remix-run/node';
 import {Form, useActionData} from '@remix-run/react';
@@ -31,6 +32,17 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
   if (userId) return redirect('/chunks');
 
   return json({});
+};
+
+export const meta: MetaFunction = () => {
+  return [
+    {title: 'Rechunk | Login'},
+    {
+      name: 'description',
+      content:
+        'Log in to access your personalized dashboard and manage your data efficiently.',
+    },
+  ];
 };
 
 export const action = async ({request}: ActionFunctionArgs) => {

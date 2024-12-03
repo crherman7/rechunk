@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Root Route -->
+  <url>
+    <loc>https://rechunk.xyz/</loc>
+    <lastmod>2024-12-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Dashboard Child Routes -->
+  <url>
+    <loc>https://rechunk.xyz/chunks</loc>
+    <lastmod>2024-12-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rechunk.xyz/settings</loc>
+    <lastmod>2024-12-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://rechunk.xyz/editor</loc>
+    <lastmod>2024-12-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Auth Routes -->
+  <url>
+    <loc>https://rechunk.xyz/auth/login</loc>
+    <lastmod>2024-12-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://rechunk.xyz/auth/logout</loc>
+    <lastmod>2024-12-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- API Routes -->
+  <url>
+    <loc>https://rechunk.xyz/api/v1/livez</loc>
+    <lastmod>2024-12-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://rechunk.xyz/api/v1/readyz</loc>
+    <lastmod>2024-12-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://rechunk.xyz/api/v1/projects</loc>
+    <lastmod>2024-12-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://rechunk.xyz/api/v1/projects/:projectId</loc>
+    <lastmod>2024-12-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://rechunk.xyz/api/v1/projects/:projectId/chunks</loc>
+    <lastmod>2024-12-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://rechunk.xyz/api/v1/projects/:projectId/chunks/:chunkId</loc>
+    <lastmod>2024-12-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+</urlset>

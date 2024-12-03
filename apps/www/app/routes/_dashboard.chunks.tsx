@@ -1,4 +1,4 @@
-import {json, LoaderFunctionArgs} from '@remix-run/node';
+import {json, LoaderFunctionArgs, MetaFunction} from '@remix-run/node';
 import {Outlet, useLoaderData, useParams} from '@remix-run/react';
 import {motion} from 'framer-motion';
 
@@ -22,6 +22,17 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
   });
 };
 
+export const meta: MetaFunction<typeof loader> = ({data}) => {
+  return [
+    {title: `Rechunk | Project ${data?.projectId}`},
+    {
+      name: 'description',
+      content:
+        'Explore and manage your data chunks effortlessly with our intuitive interface.',
+    },
+  ];
+};
+
 export default function Chunks() {
   const {projectId, chunks} = useLoaderData<typeof loader>();
   const {chunkId} = useParams();
@@ -39,7 +50,7 @@ export default function Chunks() {
               Project <span className="font-mono text-xs">{projectId}</span>
             </p>
           </div>
-          <ScrollArea className="h-[calc(100vh-140px)] px-4">
+          <ScrollArea className="h-[calc(100vh-132px)] px-4">
             {!chunks.length && (
               <p className="text text-muted-foreground">No chunks published</p>
             )}

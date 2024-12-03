@@ -1,4 +1,4 @@
-import {json, LoaderFunctionArgs} from '@remix-run/node';
+import {json, LoaderFunctionArgs, MetaFunction} from '@remix-run/node';
 import {useLoaderData} from '@remix-run/react';
 import {motion} from 'framer-motion';
 
@@ -23,6 +23,17 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
         : '',
     },
   });
+};
+
+export const meta: MetaFunction = () => {
+  return [
+    {title: 'Rechunk | Settings'},
+    {
+      name: 'description',
+      content:
+        'Configure your dashboard settings and customize your experience to fit your needs.',
+    },
+  ];
 };
 
 export default function Settings() {

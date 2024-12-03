@@ -22,7 +22,7 @@ export function Header({disableIcon = false}: HeaderProps) {
           <div className="h-[57px] w-[56px] border-r p-2">
             <a href="/">
               <Button variant="outline" size="icon" aria-label="Home">
-                <img className="p-[6px]" src="/logo.svg" alt="" />
+                <img className="p-[6px]" src="/favicon.png" alt="" />
               </Button>
             </a>
           </div>
