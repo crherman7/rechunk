@@ -9,10 +9,10 @@ export const LabeledInput = ({
   value: string | undefined;
   className?: string;
 }) => (
-  <div className="space-y-0.5 w-fit min-w-[350px]">
+  <div className="w-fit min-w-[350px] space-y-0.5">
     <p className="text-sm text-muted-foreground">{label}</p>
     <Input
-      className={`w-full text-xs pointer-events-none ${className}`}
+      className={`pointer-events-none w-full text-xs ${className}`}
       disabled
       placeholder={value || ''}
     />

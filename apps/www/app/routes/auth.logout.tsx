@@ -1,4 +1,5 @@
 import {ActionFunctionArgs, redirect} from '@remix-run/node';
+
 import {logout} from '~/session.server';
 
 /**

@@ -1,14 +1,14 @@
-import {Form, useActionData} from '@remix-run/react';
 import {
   ActionFunctionArgs,
   json,
   LoaderFunctionArgs,
   redirect,
 } from '@remix-run/node';
-import {useEffect} from 'react';
+import {Form, useActionData} from '@remix-run/react';
 import {animate, motion} from 'framer-motion';
+import {useEffect} from 'react';
 
-import {Muted} from '~/components/ui/text';
+import {Header} from '~/components/Header';
 import {Button} from '~/components/ui/button';
 import {
   Card,
@@ -18,13 +18,13 @@ import {
   CardHeader,
   CardTitle,
 } from '~/components/ui/card';
+import {Checkbox} from '~/components/ui/checkbox';
+import {GridPattern} from '~/components/ui/grid-pattern';
 import {Input} from '~/components/ui/input';
 import {Label} from '~/components/ui/label';
-import {createProjectIdSession, getProjectId} from '~/session.server';
-import {Header} from '~/components/Header';
-import {GridPattern} from '~/components/ui/grid-pattern';
+import {Muted} from '~/components/ui/text';
 import {getVerifiedProjectId} from '~/models/project.server';
-import {Checkbox} from '~/components/ui/checkbox';
+import {createProjectIdSession, getProjectId} from '~/session.server';
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
   const userId = await getProjectId(request);
@@ -62,17 +62,17 @@ export default function Login() {
   }, []);
 
   return (
-    <div className="flex flex-col justify-between h-screen">
+    <div className="flex h-screen flex-col justify-between">
       <GridPattern
         width={30}
         height={30}
         x={-1}
         y={-1}
         strokeDasharray="4 2"
-        className="[mask-image:radial-gradient(750px_circle_at_center,white,transparent)] -z-10"
+        className="-z-10 [mask-image:radial-gradient(750px_circle_at_center,white,transparent)]"
       />
       <Header />
-      <div className="flex justify-center opacity-0 animate-opacity">
+      <div className="animate-opacity flex justify-center opacity-0">
         <Form method="post">
           <Card className="w-full max-w-sm">
             <CardHeader>
@@ -105,7 +105,7 @@ export default function Login() {
                   placeholder="write-1b05d860-6100-412b-b527-bc5a9d0b2059"
                 />
               </div>
-              <div className="items-top flex space-x-2 items-center">
+              <div className="items-top flex items-center space-x-2">
                 <Checkbox id="remember" name="remember" />
                 <div className="grid gap-1.5 leading-none">
                   <label
@@ -121,7 +121,7 @@ export default function Login() {
                   animate={{opacity: 1}}
                   transition={{duration: 1}}
                   className="px-1">
-                  <Muted className="text-red-500 text-xs">
+                  <Muted className="text-xs text-red-500">
                     {actionData.error}
                   </Muted>
                 </motion.div>

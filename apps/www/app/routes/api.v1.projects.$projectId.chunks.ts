@@ -1,9 +1,9 @@
 import type {LoaderFunction} from '@remix-run/node';
 import {json} from '@remix-run/node';
 
+import {getChunksByProjectId} from '~/models/chunk.server';
 import {requireReadAccess} from '~/utils/auth';
 import {handleError} from '~/utils/error';
-import {getChunksByProjectId} from '~/models/chunk.server';
 
 export const loader: LoaderFunction = async ({params, request}) => {
   try {

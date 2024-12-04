@@ -1,9 +1,9 @@
 import type {ActionFunction} from '@remix-run/node';
 import {json} from '@remix-run/node';
 
+import {createProject} from '~/models/project.server';
 import {requireBasicAuth} from '~/utils/auth';
 import {handleError} from '~/utils/error';
-import {createProject} from '~/models/project.server';
 
 export const action: ActionFunction = async ({request}) => {
   try {

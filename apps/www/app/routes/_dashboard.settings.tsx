@@ -32,7 +32,7 @@ export default function Settings() {
       initial={{opacity: 0}}
       animate={{opacity: 1}}
       transition={{duration: 1}}
-      className="space-y-6 p-10 overflow-x-auto">
+      className="space-y-6 overflow-x-auto p-10">
       <div className="space-y-0.5">
         <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
         <p className="text-sm text-muted-foreground">

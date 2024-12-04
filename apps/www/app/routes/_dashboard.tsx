@@ -1,8 +1,8 @@
-import {TokensIcon, GearIcon} from '@radix-ui/react-icons';
+import {GearIcon, TokensIcon} from '@radix-ui/react-icons';
 import {json, LoaderFunctionArgs} from '@remix-run/node';
 import {Outlet} from '@remix-run/react';
-import {Header} from '~/components/Header';
 
+import {Header} from '~/components/Header';
 import {Button} from '~/components/ui/button';
 import {
   Tooltip,
@@ -20,9 +20,9 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
 
 export default function Dashboard() {
   return (
-    <div className="grid grid-cols-1 h-screen">
-      <aside className="inset-y fixed flex h-full flex-col border-r w-[56px]">
-        <div className="border-b p-2 h-[57px]">
+    <div className="grid h-screen grid-cols-1">
+      <aside className="inset-y fixed flex h-full w-[56px] flex-col border-r">
+        <div className="h-[57px] border-b p-2">
           <a href="/">
             <Button variant="outline" size="icon" aria-label="Home">
               <img className="p-[6px]" src="/logo.svg" alt="" />

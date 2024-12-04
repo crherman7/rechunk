@@ -1,9 +1,9 @@
 import type {LoaderFunction} from '@remix-run/node';
 import {json} from '@remix-run/node';
 
+import {getProjectById} from '~/models/project.server';
 import {requireReadAccess} from '~/utils/auth';
 import {handleError} from '~/utils/error';
-import {getProjectById} from '~/models/project.server';
 
 export const loader: LoaderFunction = async ({params, request}) => {
   try {

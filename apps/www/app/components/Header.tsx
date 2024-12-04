@@ -1,8 +1,10 @@
+import {DiscordLogoIcon, ExitIcon, GitHubLogoIcon} from '@radix-ui/react-icons';
 import {Form} from '@remix-run/react';
+
+import {useProjectId} from '~/utils/data';
+
 import {Button} from './ui/button';
 import * as Text from './ui/text';
-import {DiscordLogoIcon, GitHubLogoIcon, ExitIcon} from '@radix-ui/react-icons';
-import {useProjectId} from '~/utils/data';
 
 type HeaderProps = {
   disableIcon?: boolean;
@@ -12,12 +14,12 @@ export function Header({disableIcon = false}: HeaderProps) {
   const projectId = useProjectId();
 
   return (
-    <header className="border-b h-[57px] sticky top-0 flex flex-row items-center justify-between pr-4 backdrop-blur-[10px] z-10">
-      <div className="flex flex-row justify-center items-center">
+    <header className="sticky top-0 z-10 flex h-[57px] flex-row items-center justify-between border-b pr-4 backdrop-blur-[10px]">
+      <div className="flex flex-row items-center justify-center">
         {disableIcon ? (
           <></>
         ) : (
-          <div className="border-r p-2 h-[57px] w-[56px]">
+          <div className="h-[57px] w-[56px] border-r p-2">
             <a href="/">
               <Button variant="outline" size="icon" aria-label="Home">
                 <img className="p-[6px]" src="/logo.svg" alt="" />
@@ -26,9 +28,9 @@ export function Header({disableIcon = false}: HeaderProps) {
           </div>
         )}
 
-        <h1 className="ml-4 text-2xl font-pixelify">ReChunk</h1>
+        <h1 className="ml-4 font-pixelify text-2xl">ReChunk</h1>
       </div>
-      <div className="flex-row flex items-center">
+      <div className="flex flex-row items-center">
         <a href="https://github.com/crherman7/rechunk">
           <Button
             variant="ghost"
@@ -59,10 +61,10 @@ export function Header({disableIcon = false}: HeaderProps) {
             </Button>
           </Form>
         )}
-        <div className="h-4 border-[0.2px] mx-2" />
+        <div className="mx-2 h-4 border-[0.2px]" />
         <a
           href="https://crherman7.github.io/rechunk/"
-          className="pl-2 flex items-center">
+          className="flex items-center pl-2">
           <Text.Small className="text-center">Docs</Text.Small>
         </a>
       </div>

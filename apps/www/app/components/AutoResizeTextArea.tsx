@@ -1,4 +1,5 @@
-import React, {useRef, useEffect, TextareaHTMLAttributes} from 'react';
+import React, {TextareaHTMLAttributes, useEffect, useRef} from 'react';
+
 import {Textarea} from '~/components/ui/textarea'; // Adjust import path as needed
 
 interface AutoResizeTextareaProps
