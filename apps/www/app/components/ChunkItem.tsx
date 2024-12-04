@@ -2,6 +2,7 @@ import {Link} from '@remix-run/react';
 import {format} from 'date-fns';
 import {formatDistanceToNow} from 'date-fns/formatDistanceToNow';
 
+import {DATE_FORMAT} from '~/lib/constants';
 import {cn} from '~/lib/utils';
 
 export interface ChunkItemProps {
@@ -77,7 +78,7 @@ export function ChunkItem({
         </p>
       </div>
       <p className="text-xs text-muted-foreground">
-        {format(new Date(updatedAt), "eeee, MMMM do, yyyy 'at' hh:mm a")}
+        {format(new Date(updatedAt), DATE_FORMAT)}
       </p>
       <p className="font-mono text-xs font-medium text-slate-400">
         {projectId}
