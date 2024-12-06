@@ -218,7 +218,7 @@ async function processOptions(options: RollupOptions) {
   const defaultOptions = {
     external,
     plugins: [
-      getBabelOutputPlugin({...babelConfigOptions}),
+      getBabelOutputPlugin({...babelConfigOptions, filename: options.input}),
       image(),
       typescript({
         compilerOptions: {

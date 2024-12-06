@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "android": "expo start --android",
-    "android:dev": "RECHUNK_ENVIRONMENT=dev expo start --android",
+    "android:dev": "concurrently \"RECHUNK_ENVIRONMENT=dev expo start --android\" \"rechunk dev-server\"",
     "android:offline": "RECHUNK_ENVIRONMENT=offline expo start --android",
     "ios": "expo start --ios",
-    "ios:dev": "RECHUNK_ENVIRONMENT=dev expo start --ios",
+    "ios:dev": "concurrently \"RECHUNK_ENVIRONMENT=dev expo start --ios\" \"rechunk dev-server\"",
     "ios:offline": "RECHUNK_ENVIRONMENT=offline expo start --ios",
     "lint": "pnpm eslint .",
     "lint:fix": "pnpm eslint . --fix",
@@ -20,23 +20,25 @@
   "dependencies": {
     "@crherman7/rechunk": "workspace:*",
     "@crherman7/rechunk-api-client": "workspace:*",
-    "expo": "~50.0.17",
-    "expo-status-bar": "~1.11.1",
-    "react": "18.2.0",
-    "react-native": "0.73.6",
-    "react-native-svg": "^15.6.0",
+    "expo": "~52.0.17",
+    "expo-linear-gradient": "^14.0.1",
+    "expo-status-bar": "~2.0.0",
+    "react": "18.3.1",
+    "react-native": "0.76.3",
     "react-native-card-flip": "^1.0.7",
     "react-native-chart-kit": "^6.12.0",
-    "expo-linear-gradient": "^13.0.2"
+    "react-native-svg": "^15.10.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@crherman7/rechunk-babel-plugin": "workspace:*",
+    "@crherman7/rechunk-cli": "workspace:*",
     "@repo/eslint-config": "workspace:*",
     "@repo/prettier-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@crherman7/rechunk-babel-plugin": "workspace:*",
-    "@crherman7/rechunk-cli": "workspace:*",
-    "@babel/core": "^7.25.2",
-    "@types/react": "~18.2.45",
+    "@types/react": "~18.3.14",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "concurrently": "^9.1.0",
     "typescript": "^5.4.3"
   }
 }

@@ -2,19 +2,15 @@
   "name": "@crherman7/rechunk",
   "version": "2.0.0-rc.12",
   "description": "",
+  "keywords": [],
   "license": "MIT",
   "author": "Chris Herman",
-  "keywords": [],
   "main": "dist/index.js",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org"
-  },
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup",
     "release": "release-it"
   },
-  "types": "dist/index.d.ts",
   "dependencies": {
     "@crherman7/rechunk-api-client": "workspace:*",
     "base-64": "^1.0.0",
@@ -24,17 +20,21 @@
     "tiny-warning": "^1.0.3",
     "tslib": "^2.6.3"
   },
-  "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
-  },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@types/base-64": "^1.0.2",
     "@types/jsrsasign": "^10.5.14",
-    "react": "18.2.0",
-    "react-native": "0.73.6",
+    "react": "18.3.1",
+    "react-native": "0.76.3",
     "release-it": "^17.3.0",
     "typescript": "^5.4.3"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }

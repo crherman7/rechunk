@@ -2,40 +2,50 @@
   "name": "example",
   "version": "2.0.0-rc.12",
   "private": true,
-  "engines": {
-    "node": ">=18"
-  },
   "scripts": {
     "android": "react-native run-android",
+    "android:dev": "concurrently \"react-native run-android --no-packager\" \"pnpm start:dev\" \"rechunk dev-server\"",
+    "android:offline": "concurrently \"react-native run-android --no-packager\" \"pnpm start:offline\"",
     "ios": "react-native run-ios",
+    "ios:dev": "concurrently \"react-native run-ios --no-packager\" \"pnpm start:dev\" \"rechunk dev-server\"",
+    "ios:offline": "concurrently \"react-native run-ios --no-packager\" \"pnpm start:offline\"",
     "lint": "pnpm eslint .",
     "lint:fix": "pnpm eslint . --fix",
-    "start": "react-native start"
+    "start": "react-native start",
+    "start:dev": "RECHUNK_ENVIRONMENT=dev react-native start",
+    "start:offline": "RECHUNK_ENVIRONMENT=offline react-native start"
   },
   "dependencies": {
-    "@crherman7/rechunk-api-client": "workspace:*",
     "@crherman7/rechunk": "workspace:*",
-    "react": "18.2.0",
+    "@crherman7/rechunk-api-client": "workspace:*",
+    "react": "18.3.1",
     "react-error-boundary": "4.0.13",
-    "react-native": "0.73.6",
+    "react-native": "0.76.3",
     "react-native-card-flip": "^1.0.7",
     "react-native-chart-kit": "^6.12.0",
     "react-native-linear-gradient": "^2.8.3",
-    "react-native-svg": "^15.3.0"
+    "react-native-svg": "^15.10.1"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/prettier-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.2",
     "@babel/runtime": "^7.25.2",
     "@crherman7/rechunk-babel-plugin": "workspace:*",
     "@crherman7/rechunk-cli": "workspace:*",
-    "@react-native/babel-preset": "0.73.21",
-    "@react-native/metro-config": "0.73.5",
-    "@types/react": "^18.2.6",
-    "babel-plugin-module-resolver": "^5.0.0",
+    "@react-native-community/cli": "15.0.1",
+    "@react-native-community/cli-platform-android": "15.0.1",
+    "@react-native-community/cli-platform-ios": "15.0.1",
+    "@react-native/babel-preset": "0.76.3",
+    "@react-native/eslint-config": "0.76.3",
+    "@react-native/metro-config": "0.76.3",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/react": "~18.3.14",
+    "babel-plugin-module-resolver": "^5.0.2",
     "typescript": "^5.4.3"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

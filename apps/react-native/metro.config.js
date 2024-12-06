@@ -1,4 +1,5 @@
 const path = require('path');
+const {cacheVersion} = require('@crherman7/rechunk-babel-plugin');
 const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
 
 const root = path.resolve(__dirname, '../..');
@@ -11,7 +12,7 @@ const root = path.resolve(__dirname, '../..');
  */
 const config = {
   watchFolders: [root],
-  resetCache: true,
+  cacheVersion,
   resolver: {
     disableHierarchicalLookup: true,
     nodeModulesPaths: [

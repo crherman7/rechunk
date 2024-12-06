@@ -1,11 +1,11 @@
 {
   "name": "@repo/eslint-config",
   "version": "2.0.0-rc.12",
-  "description": "ESLint configuration",
-  "license": "MIT",
   "private": true,
-  "author": "Chris Herman",
+  "description": "ESLint configuration",
   "keywords": [],
+  "license": "MIT",
+  "author": "Chris Herman",
   "exports": {
     "./base": {
       "types": "./dist/base.d.ts",

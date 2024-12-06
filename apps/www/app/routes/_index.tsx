@@ -1,8 +1,10 @@
 import {CaretRightIcon, ExternalLinkIcon} from '@radix-ui/react-icons';
 import type {MetaFunction} from '@remix-run/node';
+import {Link} from '@remix-run/react';
 import {animate, stagger} from 'framer-motion';
 import {useEffect} from 'react';
 
+import {BetaWarning} from '~/components/BetaWarning';
 import {ButtonLink} from '~/components/ButtonLink';
 import {Header} from '~/components/Header';
 import {GridPattern} from '~/components/ui/grid-pattern';
@@ -43,15 +45,17 @@ export default function Index() {
 
       {/* Main Content */}
       <main className="mt-6 flex flex-col items-center px-6 py-6">
-        <ShinyDiv className="animate-opacity mb-12 rounded-full opacity-0">
-          <div className="flex flex-row items-center justify-center gap-3">
-            <p>🎉</p>
-            <div className="h-4 w-[0.1px] bg-gray-300" />
-            <Text.Small className="text-xs font-light text-gray-500">
-              Beta Coming Soon
-            </Text.Small>
-          </div>
-        </ShinyDiv>
+        <Link to="/chunks" className="mb-12">
+          <ShinyDiv className="animate-opacity rounded-full opacity-0">
+            <div className="flex flex-row items-center justify-center gap-3">
+              <p>🎉</p>
+              <div className="h-4 w-[0.1px] bg-gray-300" />
+              <Text.Small className="text-xs font-light text-gray-500">
+                Try the Beta Today!
+              </Text.Small>
+            </div>
+          </ShinyDiv>
+        </Link>
         <Text.H1 className="animate-opacity text-center opacity-0">
           Launch without limits.
         </Text.H1>
@@ -98,6 +102,8 @@ export default function Index() {
           />
         </div>
       </div>
+
+      <BetaWarning className="animate-opacity opacity-0" />
     </div>
   );
 }

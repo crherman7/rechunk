@@ -1,11 +1,11 @@
 {
   "name": "@repo/typescript-config",
   "version": "2.0.0-rc.12",
-  "description": "",
-  "license": "MIT",
   "private": true,
-  "author": "Chris Herman",
+  "description": "",
   "keywords": [],
+  "license": "MIT",
+  "author": "Chris Herman",
   "files": [
     "base.json",
     "expo.json",

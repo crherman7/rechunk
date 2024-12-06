@@ -1,8 +1,8 @@
 {
   "name": "docs",
   "version": "2.0.0-rc.12",
-  "license": "MIT",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "astro": "astro",
@@ -12,6 +12,7 @@
     "start": "astro dev"
   },
   "dependencies": {
+    "@astrojs/check": "^0.5.9",
     "@astrojs/starlight": "^0.21.2",
     "@astrojs/starlight-tailwind": "^2.0.1",
     "@astrojs/tailwind": "^5.1.0",
@@ -20,7 +21,6 @@
     "astro": "^4.3.5",
     "sharp": "^0.32.5",
     "tailwindcss": "^3.4.1",
-    "@astrojs/check": "^0.5.9",
     "typescript": "^5.4.3"
   }
 }
