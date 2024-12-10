@@ -12,7 +12,7 @@ The CLI has 5 commands currently: `dev-server`, `init`, `list`, `publish` and `u
 
 ### Initialization
 
-The ReChunk library relies almost completely on a configuration file to ease the integration process. This configuration is denoted by the `rechunk.json` file. In the example app of this repo there is already a `rechunk.json` configuration file generated for anybody to test out this library without a remote ReChunk service. To generate a `rechunk.json` configuration file utilize the `init` command - this will generate a new ReChunk project to publish components to.
+The ReChunk library relies almost completely on a configuration file to ease the integration process. This configuration is denoted by the `.rechunkrc.json` file. In the example app of this repo there is already a `.rechunkrc.json` configuration file generated for anybody to test out this library without a remote ReChunk service. To generate a `.rechunkrc.json` configuration file utilize the `init` command - this will generate a new ReChunk project to publish components to.
 
 <Tabs>
 <TabItem label="yarn">
@@ -45,9 +45,9 @@ bun run rechunk init --host http://localhost:3000 --username rechunk --password 
 </TabItem>
 </Tabs>
 
-In the above example command usage there are three required options: `host`, `username` and `password`. The `host` is where the ReChunk service is being hosted, the `username` and `password` are the basic authentication credentials that the project creation endpoint abides by. Once the command is complete a `rechunk.json` configuration file will be generated in the root of your React Native project - it will look similar to the following file.
+In the above example command usage there are three required options: `host`, `username` and `password`. The `host` is where the ReChunk service is being hosted, the `username` and `password` are the basic authentication credentials that the project creation endpoint abides by. Once the command is complete a `.rechunkrc.json` configuration file will be generated in the root of your React Native project - it will look similar to the following file.
 
-```json title=rechunk.json
+```json title=.rechunkrc.json
 {
   "$schema": "https://crherman7.github.io/rechunk/schema.json",
   "project": "prototypical-pigs-interlay",
@@ -65,7 +65,7 @@ This configuration file contains both public and private information, it's very 
 
 At this point a component can now be bundled to be cached via the ReChunk service. Update the `entry` value with a key and path relative to the root of the project.
 
-```json title=rechunk.json ins={8}
+```json title=.rechunkrc.json ins={8}
 {
   "$schema": "https://crherman7.github.io/rechunk/schema.json",
   "project": "prototypical-pigs-interlay",
@@ -153,9 +153,9 @@ The client library handles the process of consuming a bundled component, verifyi
 
 ### Bundle Consumption
 
-After installing, configuration babel, generating a ReChunk project and publishing a component - the published component can now be consumed by the client. The out-of-the-box experience provided by the client does not require any runtime configuration (not to be mistaken by compile time configuration via the rechunk.json). The only reason to need a runtime configuration is if there is a necessity to override the resolver, global require function, public key or verification conditions. Otherwise, the babel configuration takes care of all code-generation to run the client without runtime configuration.
+After installing, configuration babel, generating a ReChunk project and publishing a component - the published component can now be consumed by the client. The out-of-the-box experience provided by the client does not require any runtime configuration (not to be mistaken by compile time configuration via the .rechunkrc.json). The only reason to need a runtime configuration is if there is a necessity to override the resolver, global require function, public key or verification conditions. Otherwise, the babel configuration takes care of all code-generation to run the client without runtime configuration.
 
-In order to consume the ReChunk bundle the default resolver will fetch the bundle from the host denoted in the `rechunk.json` configuration.
+In order to consume the ReChunk bundle the default resolver will fetch the bundle from the host denoted in the `.rechunkrc.json` configuration.
 
 ```ts title="index.ts"
 export async function(chunkId: string) {

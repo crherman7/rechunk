@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "android": "expo start --android",
-    "android:dev": "concurrently \"RECHUNK_ENVIRONMENT=dev expo start --android\" \"rechunk dev-server\"",
+    "android:dev": "concurrently  \"rechunk dev-server\" \"RECHUNK_ENVIRONMENT=dev expo start --android -c\"",
     "android:offline": "RECHUNK_ENVIRONMENT=offline expo start --android",
     "ios": "expo start --ios",
-    "ios:dev": "concurrently \"RECHUNK_ENVIRONMENT=dev expo start --ios\" \"rechunk dev-server\"",
+    "ios:dev": "concurrently \"rechunk dev-server\" \"RECHUNK_ENVIRONMENT=dev expo start --ios -c\"",
     "ios:offline": "RECHUNK_ENVIRONMENT=offline expo start --ios",
     "lint": "pnpm eslint .",
     "lint:fix": "pnpm eslint . --fix",
@@ -27,6 +27,7 @@
     "react-native": "0.76.3",
     "react-native-card-flip": "^1.0.7",
     "react-native-chart-kit": "^6.12.0",
+    "react-native-reanimated": "~3.16.1",
     "react-native-svg": "^15.10.1"
   },
   "devDependencies": {

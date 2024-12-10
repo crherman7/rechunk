@@ -87,7 +87,7 @@ module.exports = {
   </TabItem>
 </Tabs>
 
-Due to the critical reliance of the client on the `rechunk.json` configuration file and its manipulation during the ReChunk development server runtime, it is imperative to update your Metro configuration to consistently reset the cache upon starting the Metro bundler.
+Due to the critical reliance of the client on the `.rechunkrc.json` configuration file and its manipulation during the ReChunk development server runtime, it is imperative to update your Metro configuration to consistently reset the cache upon starting the Metro bundler.
 
 ```js title="metro.config.js" ins={14}
 const path = require('path');

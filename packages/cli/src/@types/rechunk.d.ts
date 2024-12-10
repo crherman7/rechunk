@@ -1,5 +1,5 @@
 /**
- * ReChunk Configuration which is stored in the rechunk.json file in the root of a React Native project.
+ * ReChunk Configuration which is stored in the .rechunkrc.json file in the root of a React Native project.
  *
  * {@link https://crherman7.github.io/rechunk/guides/chunks/}
  */

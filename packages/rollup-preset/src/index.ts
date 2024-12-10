@@ -8,9 +8,8 @@ import {
   PluginOptions,
   TransformOptions,
 } from '@babel/core';
-import {getBabelOutputPlugin} from '@rollup/plugin-babel';
+import babel from '@rollup/plugin-babel';
 import image from '@rollup/plugin-image';
-import typescript from '@rollup/plugin-typescript';
 import {RollupOptions} from 'rollup';
 
 /**
@@ -181,7 +180,7 @@ function findClosestJSON(filename: string, start = cwd(), level = 0): any {
 /**
  * Processes the given Rollup options, merging them with default configurations.
  *
- * This function reads the project's `package.json` and `rechunk.json` files to determine
+ * This function reads the project's `package.json` and `.rechunkrc.json` files to determine
  * external dependencies and entry points, and applies Babel and TypeScript plugins.
  *
  * @param options - The Rollup configuration options to process.
@@ -190,7 +189,7 @@ function findClosestJSON(filename: string, start = cwd(), level = 0): any {
  */
 async function processOptions(options: RollupOptions) {
   const pkgJSON = findClosestJSON('package.json');
-  const rechunkJSON = findClosestJSON('rechunk.json');
+  const rechunkJSON = findClosestJSON('.rechunkrc.json');
 
   const external = [
     ...Object.keys(pkgJSON.dependencies || {}),
@@ -218,17 +217,16 @@ async function processOptions(options: RollupOptions) {
   const defaultOptions = {
     external,
     plugins: [
-      getBabelOutputPlugin({...babelConfigOptions, filename: options.input}),
-      image(),
-      typescript({
-        compilerOptions: {
-          jsx: 'react',
-          module: 'commonjs',
-          esModuleInterop: true,
-          allowSyntheticDefaultImports: true,
-          downlevelIteration: true,
+      babel({
+        filename: options.input,
+        caller: {
+          name: 'rechunk',
         },
+        babelHelpers: 'bundled',
+        extensions: ['.ts', '.tsx'],
+        exclude: 'node_modules/**',
       }),
+      image(),
     ],
     logLevel: 'silent',
   } satisfies RollupOptions;

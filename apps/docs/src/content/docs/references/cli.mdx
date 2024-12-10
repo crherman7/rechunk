@@ -8,7 +8,7 @@ The command-line interface (CLI) provides the primary means to interact with the
 
 ### Initialize
 
-The `init` command initializes a new ReChunk project via the CLI. To create a new ReChunk project, you must provide the host, username, and password for basic authentication. Upon executing this command, a `rechunk.json` configuration file will be generated in the root directory of your React Native project. This configuration file will be used to automatically configure your React Native app with the ReChunk instance.
+The `init` command initializes a new ReChunk project via the CLI. To create a new ReChunk project, you must provide the host, username, and password for basic authentication. Upon executing this command, a `.rechunkrc.json` configuration file will be generated in the root directory of your React Native project. This configuration file will be used to automatically configure your React Native app with the ReChunk instance.
 
 <Tabs>
 <TabItem label="yarn">
@@ -47,9 +47,9 @@ This command must be executed before running any other commands or utilizing thi
 
 ### Publish
 
-Chunks can only be bundled via the `publish` command. Only chunks that are registered in the `rechunk.json` can be published; this is required because the path must be defined for each chunk. The publish command will bundle all the non-registered dependencies into a single string of code to be pushed to the ReChunk service. If there are additional dependencies that should not be bundled that are not part of your `package.json` i.e. shared aliased source code that can be registered in the `rechunk.json` via the `external` attribute.
+Chunks can only be bundled via the `publish` command. Only chunks that are registered in the `.rechunkrc.json` can be published; this is required because the path must be defined for each chunk. The publish command will bundle all the non-registered dependencies into a single string of code to be pushed to the ReChunk service. If there are additional dependencies that should not be bundled that are not part of your `package.json` i.e. shared aliased source code that can be registered in the `.rechunkrc.json` via the `external` attribute.
 
-```json title=rechunk.json ins={8,9}
+```json title=.rechunkrc.json ins={8,9}
 {
   "$schema": "https://crherman7.github.io/rechunk/schema.json",
   "project": "prototypical-pigs-interlay",
@@ -168,7 +168,7 @@ bun run rechunk list
 
 ### Development Server
 
-Before publishing a chunk, it can be beneficial to test and iterate quickly. The development server is particularly useful for this process. The development server uses your configuration file to bundle chunks on the fly, without interacting with a hosted ReChunk service. It employs the same bundling logic, providing a local experience that mirrors the hosted environment. The development server command will also temporarily update the `rechunk.json` configuration to point the host to the development server.
+Before publishing a chunk, it can be beneficial to test and iterate quickly. The development server is particularly useful for this process. The development server uses your configuration file to bundle chunks on the fly, without interacting with a hosted ReChunk service. It employs the same bundling logic, providing a local experience that mirrors the hosted environment. The development server command will also temporarily update the `.rechunkrc.json` configuration to point the host to the development server.
 
 <Tabs>
 <TabItem label="yarn">

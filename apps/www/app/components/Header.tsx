@@ -27,7 +27,7 @@ export function Header({disableIcon = false}: HeaderProps) {
             </a>
           </div>
         )}
-        <h1 className="ml-4 font-pixelify text-2xl">ReChunk</h1>
+        <h1 className="ml-3 font-pixelify text-2xl">ReChunk</h1>
       </div>
       <div className="flex flex-row items-center">
         <a href="https://github.com/crherman7/rechunk">

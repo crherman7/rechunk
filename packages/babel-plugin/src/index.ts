@@ -1,10 +1,35 @@
 import type * as Babel from '@babel/core';
+import {ConfigAPI, template, type TransformCaller, types} from '@babel/core';
 import chalk from 'chalk';
 import dedent from 'dedent';
-import {existsSync, readFileSync} from 'fs';
-import path, {dirname, resolve} from 'path';
+import {readFileSync} from 'fs';
+import {dirname, relative, resolve} from 'path';
 
 import {getCacheVersion, isRechunkDevServerRunning} from './lib';
+
+/**
+ * Checks if the Babel transformation is being invoked by the ReChunk bundler.
+ *
+ * This function examines the `caller` object to determine if the `name` property
+ * matches `'rechunk'`, indicating that the current Babel transformation is being
+ * executed by the ReChunk bundler.
+ *
+ * @param {TransformCaller} caller - The caller object provided by Babel's `api.caller` function.
+ * This object typically contains metadata about the tool invoking the Babel transformation.
+ *
+ * @returns {boolean} Returns `true` if the `caller.name` is `'rechunk'`, otherwise `false`.
+ *
+ * @example
+ * ```typescript
+ * const isRechunkBundler = api.caller(getIsRechunkBundler);
+ * if (isRechunkBundler) {
+ *   console.log('Transformation is running in the ReChunk bundler');
+ * }
+ * ```
+ */
+export function getIsRechunkBundler(caller: TransformCaller): boolean {
+  return caller.name === 'rechunk';
+}
 
 /**
  * Identifier used to represent the Node.js `process` object in the plugin.
@@ -19,7 +44,7 @@ const NODE_PROCESS_IDENTIFIER = 'process';
 const NODE_PROCESS_ENV_IDENTIFIER = 'env';
 
 /**
- * Cache key used to store and retrieve the content of the `rechunk.json` file.
+ * Cache key used to store and retrieve the content of the `.rechunkrc.json` file.
  * This key is used in conjunction with a caching mechanism to avoid re-reading the file.
  */
 const RECHUNK_CONFIG_KEY = '@crherman7+rechunk+config+json';
@@ -36,21 +61,62 @@ const RECHUNK_PACKAGE_KEY = '@crherman7+rechunk+package+json';
  *
  * @link {https://github.com/rollup/plugins/tree/master/packages/typescript#tslib}
  */
-const EXTRA_DEPENDENCIES = ['tslib'];
+const EXTRA_DEPENDENCIES = ['react/jsx-runtime'];
 
 /**
  * The default host used by the Rechunk development server.
  */
 const RECHUNK_DEV_SERVER_HOST = 'http://localhost:49904';
 
-export default function ({types: t}: typeof Babel): Babel.PluginObj {
+export default function (
+  api: ConfigAPI & {types: typeof types},
+): Babel.PluginObj {
+  const t = types;
+
+  /**
+   * Determines if the current Babel transformation is being executed by the ReChunk bundler.
+   *
+   * This leverages the `api.caller` function to check the calling environment's metadata.
+   * The `getIsRechunkBundler` function is a callback that examines the caller object
+   * to determine if the bundler is identified as ReChunk.
+   *
+   * @example
+   * ```typescript
+   * const isRechunkBundler = api.caller(getIsRechunkBundler);
+   * if (isRechunkBundler) {
+   *   console.log('Transforming specifically for ReChunk bundler');
+   * }
+   * ```
+   *
+   * @type {boolean | undefined}
+   */
+  const isRechunkBundler: boolean = api.caller(getIsRechunkBundler);
+
+  /**
+   * Determines if the current environment is set to offline mode for ReChunk.
+   *
+   * This checks the `RECHUNK_ENVIRONMENT` environment variable and sets `isOffline`
+   * to `true` if the value is `'offline'`.
+   *
+   * @example
+   * ```typescript
+   * const isOffline = process.env.RECHUNK_ENVIRONMENT === 'offline';
+   * if (isOffline) {
+   *   console.log('Running in offline mode');
+   * }
+   * ```
+   *
+   * @type {boolean}
+   */
+  const isOffline: boolean = process.env.RECHUNK_ENVIRONMENT === 'offline';
+
   /**
    * A cache that stores the content of files, keyed by their filenames.
    * This ensures that a file's content is only read once and reused on subsequent plugin runs.
    *
    * @type {Map<string, object>}
    */
-  const fileCache = new Map();
+  const fileCache: Map<string, object> = new Map();
 
   /**
    * Recursively searches for the closest JSON file, starting from a given directory.
@@ -97,149 +163,184 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
   }
 
   return {
+    name: 'rechunk-babel-plugin',
     visitor: {
-      /**
-       * Transforms calls to `importChunk` into dynamic imports.
-       *
-       * For calls to `importChunk('chunkName')`, this visitor replaces:
-       *
-       * ```javascript
-       * lazy(() => importChunk('chunkName'));
-       * ```
-       *
-       * With:
-       *
-       * ```javascript
-       * lazy(() => import('../path/to/chunk'));
-       * ```
-       *
-       * @param {Babel.NodePath<Babel.types.CallExpression>} path - Babel AST node for the `CallExpression`.
-       * @param {Babel.PluginPass} state - Babel state object containing metadata like the current filename.
-       */
-      CallExpression(
-        {node}: Babel.NodePath<Babel.types.CallExpression>,
-        state: Babel.PluginPass,
-      ) {
-        /**
-         * Environment variable that defines the server mode for the ReChunk project.
-         *
-         * `RECHUNK_ENVIRONMENT` controls how the project fetches and loads components, providing options for
-         * remote, local, and offline modes. This flexibility allows for different loading behaviors based
-         * on development needs or deployment conditions.
-         *
-         * Available options:
-         * - **`prod`**: Uses the server configuration in `rechunk.json` to fetch components from a
-         *   remote server. This mode is ideal for production or testing in an environment where a
-         *   centralized server is available.
-         *
-         * - **`dev`**: Uses a local development server to serve components, allowing for fast,
-         *   iterative development. This mode is optimized for local testing and development and
-         *   expects the dev server to be running locally.
-         *
-         * - **`offline`**: Bypasses any server and lazily imports components directly within the app,
-         *   suitable for environments where no server connection is available. This mode provides a
-         *   self-contained experience by loading components without external dependencies.
-         *
-         * @example
-         * ```typescript
-         * // Set the environment variable to "prod | undefined", "dev", or "offline"
-         * process.env.RECHUNK_ENVIRONMENT = "prod";
-         * ```
-         *
-         * @remarks
-         * This variable should be set before the application initializes, as it will dictate the loading
-         * behavior for ReChunk components throughout the app lifecycle.
-         */
-        if (process.env.RECHUNK_ENVIRONMENT !== 'offline') return;
+      Program(path, state) {
+        const hasUseRechunkDirective = path.node.directives.some(
+          directive => directive.value.value === 'use rechunk',
+        );
 
-        // Ensure it's an `importChunk` call with a string literal argument
-        if (
-          t.isIdentifier(node.callee, {name: 'importChunk'}) &&
-          t.isStringLiteral(node.arguments[0])
-        ) {
-          // Replace `importChunk` with `import`
-          node.callee = t.import();
+        const filePath = state.file.opts.filename;
 
-          // Get the current file path and project root
-          const currentFilePath = state.file.opts.filename;
-          const projectRoot = process.cwd();
-
-          // Retrieve the `rechunk.json` configuration
-          const rechunkJson = getCachedJson(RECHUNK_CONFIG_KEY, 'rechunk.json');
-          const chunkKey = node.arguments[0].value;
-          const targetFileRelativeToRoot = rechunkJson.entry[chunkKey];
-
-          if (!targetFileRelativeToRoot) {
-            throw new Error(
-              chalk.yellow(dedent`\n\nChunk entry for '${chunkKey}' not found in rechunk.json.
-
-                  This error occurs because the specified chunk key ('${chunkKey}') does not have a corresponding
-                  entry in the 'entry' section of rechunk.json. Each chunk must be explicitly defined in this file
-                  to be processed.
-
-                  Steps to resolve this issue:
-                  1. Open rechunk.json in the root of your project.
-                  2. Verify that an entry exists for the chunk key '${chunkKey}' under the 'entry' field.
-                     Example:
-                     {
-                       "entry": {
-                         "${chunkKey}": "./path/to/your/chunk-file.ts"
-                       }
-                     }
-                  3. If the entry is missing, add it and ensure the file path is correct and relative to the project
-                     root directory.
-
-                  For more information on configuring rechunk.json, refer to the ReChunk documentation.
-                `),
-            );
-          }
-
-          // Resolve the target file path
-          const targetFilePath = path.join(
-            projectRoot,
-            targetFileRelativeToRoot,
-          );
-
-          if (!existsSync(targetFilePath)) {
-            throw new Error(
-              chalk.yellow(dedent`
-              Error: The file for the chunk '${chunkKey}' could not be found at the expected location:
-              ${targetFilePath}
-
-              This error occurs because the specified chunk key ('${chunkKey}') does not have a corresponding
-              file at the resolved path. This typically happens if:
-
-              1. The 'entry' field in your rechunk.json is incorrect or missing for the chunk key '${chunkKey}'.
-              2. The file path specified for the chunk key '${chunkKey}' is invalid or the file has been moved or deleted.
-              3. The working directory of your build process has changed, causing the resolved path to be incorrect.
-
-              To resolve this issue:
-              1. Open your rechunk.json file and ensure that the 'entry' field for '${chunkKey}' points to a valid
-                 file path relative to the project root.
-                 Example:
-                 {
-                   "entry": {
-                     "${chunkKey}": "./src/components/MyComponent.ts"
-                   }
-                 }
-              2. Verify that the file exists at the specified path and is correctly named.
-              3. If the file path is correct, ensure that your build process is running in the correct working directory.
-                 For example, the current working directory should be the root of your project.
-
-              For more information about configuring rechunk.json, refer to the ReChunk documentation.
-            `),
-            );
-          }
-
-          // Calculate the relative path from the current file to the target file
-          const relativePath = path.relative(
-            path.dirname(currentFilePath),
-            targetFilePath,
-          );
-
-          // Update the arguments with the new relative path
-          node.arguments = [t.stringLiteral(relativePath)];
+        if (!filePath) {
+          // This can happen in tests or systems that use Babel standalone.
+          throw new Error('[Babel] Expected a filename to be set in the state');
         }
+
+        // File starts with "use rechunk" directive.
+        if (!hasUseRechunkDirective || isOffline || isRechunkBundler) {
+          // Do nothing for code that isn't marked as a dom component.
+          return;
+        }
+
+        let hasDefaultExport = false;
+        let hasAsyncModifier = false;
+        let isFunction = state.filename.match(/\.ts$/);
+
+        path.traverse({
+          ExportNamedDeclaration(path) {
+            const declaration = path.node.declaration;
+            if (
+              t.isTypeAlias(declaration) ||
+              t.isInterfaceDeclaration(declaration) ||
+              t.isTSTypeAliasDeclaration(declaration) ||
+              t.isTSInterfaceDeclaration(declaration)
+            ) {
+              // Allows type exports
+              return;
+            }
+
+            throw path.buildCodeFrameError(
+              chalk.red(
+                dedent`\n\nError: Named exports found.
+
+                The "use rechunk" directive requires that the module contain only a single default export.
+                Having named exports is not supported and will lead to this error.
+
+                Steps to resolve this issue:
+                1. Open the file where the error occurred.
+                2. Verify that only one default export is present in the module.
+                   Example of a valid single default export:
+
+                   export default function MyComponent() {
+                     // Your code here
+                   }
+
+                3. If there are named exports, consolidate them into a single default or refactor your code.
+
+                For more details on the "use rechunk" directive and export requirements, refer to the ReChunk documentation.
+                `,
+              ),
+            );
+          },
+          ExportDefaultDeclaration(path) {
+            const declaration = path.node.declaration;
+
+            if (isFunction && t.isFunctionDeclaration(declaration)) {
+              hasAsyncModifier = declaration.async;
+            }
+            hasDefaultExport = true;
+          },
+        });
+
+        if (!hasDefaultExport) {
+          throw path.buildCodeFrameError(
+            chalk.red(
+              dedent`\n\nError: Missing default export.
+
+              The "use rechunk" directive requires the module to have a default export. Without a default export,
+              the chunk cannot be processed correctly.
+
+              Steps to resolve this issue:
+              1. Open the file where the error occurred.
+              2. Add a default export to the module.
+                 Example of a valid default export:
+
+                 export default function MyComponent() {
+                   // Your code here
+                 }
+
+              3. Ensure there is only one default export in the file.
+
+              For more details on the "use rechunk" directive and default export requirements, refer to the ReChunk documentation.
+              `,
+            ),
+          );
+        }
+
+        if (isFunction && !hasAsyncModifier) {
+          throw path.buildCodeFrameError(
+            chalk.red(
+              dedent`\n\nError: Missing async default export.
+
+              The "use rechunk" directive in a function module requires the default export to be an async function.
+              Without an async default export, the chunk cannot be processed correctly.
+
+              Steps to resolve this issue:
+              1. Open the file where the error occurred.
+              2. Ensure the default export is an async function.
+                 Example of a valid async default export:
+
+                 export default async function loadChunk() {
+                   // Your async code here
+                 }
+
+              3. Ensure there is only one default export in the file and that it includes the 'async' keyword.
+
+              For more details on the "use rechunk" directive and async default export requirements, refer to the ReChunk documentation.
+              `,
+            ),
+          );
+        }
+
+        path.traverse({
+          ImportDeclaration(path) {
+            path.remove();
+          },
+        });
+        path.node.body = [];
+        path.node.directives = [];
+
+        let relativePath = relative(process.cwd(), state.filename);
+
+        if (!relativePath.startsWith('.')) {
+          relativePath = `./${relativePath}`;
+        }
+
+        const bufferObj = Buffer.from(relativePath, 'utf8');
+        const base64String = bufferObj.toString('base64');
+
+        // Create template with declaration first
+        const rechunkComponentTemplate = `
+          import React from 'react';
+          import {importChunk} from '@crherman7/rechunk';
+
+          const $$ReChunkModule = React.lazy(() => importChunk('${base64String}'));
+
+          export default $$ReChunkModule;
+        `;
+
+        const rechunkFunctionTemplate = `
+          import { importChunk } from '@crherman7/rechunk';
+
+          const chunkLoader = importChunk('${base64String}');
+
+          async function $$ReChunkModule(...args) {
+            return chunkLoader.then(module => {
+              return module.default(...args);
+            });
+          }
+
+          export default $$ReChunkModule;
+          `;
+
+        // Convert template to AST and push to body
+        const ast = template.ast(
+          isFunction ? rechunkFunctionTemplate : rechunkComponentTemplate,
+        );
+        const results = path.pushContainer('body', ast);
+
+        // Find and register the component declaration
+        results.forEach(nodePath => {
+          if (
+            t.isVariableDeclaration(nodePath.node) &&
+            nodePath.node.declarations[0]?.id &&
+            'name' in nodePath.node.declarations[0].id &&
+            nodePath.node.declarations[0].id.name === '$$ReChunkModule'
+          ) {
+            path.scope.registerDeclaration(nodePath);
+          }
+        });
       },
       /**
        * Visits MemberExpression nodes and inserts the rechunk project and readKey
@@ -251,6 +352,7 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
        */
       MemberExpression({
         node,
+        buildCodeFrameError,
         parentPath: parent,
       }: Babel.NodePath<Babel.types.MemberExpression>) {
         // Check if the MemberExpression is accessing process.env
@@ -265,7 +367,10 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
           return;
         }
 
-        const rechunkJson = getCachedJson(RECHUNK_CONFIG_KEY, 'rechunk.json');
+        const rechunkJson = getCachedJson(
+          RECHUNK_CONFIG_KEY,
+          '.rechunkrc.json',
+        );
         const packageJson = getCachedJson(RECHUNK_PACKAGE_KEY, 'package.json');
 
         // Destructure project and readKey used to replace process.env values
@@ -307,8 +412,8 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
 
           if (process.env.RECHUNK_ENVIRONMENT === 'dev') {
             if (!isRechunkDevServerRunning())
-              throw Error(
-                chalk.yellow(dedent`\n\nRECHUNK_ENVIRONMENT is set to "dev", but no development server was detected.
+              throw buildCodeFrameError(
+                chalk.red(dedent`\n\nRECHUNK_ENVIRONMENT is set to "dev", but no development server was detected.
 
                 To use the "dev" environment, please ensure that the development server is running.
                 You can start it by executing the following command:
@@ -316,7 +421,7 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
                     rechunk dev-server
 
                 If you intended to use a different environment:
-                - Set RECHUNK_ENVIRONMENT to "prod" to fetch components from a remote server using 'rechunk.json'.
+                - Set RECHUNK_ENVIRONMENT to "prod" to fetch components from a remote server using '.rechunkrc.json'.
                 - Set RECHUNK_ENVIRONMENT to "offline" to load components directly without a server connection.
 
                 For example:
@@ -373,6 +478,7 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
           parent.replaceWith(
             t.objectExpression([
               t.objectProperty(t.identifier('require'), requireFunction),
+              t.objectProperty(t.identifier('global'), t.identifier('global')),
             ]),
           );
         }
@@ -397,7 +503,7 @@ export default function ({types: t}: typeof Babel): Babel.PluginObj {
  * @remarks
  * This constant is derived by calling the `getCacheVersion` function, which generates
  * a deterministic hash based on:
- * - The last modified time of the `rechunk.json` file.
+ * - The last modified time of the `.rechunkrc.json` file.
  * - The `RECHUNK_ENVIRONMENT` environment variable.
  * - The running status of the Rechunk development server.
  *

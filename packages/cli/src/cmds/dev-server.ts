@@ -46,7 +46,7 @@ const PORT = 49904;
 
 /**
  * Defines a command for the "dev-server" operation using the "commander" library.
- * This command facilitates serving React Native chunks based on `rechunk.json`.
+ * This command facilitates serving React Native chunks based on `.rechunkrc.json`.
  *
  * @example
  * ```bash
@@ -109,7 +109,8 @@ async function handleRequest(
   );
 
   try {
-    const code = await bundleChunk(rc.entry[chunkId]);
+    const decodeChunkId = Buffer.from(chunkId, 'base64').toString('utf-8');
+    const code = await bundleChunk(decodeChunkId);
     const token = generateToken(code, rc.privateKey);
 
     sendJsonResponse(res, {token, data: code});
@@ -151,7 +152,7 @@ async function bundleChunk(entryPath: string): Promise<string> {
   const rollupBuild = await rollup(await withRechunk({input}));
   const {
     output: [{code}],
-  } = await rollupBuild.generate({});
+  } = await rollupBuild.generate({interop: 'auto', format: 'cjs'});
 
   return code;
 }

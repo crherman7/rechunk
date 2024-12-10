@@ -6,9 +6,9 @@ The `client` is the ReChunk React Native library to configure and import chunks.
 
 ### Add Configuration
 
-The `client` is already auto-configured based on your `rechunk.json` configuration - but there may be a need to additionally customize the `client`.
+The `client` is already auto-configured based on your `.rechunkrc.json` configuration - but there may be a need to additionally customize the `client`.
 
-The `resolver`, a function to fetch the hosted chunk and it's relevant data, can be customized to your own implementation. The default `resolver` utilizes the `rechunk.json` configuration for the `host`, `project` and `readKey` attributes.
+The `resolver`, a function to fetch the hosted chunk and it's relevant data, can be customized to your own implementation. The default `resolver` utilizes the `.rechunkrc.json` configuration for the `host`, `project` and `readKey` attributes.
 
 ```ts
 import ReChunk from '@crherman7/rechunk';
@@ -20,7 +20,7 @@ ReChunk.addConfiguration({
 });
 ```
 
-The `global` require function can be customized to configure how imports should be resolved. The default implementation utilizes the `package.json` `dependencies` and the `rechunk.json` `external` configurations to resovle dependencies.
+The `global` require function can be customized to configure how imports should be resolved. The default implementation utilizes the `package.json` `dependencies` and the `.rechunkrc.json` `external` configurations to resovle dependencies.
 
 ```ts
 import ReChunk from '@crherman7/rechunk';
@@ -40,7 +40,7 @@ ReChunk.addConfiguration({
 });
 ```
 
-The `publicKey` can be customized to a different public key. The default implementation utilizes the `rechunk.json` `publicKey` attribute.
+The `publicKey` can be customized to a different public key. The default implementation utilizes the `.rechunkrc.json` `publicKey` attribute.
 
 ```ts
 import ReChunk from '@crherman7/rechunk';

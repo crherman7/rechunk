@@ -31,7 +31,7 @@ export type ReChunkEntries = null;
  */
 export type ValidateReChunkEntry<T extends string> = T extends ReChunkEntries
   ? T
-  : `Invalid ReChunk entry: '${T}' is not a recognized chunk ID. Please ensure the chunk ID exists in the rechunk.json configuration file and regenerate types using the \`typegen\` command.`;
+  : `Error: '${T}' is not a valid ReChunk entry. To access chunks dynamically, use the 'use rechunk' directive in your component or function module.`;
 
 /**
  * Makes all properties of a type and its nested types required recursively.

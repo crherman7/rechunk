@@ -1,3 +1,5 @@
+'use rechunk';
+
 import React, {memo} from 'react';
 import {FlatList, type FlatListProps, StyleSheet} from 'react-native';
 

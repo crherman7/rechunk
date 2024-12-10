@@ -153,11 +153,9 @@ export class ChunkManager extends TinyEmitter {
       'module, exports',
       `${Object.keys(this.global)
         .map(key => `var ${key} = __rechunk__.${key};`)
-        .join('\n')} ${chunk} ${
-        /module\.exports/.test(chunk)
-          ? 'return module.exports;'
-          : 'return exports.default;'
-      }`,
+        .join('\n')} ${chunk}
+        return module.exports;
+      `,
     )(this.global, module, exports);
 
     // Add chunkId and chunk to cache

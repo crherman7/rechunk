@@ -1,108 +1,130 @@
-import {
-  Configuration as ReChunkApiConfiguration,
-  DefaultApi as ReChunkApi,
-} from '@crherman7/rechunk-api-client';
 import withRechunk from '@crherman7/rechunk-rollup-preset';
+import chalk from 'chalk';
 import {program} from 'commander';
+import inquirer from 'inquirer';
 import path from 'path';
 import {rollup} from 'rollup';
 
-import {getRechunkConfig, LOGO} from '../lib';
-
-interface PublishOptions {
-  chunk: string;
-}
+import {
+  aggregateUseRechunkFiles,
+  configureReChunkApi,
+  getRechunkConfig,
+  LOGO,
+} from '../lib';
 
 /**
- * Defines a command for the "publish" operation using the "commander" library.
- * Bundles a specified chunk and publishes it to the configured ReChunk server.
+ * Registers the `publish-all` command to the CLI.
+ *
+ * This command aggregates all `.tsx` files containing the `"use rechunk"` directive,
+ * prompts the user to select which components to publish, bundles the selected components
+ * using Rollup, and publishes them to the ReChunk server.
  *
  * @example
  * ```bash
- * yarn rechunk publish --chunk foo
+ * yarn rechunk publish-all
  * ```
  */
 program
-  .command('publish <chunk>')
-  .description('Publishes a specified chunk')
-  .action(async (chunk: string) => {
+  .command('publish')
+  .description('Aggregates and publishes selected ReChunk components')
+  .action(async () => {
     console.log();
     console.log(LOGO);
 
-    try {
-      const rc = getValidatedConfig(chunk);
-      const code = await bundleChunk(rc.entry[chunk], chunk);
-      await publishChunk(rc.host, chunk, code, rc.project, rc.writeKey);
+    const ora = await import('ora');
 
-      console.log(`🎉 Successfully published ${chunk}!\n`);
+    const spinner = ora.default('Aggregating ReChunk files...').start();
+
+    try {
+      // Aggregate all "use rechunk" files
+      const files = await aggregateUseRechunkFiles(process.cwd());
+
+      if (files.length === 0) {
+        spinner.fail('No files containing "use rechunk" directive found.');
+        return;
+      }
+
+      spinner.succeed(`Found ${files.length} files.`);
+
+      // Prompt the user to select files to publish
+      const promptMessage = `
+  ${chalk.dim('Press:')}
+    ${chalk.cyan('<space>')} to select an item
+    ${chalk.cyan('<a>')} to toggle all selections
+    ${chalk.cyan('<i>')} to invert selections
+    ${chalk.cyan('<enter>')} to proceed
+    `;
+
+      const {selectedFiles} = await inquirer.prompt([
+        {
+          type: 'checkbox',
+          name: 'selectedFiles',
+          message: `${chalk.bold('Select the components to publish:\n')}`,
+          instructions: promptMessage,
+          choices: files.map(file => ({
+            name: ` ${chalk.cyan(file)}`,
+            value: file,
+          })),
+          validate: choices =>
+            choices.length > 0
+              ? true
+              : 'You must select at least one component.',
+        },
+      ]);
+
+      if (selectedFiles.length === 0) {
+        console.log(
+          chalk.yellow('No components selected for publishing. Exiting.'),
+        );
+        return;
+      }
+
+      // Get ReChunk configuration
+      const rc = getRechunkConfig();
+
+      for (const file of selectedFiles) {
+        const componentName = path.basename(file, path.extname(file));
+        const base64String = Buffer.from(file, 'utf8').toString('base64');
+
+        spinner.start(
+          `Bundling and publishing ${componentName} as ${base64String}...`,
+        );
+
+        try {
+          const input = path.resolve(process.cwd(), file);
+          const rollupBuild = await rollup(await withRechunk({input}));
+          const {
+            output: [{code}],
+          } = await rollupBuild.generate({interop: 'auto', format: 'cjs'});
+
+          // Simulate publishing
+          await publishChunk(
+            rc.host,
+            base64String,
+            code,
+            rc.project,
+            rc.writeKey,
+          );
+
+          spinner.succeed(`Successfully published ${base64String}`);
+        } catch (err) {
+          spinner.fail(
+            `Failed to publish ${base64String}: ${(err as Error).message}`,
+          );
+
+          process.exit(1);
+        }
+      }
+
+      console.log(
+        chalk.green(
+          '\n🎉 All selected components have been published successfully!',
+        ),
+      );
     } catch (error) {
-      logError((error as Error).message);
+      spinner.fail(`Error: ${(error as Error).message}`);
     }
   });
-
-/**
- * Retrieves and validates the ReChunk configuration, ensuring that the specified chunk
- * is present as an entry point in `rechunk.json`.
- *
- * @param chunk - The name of the chunk to be published.
- * @returns The validated ReChunk configuration object.
- * @throws {Error} If the specified chunk does not exist as an entry point in the configuration.
- */
-function getValidatedConfig(
-  chunk: string,
-): ReturnType<typeof getRechunkConfig> {
-  const rc = getRechunkConfig();
-
-  if (!rc.entry[chunk]) {
-    throw new Error(
-      `Chunk "${chunk}" does not exist as an entry point in rechunk.json`,
-    );
-  }
-
-  return rc;
-}
-
-/**
- * Bundles the specified chunk using Rollup and returns the generated code.
- *
- * @param inputPath - The file path of the entry point for the chunk.
- * @param chunk - The name of the chunk (used in log messages).
- * @returns A promise that resolves to the bundled code as a string.
- */
-async function bundleChunk(inputPath: string, chunk: string): Promise<string> {
-  console.log(`🛠  Bundling ${chunk}...\n`);
-
-  const input = path.resolve(process.cwd(), inputPath);
-  const rollupBuild = await rollup(await withRechunk({input}));
-
-  const {
-    output: [{code}],
-  } = await rollupBuild.generate({});
-  return code;
-}
-
-/**
- * Configures and returns an instance of the ReChunk API client.
- *
- * @param host - The base URL of the ReChunk server.
- * @param username - Username for basic authentication.
- * @param password - Password for basic authentication.
- * @returns A configured instance of `ReChunkApi`.
- */
-function configureReChunkApi(
-  host: string,
-  username: string,
-  password: string,
-): ReChunkApi {
-  return new ReChunkApi(
-    new ReChunkApiConfiguration({
-      basePath: host,
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
-      },
-    }),
-  );
-}
 
 /**
  * Publishes the bundled code for a specified chunk to the ReChunk server.
@@ -122,8 +144,6 @@ async function publishChunk(
   project: string,
   writeKey: string,
 ): Promise<void> {
-  console.log(`🚀 Publishing ${chunk}...\n`);
-
   const api = configureReChunkApi(host, project, writeKey);
   try {
     await api.createChunkForProject({
@@ -134,13 +154,4 @@ async function publishChunk(
   } catch (error) {
     throw new Error(`Failed to publish chunk: ${(error as Error).message}`);
   }
-}
-
-/**
- * Logs an error message in a consistent format, enhancing readability for the user.
- *
- * @param message - The error message to display.
- */
-function logError(message: string): void {
-  console.log(`❌ Error: ${message}\n`);
 }

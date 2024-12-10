@@ -71,7 +71,9 @@ export function useProjectId(): string | undefined {
  * }
  * ```
  */
-export function useChunk(chunkId: string): Chunk | undefined {
+export function useChunk(
+  chunkId: string,
+): (Chunk & {filePath: string}) | undefined {
   // Replace with your actual route ID
   const data = useMatchesData('routes/_dashboard.chunks');
 
@@ -82,7 +84,7 @@ export function useChunk(chunkId: string): Chunk | undefined {
 
   // Safely find and return the chunk with the matching ID
   return data.chunks.find(
-    (item): item is Chunk =>
+    (item): item is Chunk & {filePath: string} =>
       item && typeof item === 'object' && item.id === chunkId,
   );
 }

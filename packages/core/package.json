@@ -17,8 +17,7 @@
     "jsrsasign": "^11.1.0",
     "tiny-emitter": "^2.1.0",
     "tiny-invariant": "^1.3.3",
-    "tiny-warning": "^1.0.3",
-    "tslib": "^2.6.3"
+    "tiny-warning": "^1.0.3"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",

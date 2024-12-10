@@ -1,10 +1,6 @@
-import {
-  Configuration as ReChunkApiConfiguration,
-  DefaultApi as ReChunkApi,
-} from '@crherman7/rechunk-api-client';
 import {program} from 'commander';
 
-import {getRechunkConfig, LOGO} from '../lib';
+import {configureReChunkApi, getRechunkConfig, LOGO} from '../lib';
 
 /**
  * Defines a command for the "unpublish" operation using the "commander" library.
@@ -22,7 +18,7 @@ program
     console.log(LOGO);
 
     try {
-      const rc = getValidatedConfig(chunk);
+      const rc = getRechunkConfig();
       await unpublishChunk(rc.host, chunk, rc.project, rc.writeKey);
 
       console.log(`🎉 Successfully unpublished ${chunk}!\n`);
@@ -30,51 +26,6 @@ program
       logError((error as Error).message);
     }
   });
-
-/**
- * Retrieves and validates the ReChunk configuration, ensuring that the specified chunk
- * is present as an entry point in `rechunk.json`.
- *
- * @param chunk - The name of the chunk to unpublish.
- * @returns The validated ReChunk configuration object.
- * @throws {Error} If the specified chunk does not exist as an entry point in the configuration.
- */
-function getValidatedConfig(
-  chunk: string,
-): ReturnType<typeof getRechunkConfig> {
-  const rc = getRechunkConfig();
-
-  if (!rc.entry[chunk]) {
-    throw new Error(
-      `Chunk "${chunk}" does not exist as an entry point in rechunk.json`,
-    );
-  }
-
-  return rc;
-}
-
-/**
- * Configures and returns an instance of the ReChunk API client.
- *
- * @param host - The base URL of the ReChunk server.
- * @param username - Username for basic authentication.
- * @param password - Password for basic authentication.
- * @returns A configured instance of `ReChunkApi`.
- */
-function configureReChunkApi(
-  host: string,
-  username: string,
-  password: string,
-): ReChunkApi {
-  return new ReChunkApi(
-    new ReChunkApiConfiguration({
-      basePath: host,
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
-      },
-    }),
-  );
-}
 
 /**
  * Unpublishes the specified chunk from the ReChunk server by sending a DELETE request.

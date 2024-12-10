@@ -21,7 +21,6 @@ export const action: ActionFunction = async ({request}) => {
         writeKey,
         publicKey,
         privateKey,
-        entry: {},
         external: [],
       },
       {status: 200},

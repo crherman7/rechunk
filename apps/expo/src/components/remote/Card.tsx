@@ -1,47 +1,52 @@
-import React, {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useRef,
-} from 'react';
-import {StyleSheet} from 'react-native';
-import CardFlip, {type FlipCardProps} from 'react-native-card-flip';
+'use rechunk';
 
-import {BackSide, type CardFlipEvents, FrontSide} from '@/components';
+import React from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
-export default forwardRef<CardFlipEvents, FlipCardProps>(function Card(
-  props,
-  ref,
-) {
-  const cardRef = useRef<CardFlip | null>(null);
+export default function Card() {
+  const randomWidth = useSharedValue(10);
 
-  useImperativeHandle(ref, () => ({
-    flip: () => cardRef?.current?.flip(),
-    tip: args => cardRef.current?.tip(args),
-    jiggle: args => cardRef.current?.jiggle(args),
-  }));
+  const config = {
+    duration: 500,
+    easing: Easing.bezier(0.5, 0.01, 0, 1),
+  };
 
-  const handleFlip = useCallback(() => {
-    cardRef?.current?.flip();
-  }, []);
+  const style = useAnimatedStyle(() => {
+    return {
+      width: withTiming(randomWidth.value, config),
+    };
+  });
 
   return (
-    // @ts-ignore
-    <CardFlip
-      ref={cardRef}
-      flipZoom={-0.15}
-      style={styles.container}
-      {...props}>
-      <FrontSide handleFlip={handleFlip} />
-      <BackSide handleFlip={handleFlip} />
-    </CardFlip>
+    <View style={styles.container}>
+      <Animated.View style={[styles.box, style]} />
+      <TouchableOpacity
+        style={{backgroundColor: 'grey', height: 200, width: 100}}
+        onPress={() => {
+          randomWidth.value = Math.random() * 350;
+        }}
+      />
+    </View>
   );
-});
+}
 
 const styles = StyleSheet.create({
   container: {
-    height: 200,
-    marginBottom: 24,
-    borderRadius: 12,
+    flex: 1,
+    marginVertical: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  box: {
+    width: 100,
+    height: 80,
+    backgroundColor: 'black',
+    margin: 30,
   },
 });

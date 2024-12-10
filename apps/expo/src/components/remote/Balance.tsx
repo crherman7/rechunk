@@ -1,3 +1,5 @@
+'use rechunk';
+
 import React, {memo} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';

@@ -1,13 +1,9 @@
-import {
-  Configuration as ReChunkApiConfiguration,
-  DefaultApi as ReChunkApi,
-  Project,
-} from '@crherman7/rechunk-api-client';
+import {Project} from '@crherman7/rechunk-api-client';
 import {program} from 'commander';
 import fs from 'fs';
 import path from 'path';
 
-import {LOGO} from '../lib';
+import {configureReChunkApi, LOGO} from '../lib';
 
 interface InitOptions {
   host: string;
@@ -17,7 +13,7 @@ interface InitOptions {
 
 /**
  * Defines a command for the "init" operation using the "commander" library.
- * Initializes a new ReChunk project by creating a configuration file (`rechunk.json`)
+ * Initializes a new ReChunk project by creating a configuration file (`.rechunkrc.json`)
  * with the server details provided through command-line options.
  *
  * @example
@@ -36,7 +32,7 @@ program
 
     const {host, username, password} = options;
     const ctx = process.cwd();
-    const rcPath = path.resolve(ctx, 'rechunk.json');
+    const rcPath = path.resolve(ctx, '.rechunkrc.json');
 
     try {
       validateHost(host);
@@ -45,10 +41,14 @@ program
       console.log('🚀 Creating project...\n');
 
       const projectData = await createProject(host, username, password);
-      saveProjectFile(rcPath, projectData);
+      saveProjectFile(rcPath, {
+        ...projectData,
+        host,
+        external: [],
+      } as any);
 
       console.log(
-        '🎉 Successfully initialized a new ReChunk project. Generated rechunk.json!\n',
+        '🎉 Successfully initialized a new ReChunk project. Generated .rechunkrc.json!\n',
       );
     } catch (error) {
       logError((error as Error).message);
@@ -72,41 +72,18 @@ function validateHost(host: string): void {
 }
 
 /**
- * Checks if the project already exists by verifying the presence of `rechunk.json`.
- * Throws an error if `rechunk.json` is found in the current directory.
+ * Checks if the project already exists by verifying the presence of `.rechunkrc.json`.
+ * Throws an error if `.rechunkrc.json` is found in the current directory.
  *
- * @param rcPath - The file path to the `rechunk.json` file.
- * @throws {Error} If `rechunk.json` already exists in the directory.
+ * @param rcPath - The file path to the `.rechunkrc.json` file.
+ * @throws {Error} If `.rechunkrc.json` already exists in the directory.
  */
 function checkProjectExists(rcPath: string): void {
   if (fs.existsSync(rcPath)) {
     throw new Error(
-      'Project already exists. Please remove rechunk.json before initializing a new project.',
+      'Project already exists. Please remove .rechunkrc.json before initializing a new project.',
     );
   }
-}
-
-/**
- * Creates and returns a configured instance of the ReChunk API client.
- *
- * @param host - The ReChunk server host URL.
- * @param username - Username for basic authentication.
- * @param password - Password for basic authentication.
- * @returns A configured instance of `ReChunkApi`.
- */
-function configureReChunkApi(
-  host: string,
-  username: string,
-  password: string,
-): ReChunkApi {
-  return new ReChunkApi(
-    new ReChunkApiConfiguration({
-      basePath: host,
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
-      },
-    }),
-  );
 }
 
 /**
@@ -134,14 +111,14 @@ async function createProject(
 }
 
 /**
- * Saves the provided project data to `rechunk.json` in the current directory.
+ * Saves the provided project data to `.rechunkrc.json` in the current directory.
  *
- * @param rcPath - The file path to save the `rechunk.json` file.
+ * @param rcPath - The file path to save the `.rechunkrc.json` file.
  * @param data - The project data to be saved.
  */
 function saveProjectFile(rcPath: string, data: Project): void {
   fs.writeFileSync(rcPath, JSON.stringify(data, null, 2) + '\n');
-  console.log('✅ Project data saved successfully to rechunk.json');
+  console.log('✅ Project data saved successfully to .rechunkrc.json');
 }
 
 /**

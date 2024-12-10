@@ -55,11 +55,11 @@ export function isRechunkDevServerRunning(): boolean {
 /**
  * Generates a cache version string for the Metro Bundler.
  *
- * @returns A hashed cache version string based on the `rechunk.json` modification time,
+ * @returns A hashed cache version string based on the `.rechunkrc.json` modification time,
  * the current Rechunk environment, and the status of the Rechunk development server.
  *
  * @remarks
- * This function reads the `rechunk.json` file to determine its last modified time and combines it
+ * This function reads the `.rechunkrc.json` file to determine its last modified time and combines it
  * with the current environment variable `RECHUNK_ENVIRONMENT` and whether the Rechunk dev server
  * is running to generate a unique cache version.
  *
@@ -72,12 +72,12 @@ export function isRechunkDevServerRunning(): boolean {
 export function getCacheVersion(): string {
   const rechunkEnvironment = process.env.RECHUNK_ENVIRONMENT || '';
 
-  const rechunkJSONPath = path.resolve(process.cwd(), 'rechunk.json');
+  const rechunkJSONPath = path.resolve(process.cwd(), '.rechunkrc.json');
   const stats = fs.statSync(rechunkJSONPath);
 
   return crypto
     .createHash('md5')
-    .update(String(stats.mtime)) // Use last modified time of `rechunk.json`
+    .update(String(stats.mtime)) // Use last modified time of `.rechunkrc.json`
     .update(rechunkEnvironment) // Include the environment variable
     .update(isRechunkDevServerRunning().toString()) // Include dev server status
     .digest('hex'); // Return as a hexadecimal string

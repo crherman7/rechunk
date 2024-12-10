@@ -15,7 +15,6 @@
     "@babel/core": "^7.25.2",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-image": "^3.0.3",
-    "@rollup/plugin-typescript": "^11.1.6",
     "merge-anything": "^6.0.2",
     "rollup": "^4.13.0"
   },

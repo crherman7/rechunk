@@ -49,8 +49,8 @@ export default function Chunk() {
 
   return (
     <TooltipProvider delayDuration={300}>
-      <ResizablePanel defaultSize={70} minSize={30} maxSize={70}>
-        <div className="flex h-[75px] flex-row items-end justify-between border-b px-4 pb-1">
+      <ResizablePanel defaultSize={70} minSize={40} maxSize={70}>
+        <div className="flex h-[75px] flex-row items-end justify-between border-b px-3 pb-1">
           <div className="flex flex-col space-y-0.5">
             <h2 className="text-2xl font-bold tracking-tight">Chunk</h2>
             <p className="text-xs text-muted-foreground">
@@ -72,8 +72,9 @@ export default function Chunk() {
           </div>
         </div>
         <ScrollArea className="h-[calc(100vh-132px)]">
-          <div className="space-y-4 px-4 py-2">
+          <div className="space-y-4 px-3 py-2">
             <h3 className="text-xl font-bold tracking-tight">Metadata</h3>
+            <LabeledInput label="File" value={chunk?.filePath} />
             <LabeledInput
               label="Created At"
               value={format(new Date(chunk?.createdAt || ''), DATE_FORMAT)}
@@ -84,7 +85,7 @@ export default function Chunk() {
             />
           </div>
           <Separator className="my-2" />
-          <div className="space-y-4 px-4">
+          <div className="mb-3 space-y-4 px-4">
             <h3 className="text-xl font-bold tracking-tight">Data</h3>
             <LabeledTextarea
               label="JavaScript"

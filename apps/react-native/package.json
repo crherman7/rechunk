@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "android:dev": "concurrently \"react-native run-android --no-packager\" \"pnpm start:dev\" \"rechunk dev-server\"",
+    "android:dev": "concurrently \"rechunk dev-server\" \"react-native run-android --no-packager\" \"pnpm start:dev\"",
     "android:offline": "concurrently \"react-native run-android --no-packager\" \"pnpm start:offline\"",
     "ios": "react-native run-ios",
-    "ios:dev": "concurrently \"react-native run-ios --no-packager\" \"pnpm start:dev\" \"rechunk dev-server\"",
+    "ios:dev": "concurrently \"rechunk dev-server\" \"react-native run-ios --no-packager\" \"pnpm start:dev\"",
     "ios:offline": "concurrently \"react-native run-ios --no-packager\" \"pnpm start:offline\"",
     "lint": "pnpm eslint .",
     "lint:fix": "pnpm eslint . --fix",

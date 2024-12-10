@@ -12,9 +12,9 @@ export interface ChunkItemProps {
   id: string;
 
   /**
-   * The project ID associated with the chunk.
+   * The file path of the chunk.
    */
-  projectId: string;
+  filePath: string;
 
   /**
    * The data stored within the chunk.
@@ -55,8 +55,8 @@ export interface ChunkItemProps {
  */
 export function ChunkItem({
   id,
-  projectId,
   data,
+  filePath,
   createdAt,
   updatedAt,
   isSelected = false,
@@ -66,11 +66,13 @@ export function ChunkItem({
       to={`/chunks/${id}`}
       key={id}
       className={cn(
-        'my-3 flex max-w-[600px] flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
+        'flex flex-col items-start gap-2 p-3 text-left text-sm transition-all hover:bg-accent',
         isSelected && 'bg-accent',
       )}>
-      <div className="mb-2 flex w-full flex-row items-center justify-between">
-        <p className="text-sm font-bold">{id}</p>
+      <div className="mb-2 flex w-full flex-row items-center justify-between gap-4">
+        <p className="text-wrap break-all font-mono text-xs font-medium">
+          {id}
+        </p>
         <p className="text-xs font-normal">
           {formatDistanceToNow(new Date(createdAt), {
             addSuffix: true,
@@ -80,8 +82,8 @@ export function ChunkItem({
       <p className="text-xs text-muted-foreground">
         {format(new Date(updatedAt), DATE_FORMAT)}
       </p>
-      <p className="font-mono text-xs font-medium text-slate-400">
-        {projectId}
+      <p className="text-wrap break-all font-mono text-[10px] text-slate-400">
+        {filePath}
       </p>
       <div className="rounded-lg bg-slate-50 p-2">
         <p className="line-clamp-3 text-wrap break-all font-mono text-[10px] font-extralight text-slate-400">

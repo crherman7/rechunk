@@ -1,16 +1,22 @@
-import {importChunk} from '@crherman7/rechunk';
-import React, {lazy, Suspense} from 'react';
+import React, {Suspense, useEffect} from 'react';
 import {ErrorBoundary} from 'react-error-boundary';
 import {ActivityIndicator, SafeAreaView, StyleSheet, View} from 'react-native';
 
 import {Error404} from '@/components';
+import Balance from '@/components/remote/Balance';
+import Card from '@/components/remote/Card';
+import Transactions from '@/components/remote/Transactions';
 import {balanceData, transactionsData} from '@/lib';
-
-const Card = lazy(() => importChunk('card'));
-const Balance = lazy(() => importChunk('balance'));
-const Transactions = lazy(() => importChunk('transactions'));
+import helloWorld from '@/lib/helloWorld';
 
 export default function App() {
+  useEffect(() => {
+    (async function () {
+      const msg = await helloWorld('Hello World!', 'The one!');
+
+      console.log('MSG: ', msg);
+    })();
+  }, []);
   return (
     <ErrorBoundary FallbackComponent={Error404}>
       <Suspense fallback={<ActivityIndicator style={styles.container} />}>
@@ -33,6 +39,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ecf0f1',
   },
   content: {
+    flex: 1,
     paddingHorizontal: 16,
   },
 });

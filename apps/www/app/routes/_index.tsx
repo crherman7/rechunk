@@ -15,10 +15,11 @@ import * as Text from '~/components/ui/text';
 
 export const meta: MetaFunction = () => {
   return [
-    {title: 'ReChunk | Remote Chunks'},
+    {title: 'ReChunk | Over-The-Air Chunks'},
     {
       name: 'description',
-      content: 'Seamless Code Chunking for Optimized React Native Apps.',
+      content:
+        'Seamless Code Chunking for over-the-air React Native components.',
     },
   ];
 };
@@ -60,10 +61,10 @@ export default function Index() {
           Launch without limits.
         </Text.H1>
         <Text.P className="animate-opacity mt-6 max-w-2xl text-center font-thin opacity-0">
-          Effortlessly bundle, sign, and serve code with blazing-fast
-          performance and built-in security. Simplify your React Native
-          app&apos;s lifecycle with modular delivery and dynamic updates that
-          just work. Take control of your codebase. ReChunk it.
+          Over-the-air updates at a component and function level. Bundle, sign,
+          and serve code with blazing-fast performance and built-in security.
+          Simplify your React Native app&apos;s lifecycle. Take control of your
+          codebase. ReChunk it.
         </Text.P>
 
         {/* Call to Actions */}
