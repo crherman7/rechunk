@@ -15,7 +15,7 @@
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.13.5",
     "@repo/typescript-config": "workspace:*",
-    "release-it": "^17.3.0",
+    "release-it": "^17.6.0",
     "typescript": "^5.4.3"
   },
   "publishConfig": {

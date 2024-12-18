@@ -84,3 +84,9 @@ migrations
 # Expo
 .expo/
 web-build/
+
+# ReChunk Configuration
+#
+# The .rechunkrc.json file is usually tracked in version control,
+# but we ignore it here temporarily for development purposes.
+.rechunkrc.json

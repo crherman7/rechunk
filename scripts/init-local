@@ -1,0 +1,136 @@
+#!/bin/bash
+
+################################################################################
+# Project Initialization Script
+#
+# This script automates the initialization process for a multi-app project,
+# specifically handling the following tasks:
+#
+# 1. **Environment Setup for the `www` App**:
+#    - Copies `.env.example` to `.env`.
+#    - Seeds the database using `pnpm seed`.
+#    - Ensures any process using port `5173` is terminated before starting
+#      the dev server.
+#    - Launches the dev server in a new terminal window and waits for it to be ready.
+#
+# 2. **ReChunk Initialization for the `expo` App**:
+#    - Runs `pnpm rechunk init` with predefined host and credentials.
+#    - Modifies the `.rechunkrc.json` configuration file to include `"@/components"`
+#      in the `external` field.
+#    - Publishes ReChunk chunks using `pnpm rechunk publish`.
+#
+# 3. **Platform Compatibility**:
+#    - Supports both macOS and Linux environments.
+#    - Uses `osascript` for macOS and `gnome-terminal` for Linux to open new
+#      terminal windows.
+#
+# 4. **Port Management**:
+#    - Kills any processes using port `5173` to avoid conflicts.
+#    - Waits until the dev server is up and running on port `5173` before proceeding.
+#
+# 5. **Error Handling**:
+#    - The script exits on any error (`set -e`).
+#    - Provides informative error messages when expected files are missing.
+#
+# Dependencies:
+# - `pnpm` for package management and running scripts.
+# - `lsof` for managing processes using specific ports.
+# - `nc` (netcat) for checking if a port is open.
+# - `sed` for modifying JSON configuration files.
+#
+################################################################################
+
+# Exit on any error
+set -e
+
+# Function to kill any process using port 5173
+kill_port_5173() {
+  echo "Checking for processes using port 5173..."
+  if lsof -ti :5173 > /dev/null 2>&1; then
+    lsof -ti :5173 | xargs kill -9
+    echo "Killed process using port 5173."
+  else
+    echo "No process found using port 5173."
+  fi
+}
+
+# Wait for the dev server to be up and running on port 5173
+wait_for_dev_server() {
+  echo "Waiting for the dev server to be up on port 5173..."
+  until nc -z localhost 5173; do
+    sleep 1
+  done
+  echo "Dev server is running on port 5173."
+}
+
+# Initialize the www app
+echo "Initializing www app..."
+cd apps/www
+
+# Copy environment file
+if [ -f .env.example ]; then
+  cp .env.example .env
+  echo ".env file created."
+else
+  echo "Error: .env.example not found."
+  exit 1
+fi
+
+# Seed the database
+echo "Seeding the database..."
+pnpm seed
+
+# Kill any process using port 5173 before starting the dev server
+kill_port_5173
+
+# Start the development server in a new terminal window
+echo "Starting pnpm dev in a new terminal window..."
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # macOS
+  osascript -e "tell application \"Terminal\" to do script \"cd '$(pwd)' && pnpm dev\""
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  # Linux
+  gnome-terminal -- bash -c "pnpm dev; exec bash"
+else
+  echo "Unsupported OS for opening a new terminal window."
+  exit 1
+fi
+
+# Wait for the dev server to be up
+wait_for_dev_server
+
+# Initialize the expo app
+echo "Initializing expo app..."
+cd ../expo
+
+# ReChunk initialization
+echo "Running pnpm rechunk init..."
+pnpm rechunk init --host http://localhost:5173/api/v1 --username admin --password password123
+
+# Modify .rechunkrc.json to include '@/components' in 'external'
+CONFIG_FILE=".rechunkrc.json"
+
+# Check if the configuration file exists
+if [ -f "$CONFIG_FILE" ]; then
+  echo "Updating 'external' field in $CONFIG_FILE..."
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS: In-place editing with an empty backup suffix
+    sed -i '' 's/"external": \[\(.*\)\]/"external": ["@\/components"]/' "$CONFIG_FILE"
+  else
+    # Linux: In-place editing without a backup suffix
+    sed -i 's/"external": \[\(.*\)\]/"external": ["@\/components"]/' "$CONFIG_FILE"
+  fi
+  echo "'external' field updated."
+else
+  echo "Error: $CONFIG_FILE not found."
+  exit 1
+fi
+
+# Publish chunks
+echo "Publishing chunks..."
+pnpm rechunk publish
+
+echo "Project initialization complete!"
+
+echo "Starting app..."
+pnpm ios

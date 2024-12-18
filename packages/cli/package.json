@@ -31,7 +31,7 @@
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@types/jsrsasign": "^10.5.14",
-    "release-it": "^17.3.0"
+    "release-it": "^17.6.0"
   },
   "publishConfig": {
     "access": "public",

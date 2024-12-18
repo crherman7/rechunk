@@ -21,7 +21,7 @@
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@types/babel__core": "^7.20.5",
-    "release-it": "^17.3.0",
+    "release-it": "^17.6.0",
     "typescript": "^5.4.3"
   },
   "publishConfig": {
