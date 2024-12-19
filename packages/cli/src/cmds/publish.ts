@@ -13,7 +13,7 @@ import {
 } from '../lib';
 
 /**
- * Registers the `publish-all` command to the CLI.
+ * Registers the `publish` command to the CLI.
  *
  * This command aggregates all `.tsx` files containing the `"use rechunk"` directive,
  * prompts the user to select which components to publish, bundles the selected components
@@ -21,7 +21,7 @@ import {
  *
  * @example
  * ```bash
- * yarn rechunk publish-all
+ * pnpm rechunk publish
  * ```
  */
 program
@@ -32,11 +32,9 @@ program
     console.log(LOGO);
 
     const ora = await import('ora');
-
     const spinner = ora.default('Aggregating ReChunk files...').start();
 
     try {
-      // Aggregate all "use rechunk" files
       const files = await aggregateUseRechunkFiles(process.cwd());
 
       if (files.length === 0) {
@@ -46,21 +44,30 @@ program
 
       spinner.succeed(`Found ${files.length} files.`);
 
-      // Prompt the user to select files to publish
-      const promptMessage = `
-  ${chalk.dim('Press:')}
-    ${chalk.cyan('<space>')} to select an item
-    ${chalk.cyan('<a>')} to toggle all selections
-    ${chalk.cyan('<i>')} to invert selections
-    ${chalk.cyan('<enter>')} to proceed
-    `;
-
       const {selectedFiles} = await inquirer.prompt([
         {
           type: 'checkbox',
+          theme: {
+            style: {
+              renderSelectedChoices: (
+                selectedChoices: ReadonlyArray<{
+                  value: any;
+                  name: string;
+                  description?: string;
+                  short: string;
+                  disabled: boolean | string;
+                  checked: boolean;
+                }>,
+              ) =>
+                selectedChoices
+                  .map((choice, index) =>
+                    index !== 0 ? `  ${choice.short}` : ` ${choice.short}`,
+                  )
+                  .join('\n'),
+            },
+          },
           name: 'selectedFiles',
           message: `${chalk.bold('Select the components to publish:\n')}`,
-          instructions: promptMessage,
           choices: files.map(file => ({
             name: ` ${chalk.cyan(file)}`,
             value: file,
@@ -79,7 +86,20 @@ program
         return;
       }
 
-      // Get ReChunk configuration
+      const confirm = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'proceed',
+          message: `You selected ${selectedFiles.length} components. Do you want to proceed with publishing?`,
+          default: true,
+        },
+      ]);
+
+      if (!confirm.proceed) {
+        console.log(chalk.yellow('Publishing cancelled.'));
+        return;
+      }
+
       const rc = getRechunkConfig();
 
       for (const file of selectedFiles) {
@@ -97,7 +117,6 @@ program
             output: [{code}],
           } = await rollupBuild.generate({interop: 'auto', format: 'cjs'});
 
-          // Simulate publishing
           await publishChunk(
             rc.host,
             base64String,
@@ -106,20 +125,19 @@ program
             rc.writeKey,
           );
 
-          spinner.succeed(`Successfully published ${base64String}`);
+          spinner.succeed(
+            `Successfully published ${componentName} as ${base64String}`,
+          );
         } catch (err) {
           spinner.fail(
-            `Failed to publish ${base64String}: ${(err as Error).message}`,
+            `Failed to publish ${componentName}: ${(err as Error).message}`,
           );
-
-          process.exit(1);
+          continue; // Continue to the next file instead of exiting
         }
       }
 
       console.log(
-        chalk.green(
-          '\n🎉 All selected components have been published successfully!',
-        ),
+        chalk.green('\n🎉 All selected components have been processed!'),
       );
     } catch (error) {
       spinner.fail(`Error: ${(error as Error).message}`);

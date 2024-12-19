@@ -12,6 +12,32 @@
     }
   ],
   "paths": {
+    "/token": {
+      "post": {
+        "operationId": "createToken",
+        "summary": "Create a new project token.",
+        "responses": {
+          "200": {
+            "description": "Successfully created a new project token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
     "/projects": {
       "post": {
         "operationId": "createProject",
@@ -323,6 +349,14 @@
             "type": "string"
           },
           "host": {
+            "type": "string"
+          }
+        }
+      },
+      "Token": {
+        "type": "object",
+        "properties": {
+          "token": {
             "type": "string"
           }
         }

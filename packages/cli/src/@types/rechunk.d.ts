@@ -50,17 +50,6 @@ type ReChunkConfig = {
   privateKey: string;
 
   /**
-   * Entries associated with the project; a map of string keys to string values
-   *
-   * @example
-   *
-   * ```json
-   * {"foo": "./src/shared/remote-ui/Remote.tsx"}
-   * ```
-   */
-  entry: {[key: string]: string};
-
-  /**
    * External resources related to the project; an array of strings
    *
    * @example

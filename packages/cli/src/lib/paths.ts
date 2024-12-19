@@ -119,3 +119,33 @@ export async function aggregateUseRechunkFiles(
 
   return matchingFiles;
 }
+
+/**
+ * Constructs a secure authentication token URL with query parameters.
+ *
+ * @param host - The base URL or host, e.g., `https://example.com`.
+ * @param project - The project ID to be included as a query parameter.
+ * @param token - An object containing the authentication token string.
+ *
+ * @returns The fully constructed URL as a string with properly encoded query parameters.
+ *
+ * @example
+ * ```typescript
+ * const url = constructAuthTokenURL('https://api.example.com', 'myProject', { token: 'abc123' });
+ * console.log(url); // "https://api.example.com/auth/token?projectId=myProject&token=abc123"
+ * ```
+ */
+export function constructAuthTokenURL(
+  host: string,
+  project: string,
+  token: string,
+): string {
+  const url = new URL('/auth/token', host);
+  const params = new URLSearchParams({
+    projectId: project,
+    token,
+  });
+
+  url.search = params.toString();
+  return url.toString();
+}

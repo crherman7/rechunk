@@ -1,14 +1,12 @@
-import {importChunk} from '@crherman7/rechunk';
-import React, {lazy, Suspense} from 'react';
+import React, {Suspense} from 'react';
 import {ErrorBoundary} from 'react-error-boundary';
 import {ActivityIndicator, SafeAreaView, StyleSheet, View} from 'react-native';
 
 import {Error404} from '@/components';
+import Balance from '@/components/remote/Balance';
+import Card from '@/components/remote/Card';
+import Transactions from '@/components/remote/Transactions';
 import {balanceData, transactionsData} from '@/lib';
-
-const Card = lazy(() => importChunk('card'));
-const Balance = lazy(() => importChunk('balance'));
-const Transactions = lazy(() => importChunk('transactions'));
 
 export default function App() {
   return (

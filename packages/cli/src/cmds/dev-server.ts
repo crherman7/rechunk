@@ -50,7 +50,7 @@ const PORT = 49904;
  *
  * @example
  * ```bash
- * yarn rechunk dev-server
+ * pnpm rechunk dev-server
  * ```
  */
 program

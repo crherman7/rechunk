@@ -3,3 +3,4 @@
 export * from './Chunk';
 export * from './CreateChunkForProject200Response';
 export * from './Project';
+export * from './Token';

@@ -16,6 +16,7 @@ model Project {
   privateKey String
   publicKey  String
   chunks     Chunk[]
+  tokens     Token[]
 }
 
 model Chunk {
@@ -23,6 +24,14 @@ model Chunk {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   data      String
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Token {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  token     String
   projectId String
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }

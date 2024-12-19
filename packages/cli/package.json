@@ -24,6 +24,7 @@
     "glob": "^11.0.0",
     "inquirer": "^12.2.0",
     "jsrsasign": "^11.1.0",
+    "open": "8.4.2",
     "ora": "^8.1.1",
     "rollup": "^4.13.0",
     "typescript": "^5.4.3"

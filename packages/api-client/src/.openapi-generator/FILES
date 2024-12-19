@@ -4,5 +4,6 @@ index.ts
 models/Chunk.ts
 models/CreateChunkForProject200Response.ts
 models/Project.ts
+models/Token.ts
 models/index.ts
 runtime.ts

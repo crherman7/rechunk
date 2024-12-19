@@ -17,6 +17,7 @@ import type {
   Chunk,
   CreateChunkForProject200Response,
   Project,
+  Token,
 } from '../models/index';
 import {
   ChunkFromJSON,
@@ -25,6 +26,8 @@ import {
   CreateChunkForProject200ResponseToJSON,
   ProjectFromJSON,
   ProjectToJSON,
+  TokenFromJSON,
+  TokenToJSON,
 } from '../models/index';
 
 export interface CreateChunkForProjectRequest {
@@ -177,6 +180,50 @@ export class DefaultApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Project> {
     const response = await this.createProjectRaw(initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Create a new project token.
+   */
+  async createTokenRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Token>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (
+      this.configuration &&
+      (this.configuration.username !== undefined ||
+        this.configuration.password !== undefined)
+    ) {
+      headerParameters['Authorization'] =
+        'Basic ' +
+        btoa(this.configuration.username + ':' + this.configuration.password);
+    }
+    const response = await this.request(
+      {
+        path: `/token`,
+        method: 'POST',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, jsonValue =>
+      TokenFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   * Create a new project token.
+   */
+  async createToken(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Token> {
+    const response = await this.createTokenRaw(initOverrides);
     return await response.value();
   }
 

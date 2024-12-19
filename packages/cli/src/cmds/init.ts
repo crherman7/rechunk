@@ -1,24 +1,29 @@
 import {Project} from '@crherman7/rechunk-api-client';
+import chalk from 'chalk';
 import {program} from 'commander';
 import fs from 'fs';
 import path from 'path';
 
 import {configureReChunkApi, LOGO} from '../lib';
 
+/**
+ * Options for the `init` command.
+ */
 interface InitOptions {
+  /** The ReChunk server host URL. */
   host: string;
+  /** The username for basic authentication. */
   username: string;
+  /** The password for basic authentication. */
   password: string;
 }
 
 /**
- * Defines a command for the "init" operation using the "commander" library.
- * Initializes a new ReChunk project by creating a configuration file (`.rechunkrc.json`)
- * with the server details provided through command-line options.
+ * Initializes a ReChunk project by creating a configuration file (`.rechunkrc.json`).
  *
  * @example
  * ```bash
- * yarn rechunk init -h https://rechunk.example.com -u myUser -p myPassword
+ * pnpm rechunk init -h https://rechunk.example.com -u myUser -p myPassword
  * ```
  */
 program
@@ -30,34 +35,46 @@ program
   .action(async (options: InitOptions) => {
     console.log(LOGO);
 
+    const ora = await import('ora');
+    const spinner = ora.default();
+
     const {host, username, password} = options;
     const ctx = process.cwd();
     const rcPath = path.resolve(ctx, '.rechunkrc.json');
 
     try {
+      spinner.start('Validating host URL...');
       validateHost(host);
+      spinner.succeed('Host URL is valid.');
+
+      spinner.start('Checking for existing project...');
       checkProjectExists(rcPath);
+      spinner.succeed('No existing project found.');
 
-      console.log('🚀 Creating project...\n');
-
+      spinner.start('Creating project on the ReChunk server...');
       const projectData = await createProject(host, username, password);
+      spinner.succeed('Project created successfully.');
+
+      spinner.start('Saving project configuration...');
       saveProjectFile(rcPath, {
         ...projectData,
         host,
         external: [],
       } as any);
+      spinner.succeed('Project configuration saved.');
 
       console.log(
-        '🎉 Successfully initialized a new ReChunk project. Generated .rechunkrc.json!\n',
+        chalk.green(
+          '\n🎉 Successfully initialized a new ReChunk project! Generated .rechunkrc.json.',
+        ),
       );
     } catch (error) {
-      logError((error as Error).message);
+      spinner.fail(chalk.red(`Error: ${(error as Error).message}`));
     }
   });
 
 /**
  * Validates if the host URL matches the required format.
- * Throws an error if the URL format is invalid.
  *
  * @param host - The host URL to validate.
  * @throws {Error} If the URL format does not match the expected schema.
@@ -73,7 +90,6 @@ function validateHost(host: string): void {
 
 /**
  * Checks if the project already exists by verifying the presence of `.rechunkrc.json`.
- * Throws an error if `.rechunkrc.json` is found in the current directory.
  *
  * @param rcPath - The file path to the `.rechunkrc.json` file.
  * @throws {Error} If `.rechunkrc.json` already exists in the directory.
@@ -87,12 +103,12 @@ function checkProjectExists(rcPath: string): void {
 }
 
 /**
- * Fetches project data from the ReChunk server using the ReChunk API client.
+ * Creates a new project on the ReChunk server.
  *
  * @param host - The ReChunk server host URL.
- * @param username - Username for basic authentication.
- * @param password - Password for basic authentication.
- * @returns A promise resolving to the project data as a `Project` object.
+ * @param username - The username for basic authentication.
+ * @param password - The password for basic authentication.
+ * @returns A promise that resolves to the project data.
  * @throws {Error} If the request to initialize the project fails.
  */
 async function createProject(
@@ -118,14 +134,4 @@ async function createProject(
  */
 function saveProjectFile(rcPath: string, data: Project): void {
   fs.writeFileSync(rcPath, JSON.stringify(data, null, 2) + '\n');
-  console.log('✅ Project data saved successfully to .rechunkrc.json');
-}
-
-/**
- * Logs errors in a consistent format, making user feedback more clear and readable.
- *
- * @param message - The error message to display.
- */
-function logError(message: string): void {
-  console.log(`❌ Error: ${message}\n`);
 }
