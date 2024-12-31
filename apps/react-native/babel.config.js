@@ -22,7 +22,7 @@ module.exports = api => {
           },
         },
       ],
-      ['@crherman7/rechunk-babel-plugin'],
+      ['@rechunk/babel-plugin'],
     ],
   };
 };

@@ -1,6 +1,6 @@
 {
-  "name": "@crherman7/rechunk-cli",
-  "version": "2.0.0-rc.12",
+  "name": "@rechunk/cli",
+  "version": "0.0.0",
   "description": "",
   "keywords": [],
   "license": "MIT",
@@ -17,8 +17,8 @@
   "dependencies": {
     "@babel/parser": "^7.26.3",
     "@babel/traverse": "^7.26.4",
-    "@crherman7/rechunk-api-client": "workspace:*",
-    "@crherman7/rechunk-rollup-preset": "workspace:*",
+    "@rechunk/api-client": "workspace:*",
+    "@rechunk/rollup-preset": "workspace:*",
     "chalk": "^4.0.0",
     "commander": "^12.0.0",
     "glob": "^11.0.0",

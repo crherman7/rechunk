@@ -2,7 +2,7 @@ import {
   Chunk,
   Configuration as ReChunkApiConfiguration,
   DefaultApi as ReChunkApi,
-} from '@crherman7/rechunk-api-client';
+} from '@rechunk/api-client';
 import React from 'react';
 import {TinyEmitter} from 'tiny-emitter';
 import invariant from 'tiny-invariant';

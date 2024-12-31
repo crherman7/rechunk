@@ -1,4 +1,4 @@
-import withRechunk from '@crherman7/rechunk-rollup-preset';
+import withRechunk from '@rechunk/rollup-preset';
 import chalk from 'chalk';
 import {program} from 'commander';
 import {createHash} from 'crypto';

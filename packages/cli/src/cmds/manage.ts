@@ -1,13 +1,13 @@
+import {Token} from '@rechunk/api-client';
 import {program} from 'commander';
 import open from 'open';
 
 import {
   configureReChunkApi,
+  constructAuthTokenURL,
   getRechunkConfig,
   LOGO,
-  constructAuthTokenURL,
 } from '../lib';
-import {Token} from '@crherman7/rechunk-api-client';
 
 /**
  * Registers the `manage` command to the CLI.

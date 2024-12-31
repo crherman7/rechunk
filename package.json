@@ -23,9 +23,9 @@
     "rechunk.podspec"
   ],
   "scripts": {
-    "build": "pnpm --filter '@repo/*' --filter '@crherman7/*' recursive run --sort build",
+    "build": "pnpm --filter '@repo/*' --filter '@rechunk/*' recursive run --sort build",
     "prepare": "husky",
-    "release": "pnpm --filter '@crherman7/*' recursive run --sort release --ci",
+    "release": "pnpm --filter '@rechunk/*' recursive run --sort release --ci",
     "release:dry-run": "pnpm release --dry-run",
     "release:major": "pnpm release --increment major",
     "release:minor": "pnpm release --increment minor",

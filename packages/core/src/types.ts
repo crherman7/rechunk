@@ -1,4 +1,4 @@
-import {Chunk} from '@crherman7/rechunk-api-client';
+import {Chunk} from '@rechunk/api-client';
 
 /**
  * Represents the valid entries for chunks in the `importChunk` function.

@@ -1,7 +1,7 @@
 import {
   Configuration as ReChunkApiConfiguration,
   DefaultApi as ReChunkApi,
-} from '@crherman7/rechunk-api-client';
+} from '@rechunk/api-client';
 import fs from 'fs';
 import path from 'path';
 

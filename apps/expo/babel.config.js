@@ -4,6 +4,6 @@ module.exports = api => {
 
   return {
     presets: [['babel-preset-expo', {enableBabelRuntime: !isRechunk}]],
-    plugins: [['@crherman7/rechunk-babel-plugin']],
+    plugins: [['@rechunk/babel-plugin']],
   };
 };

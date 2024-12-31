@@ -18,8 +18,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@crherman7/rechunk": "workspace:*",
-    "@crherman7/rechunk-api-client": "workspace:*",
+    "@rechunk/api-client": "workspace:*",
+    "@rechunk/core": "workspace:*",
     "expo": "~52.0.20",
     "expo-linear-gradient": "^14.0.1",
     "expo-status-bar": "~2.0.0",
@@ -32,8 +32,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
-    "@crherman7/rechunk-babel-plugin": "workspace:*",
-    "@crherman7/rechunk-cli": "workspace:*",
+    "@rechunk/babel-plugin": "workspace:*",
+    "@rechunk/cli": "workspace:*",
     "@repo/eslint-config": "workspace:*",
     "@repo/prettier-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",

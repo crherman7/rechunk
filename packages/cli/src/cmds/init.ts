@@ -1,4 +1,4 @@
-import {Project} from '@crherman7/rechunk-api-client';
+import {Project} from '@rechunk/api-client';
 import chalk from 'chalk';
 import {program} from 'commander';
 import fs from 'fs';

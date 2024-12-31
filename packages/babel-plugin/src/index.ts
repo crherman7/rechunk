@@ -47,13 +47,13 @@ const NODE_PROCESS_ENV_IDENTIFIER = 'env';
  * Cache key used to store and retrieve the content of the `.rechunkrc.json` file.
  * This key is used in conjunction with a caching mechanism to avoid re-reading the file.
  */
-const RECHUNK_CONFIG_KEY = '@crherman7+rechunk+config+json';
+const RECHUNK_CONFIG_KEY = '@rechunk+config+json';
 
 /**
  * Cache key used to store and retrieve the content of the `package.json` file.
  * This key is used in conjunction with a caching mechanism to avoid re-reading the file.
  */
-const RECHUNK_PACKAGE_KEY = '@crherman7+rechunk+package+json';
+const RECHUNK_PACKAGE_KEY = '@rechunk+package+json';
 
 /**
  * An array of dependencies that should be considered as extra dependencies for the project.
@@ -303,7 +303,7 @@ export default function (
         // Create template with declaration first
         const rechunkComponentTemplate = `
           import React from 'react';
-          import {importChunk} from '@crherman7/rechunk';
+          import {importChunk} from '@rechunk/core';
 
           const $$ReChunkModule = React.lazy(() => importChunk('${base64String}'));
 
@@ -311,7 +311,7 @@ export default function (
         `;
 
         const rechunkFunctionTemplate = `
-          import { importChunk } from '@crherman7/rechunk';
+          import { importChunk } from '@rechunk/core';
 
           const chunkLoader = importChunk('${base64String}');
 
