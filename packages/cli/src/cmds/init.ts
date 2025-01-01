@@ -4,7 +4,7 @@ import {program} from 'commander';
 import fs from 'fs';
 import path from 'path';
 
-import {configureReChunkApi, LOGO} from '../lib';
+import {configureReChunkProjectsApi, LOGO} from '../lib';
 
 /**
  * Options for the `init` command.
@@ -52,12 +52,18 @@ program
       spinner.succeed('No existing project found.');
 
       spinner.start('Creating project on the ReChunk server...');
-      const projectData = await createProject(host, username, password);
+      const {createdAt, updatedAt, id, ...projectData} = await createProject(
+        host,
+        username,
+        password,
+      );
       spinner.succeed('Project created successfully.');
 
       spinner.start('Saving project configuration...');
       saveProjectFile(rcPath, {
         ...projectData,
+        $schema: 'https://crherman7.github.io/rechunk/schema.json',
+        project: id,
         host,
         external: [],
       } as any);
@@ -116,7 +122,7 @@ async function createProject(
   username: string,
   password: string,
 ): Promise<Project> {
-  const api = configureReChunkApi(host, username, password);
+  const api = configureReChunkProjectsApi(host, username, password);
   try {
     return await api.createProject();
   } catch (error) {
@@ -133,5 +139,17 @@ async function createProject(
  * @param data - The project data to be saved.
  */
 function saveProjectFile(rcPath: string, data: Project): void {
-  fs.writeFileSync(rcPath, JSON.stringify(data, null, 2) + '\n');
+  fs.writeFileSync(
+    rcPath,
+    JSON.stringify(
+      Object.keys(data)
+        .sort()
+        .reduce((obj, key) => {
+          obj[key] = data[key];
+          return obj;
+        }, {}),
+      null,
+      2,
+    ) + '\n',
+  );
 }

@@ -1,8 +1,11 @@
-apis/DefaultApi.ts
+.openapi-generator-ignore
+apis/AuthenticationApi.ts
+apis/ChunksApi.ts
+apis/ProjectsApi.ts
 apis/index.ts
 index.ts
 models/Chunk.ts
-models/CreateChunkForProject200Response.ts
+models/ChunkCreate.ts
 models/Project.ts
 models/Token.ts
 models/index.ts

@@ -22,7 +22,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
     const {projectId} = await requireWriteAccess(request);
     const token = await createProjectToken(projectId);
 
-    return json({token});
+    return json(token);
   } catch (e) {
     handleError(e);
   }

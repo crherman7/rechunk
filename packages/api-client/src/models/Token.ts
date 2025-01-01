@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * ReChunk API
- * API for managing chunks in the ReChunk project.
+ * API for managing chunks in the ReChunk project. Enables secure storage and retrieval of data chunks with project-based organization.
  *
  * The version of the OpenAPI document: 1.0.0
  *
@@ -20,7 +20,25 @@ import {mapValues} from '../runtime';
  */
 export interface Token {
   /**
-   *
+   * Unique identifier for the token
+   * @type {string}
+   * @memberof Token
+   */
+  id?: string;
+  /**
+   * Timestamp of project creation
+   * @type {Date}
+   * @memberof Token
+   */
+  createdAt?: Date;
+  /**
+   * The unique identifier for the project
+   * @type {string}
+   * @memberof Token
+   */
+  projectId?: string;
+  /**
+   * JWT token for authentication
    * @type {string}
    * @memberof Token
    */
@@ -46,6 +64,10 @@ export function TokenFromJSONTyped(
     return json;
   }
   return {
+    id: json['id'] == null ? undefined : json['id'],
+    createdAt:
+      json['createdAt'] == null ? undefined : new Date(json['createdAt']),
+    projectId: json['projectId'] == null ? undefined : json['projectId'],
     token: json['token'] == null ? undefined : json['token'],
   };
 }
@@ -55,6 +77,10 @@ export function TokenToJSON(value?: Token | null): any {
     return value;
   }
   return {
+    id: value['id'],
+    createdAt:
+      value['createdAt'] == null ? undefined : value['createdAt'].toISOString(),
+    projectId: value['projectId'],
     token: value['token'],
   };
 }

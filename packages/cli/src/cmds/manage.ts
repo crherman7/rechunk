@@ -3,7 +3,7 @@ import {program} from 'commander';
 import open from 'open';
 
 import {
-  configureReChunkApi,
+  configureReChunkAuthenticationApi,
   constructAuthTokenURL,
   getRechunkConfig,
   LOGO,
@@ -37,7 +37,7 @@ program
     spinner.succeed('Generated auth token.');
 
     spinner.start(`Opening browser at ${host}/auth/token...`);
-    await open(constructAuthTokenURL(host, project, (token as any).token));
+    await open(constructAuthTokenURL(host, project, token));
     spinner.succeed(`Opened browser at ${host}/auth/token.`);
   });
 
@@ -64,7 +64,7 @@ async function manageCunks(
   project: string,
   writeKey: string,
 ): Promise<Token> {
-  const api = configureReChunkApi(host, project, writeKey);
+  const api = configureReChunkAuthenticationApi(host, project, writeKey);
   try {
     return api.createToken();
   } catch (error) {

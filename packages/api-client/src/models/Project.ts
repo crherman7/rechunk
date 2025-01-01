@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * ReChunk API
- * API for managing chunks in the ReChunk project.
+ * API for managing chunks in the ReChunk project. Enables secure storage and retrieval of data chunks with project-based organization.
  *
  * The version of the OpenAPI document: 1.0.0
  *
@@ -20,47 +20,47 @@ import {mapValues} from '../runtime';
  */
 export interface Project {
   /**
-   *
+   * Unique identifier for the project
    * @type {string}
    * @memberof Project
    */
-  $schema?: string;
+  id?: string;
   /**
-   *
-   * @type {string}
-   * @memberof Project
-   */
-  project?: string;
-  /**
-   *
+   * Read access key
    * @type {string}
    * @memberof Project
    */
   readKey?: string;
   /**
-   *
+   * Write access key
    * @type {string}
    * @memberof Project
    */
   writeKey?: string;
   /**
-   *
+   * Public key
    * @type {string}
    * @memberof Project
    */
   publicKey?: string;
   /**
-   *
+   * Private key
    * @type {string}
    * @memberof Project
    */
   privateKey?: string;
   /**
-   *
-   * @type {string}
+   * Timestamp of project creation
+   * @type {Date}
    * @memberof Project
    */
-  host?: string;
+  createdAt?: Date;
+  /**
+   * Timestamp of last update
+   * @type {Date}
+   * @memberof Project
+   */
+  updatedAt?: Date;
 }
 
 /**
@@ -82,13 +82,15 @@ export function ProjectFromJSONTyped(
     return json;
   }
   return {
-    $schema: json['$schema'] == null ? undefined : json['$schema'],
-    project: json['project'] == null ? undefined : json['project'],
+    id: json['id'] == null ? undefined : json['id'],
     readKey: json['readKey'] == null ? undefined : json['readKey'],
     writeKey: json['writeKey'] == null ? undefined : json['writeKey'],
     publicKey: json['publicKey'] == null ? undefined : json['publicKey'],
     privateKey: json['privateKey'] == null ? undefined : json['privateKey'],
-    host: json['host'] == null ? undefined : json['host'],
+    createdAt:
+      json['createdAt'] == null ? undefined : new Date(json['createdAt']),
+    updatedAt:
+      json['updatedAt'] == null ? undefined : new Date(json['updatedAt']),
   };
 }
 
@@ -97,12 +99,14 @@ export function ProjectToJSON(value?: Project | null): any {
     return value;
   }
   return {
-    $schema: value['$schema'],
-    project: value['project'],
+    id: value['id'],
     readKey: value['readKey'],
     writeKey: value['writeKey'],
     publicKey: value['publicKey'],
     privateKey: value['privateKey'],
-    host: value['host'],
+    createdAt:
+      value['createdAt'] == null ? undefined : value['createdAt'].toISOString(),
+    updatedAt:
+      value['updatedAt'] == null ? undefined : value['updatedAt'].toISOString(),
   };
 }

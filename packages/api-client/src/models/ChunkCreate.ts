@@ -16,53 +16,46 @@ import {mapValues} from '../runtime';
 /**
  *
  * @export
- * @interface Chunk
+ * @interface ChunkCreate
  */
-export interface Chunk {
+export interface ChunkCreate {
   /**
    * The chunk content
    * @type {string}
-   * @memberof Chunk
+   * @memberof ChunkCreate
    */
-  data?: string;
-  /**
-   * The signed chunk content
-   * @type {string}
-   * @memberof Chunk
-   */
-  token?: string;
+  data: string;
 }
 
 /**
- * Check if a given object implements the Chunk interface.
+ * Check if a given object implements the ChunkCreate interface.
  */
-export function instanceOfChunk(value: object): value is Chunk {
+export function instanceOfChunkCreate(value: object): value is ChunkCreate {
+  if (!('data' in value) || value['data'] === undefined) return false;
   return true;
 }
 
-export function ChunkFromJSON(json: any): Chunk {
-  return ChunkFromJSONTyped(json, false);
+export function ChunkCreateFromJSON(json: any): ChunkCreate {
+  return ChunkCreateFromJSONTyped(json, false);
 }
 
-export function ChunkFromJSONTyped(
+export function ChunkCreateFromJSONTyped(
   json: any,
   ignoreDiscriminator: boolean,
-): Chunk {
+): ChunkCreate {
   if (json == null) {
     return json;
   }
   return {
-    data: json['data'] == null ? undefined : json['data'],
-    token: json['token'] == null ? undefined : json['token'],
+    data: json['data'],
   };
 }
 
-export function ChunkToJSON(value?: Chunk | null): any {
+export function ChunkCreateToJSON(value?: ChunkCreate | null): any {
   if (value == null) {
     return value;
   }
   return {
     data: value['data'],
-    token: value['token'],
   };
 }

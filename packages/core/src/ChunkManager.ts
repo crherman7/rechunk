@@ -1,7 +1,7 @@
 import {
   Chunk,
+  ChunksApi,
   Configuration as ReChunkApiConfiguration,
-  DefaultApi as ReChunkApi,
 } from '@rechunk/api-client';
 import React from 'react';
 import {TinyEmitter} from 'tiny-emitter';
@@ -42,7 +42,7 @@ export class ChunkManager extends TinyEmitter {
    * @type {ReChunkApi}
    * @protected
    */
-  protected request: ReChunkApi = new ReChunkApi(
+  protected request: ChunksApi = new ChunksApi(
     new ReChunkApiConfiguration({basePath: process.env.__RECHUNK_HOST__}),
   );
 

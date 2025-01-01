@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * ReChunk API
- * API for managing chunks in the ReChunk project.
+ * API for managing chunks in the ReChunk project. Enables secure storage and retrieval of data chunks with project-based organization.
  *
  * The version of the OpenAPI document: 1.0.0
  *
@@ -13,27 +13,18 @@
  */
 
 import * as runtime from '../runtime';
-import type {
-  Chunk,
-  CreateChunkForProject200Response,
-  Project,
-  Token,
-} from '../models/index';
+import type {Chunk, ChunkCreate} from '../models/index';
 import {
   ChunkFromJSON,
   ChunkToJSON,
-  CreateChunkForProject200ResponseFromJSON,
-  CreateChunkForProject200ResponseToJSON,
-  ProjectFromJSON,
-  ProjectToJSON,
-  TokenFromJSON,
-  TokenToJSON,
+  ChunkCreateFromJSON,
+  ChunkCreateToJSON,
 } from '../models/index';
 
 export interface CreateChunkForProjectRequest {
   projectId: string;
   chunkId: string;
-  body: string;
+  chunkCreate: ChunkCreate;
 }
 
 export interface DeleteChunkByIdRequest {
@@ -50,21 +41,17 @@ export interface GetChunksByProjectIdRequest {
   projectId: string;
 }
 
-export interface GetProjectByIdRequest {
-  projectId: string;
-}
-
 /**
  *
  */
-export class DefaultApi extends runtime.BaseAPI {
+export class ChunksApi extends runtime.BaseAPI {
   /**
-   * Create a chunk in the project.
+   * Create a chunk in the project
    */
   async createChunkForProjectRaw(
     requestParameters: CreateChunkForProjectRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<CreateChunkForProject200Response>> {
+  ): Promise<runtime.ApiResponse<Chunk>> {
     if (requestParameters['projectId'] == null) {
       throw new runtime.RequiredError(
         'projectId',
@@ -79,10 +66,10 @@ export class DefaultApi extends runtime.BaseAPI {
       );
     }
 
-    if (requestParameters['body'] == null) {
+    if (requestParameters['chunkCreate'] == null) {
       throw new runtime.RequiredError(
-        'body',
-        'Required parameter "body" was null or undefined when calling createChunkForProject().',
+        'chunkCreate',
+        'Required parameter "chunkCreate" was null or undefined when calling createChunkForProject().',
       );
     }
 
@@ -115,23 +102,23 @@ export class DefaultApi extends runtime.BaseAPI {
         method: 'POST',
         headers: headerParameters,
         query: queryParameters,
-        body: requestParameters['body'] as any,
+        body: ChunkCreateToJSON(requestParameters['chunkCreate']),
       },
       initOverrides,
     );
 
     return new runtime.JSONApiResponse(response, jsonValue =>
-      CreateChunkForProject200ResponseFromJSON(jsonValue),
+      ChunkFromJSON(jsonValue),
     );
   }
 
   /**
-   * Create a chunk in the project.
+   * Create a chunk in the project
    */
   async createChunkForProject(
     requestParameters: CreateChunkForProjectRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<CreateChunkForProject200Response> {
+  ): Promise<Chunk> {
     const response = await this.createChunkForProjectRaw(
       requestParameters,
       initOverrides,
@@ -140,100 +127,12 @@ export class DefaultApi extends runtime.BaseAPI {
   }
 
   /**
-   * Create a new project.
-   */
-  async createProjectRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Project>> {
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    if (
-      this.configuration &&
-      (this.configuration.username !== undefined ||
-        this.configuration.password !== undefined)
-    ) {
-      headerParameters['Authorization'] =
-        'Basic ' +
-        btoa(this.configuration.username + ':' + this.configuration.password);
-    }
-    const response = await this.request(
-      {
-        path: `/projects`,
-        method: 'POST',
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
-
-    return new runtime.JSONApiResponse(response, jsonValue =>
-      ProjectFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   * Create a new project.
-   */
-  async createProject(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<Project> {
-    const response = await this.createProjectRaw(initOverrides);
-    return await response.value();
-  }
-
-  /**
-   * Create a new project token.
-   */
-  async createTokenRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Token>> {
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    if (
-      this.configuration &&
-      (this.configuration.username !== undefined ||
-        this.configuration.password !== undefined)
-    ) {
-      headerParameters['Authorization'] =
-        'Basic ' +
-        btoa(this.configuration.username + ':' + this.configuration.password);
-    }
-    const response = await this.request(
-      {
-        path: `/token`,
-        method: 'POST',
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
-
-    return new runtime.JSONApiResponse(response, jsonValue =>
-      TokenFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   * Create a new project token.
-   */
-  async createToken(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<Token> {
-    const response = await this.createTokenRaw(initOverrides);
-    return await response.value();
-  }
-
-  /**
-   * Delete a chunk from the project.
+   * Delete a chunk from the project
    */
   async deleteChunkByIdRaw(
     requestParameters: DeleteChunkByIdRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<CreateChunkForProject200Response>> {
+  ): Promise<runtime.ApiResponse<void>> {
     if (requestParameters['projectId'] == null) {
       throw new runtime.RequiredError(
         'projectId',
@@ -279,27 +178,21 @@ export class DefaultApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.JSONApiResponse(response, jsonValue =>
-      CreateChunkForProject200ResponseFromJSON(jsonValue),
-    );
+    return new runtime.VoidApiResponse(response);
   }
 
   /**
-   * Delete a chunk from the project.
+   * Delete a chunk from the project
    */
   async deleteChunkById(
     requestParameters: DeleteChunkByIdRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<CreateChunkForProject200Response> {
-    const response = await this.deleteChunkByIdRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return await response.value();
+  ): Promise<void> {
+    await this.deleteChunkByIdRaw(requestParameters, initOverrides);
   }
 
   /**
-   * Get details of a chunk in the project.
+   * Get details of a chunk in the project
    */
   async getChunkByIdRaw(
     requestParameters: GetChunkByIdRequest,
@@ -356,7 +249,7 @@ export class DefaultApi extends runtime.BaseAPI {
   }
 
   /**
-   * Get details of a chunk in the project.
+   * Get details of a chunk in the project
    */
   async getChunkById(
     requestParameters: GetChunkByIdRequest,
@@ -370,7 +263,7 @@ export class DefaultApi extends runtime.BaseAPI {
   }
 
   /**
-   * Get details of all chunks in the project.
+   * Get details of all chunks in the project
    */
   async getChunksByProjectIdRaw(
     requestParameters: GetChunksByProjectIdRequest,
@@ -415,72 +308,13 @@ export class DefaultApi extends runtime.BaseAPI {
   }
 
   /**
-   * Get details of all chunks in the project.
+   * Get details of all chunks in the project
    */
   async getChunksByProjectId(
     requestParameters: GetChunksByProjectIdRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Array<Chunk>> {
     const response = await this.getChunksByProjectIdRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return await response.value();
-  }
-
-  /**
-   * Get project details.
-   */
-  async getProjectByIdRaw(
-    requestParameters: GetProjectByIdRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Project>> {
-    if (requestParameters['projectId'] == null) {
-      throw new runtime.RequiredError(
-        'projectId',
-        'Required parameter "projectId" was null or undefined when calling getProjectById().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    if (
-      this.configuration &&
-      (this.configuration.username !== undefined ||
-        this.configuration.password !== undefined)
-    ) {
-      headerParameters['Authorization'] =
-        'Basic ' +
-        btoa(this.configuration.username + ':' + this.configuration.password);
-    }
-    const response = await this.request(
-      {
-        path: `/projects/{projectId}`.replace(
-          `{${'projectId'}}`,
-          encodeURIComponent(String(requestParameters['projectId'])),
-        ),
-        method: 'GET',
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
-
-    return new runtime.JSONApiResponse(response, jsonValue =>
-      ProjectFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   * Get project details.
-   */
-  async getProjectById(
-    requestParameters: GetProjectByIdRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<Project> {
-    const response = await this.getProjectByIdRaw(
       requestParameters,
       initOverrides,
     );

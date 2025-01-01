@@ -7,7 +7,7 @@ import {rollup} from 'rollup';
 
 import {
   aggregateUseRechunkFiles,
-  configureReChunkApi,
+  configureReChunkChunksApi,
   getRechunkConfig,
   LOGO,
 } from '../lib';
@@ -162,12 +162,14 @@ async function publishChunk(
   project: string,
   writeKey: string,
 ): Promise<void> {
-  const api = configureReChunkApi(host, project, writeKey);
+  const api = configureReChunkChunksApi(host, project, writeKey);
   try {
     await api.createChunkForProject({
       projectId: project,
       chunkId: chunk,
-      body: code,
+      chunkCreate: {
+        data: code,
+      },
     });
   } catch (error) {
     throw new Error(`Failed to publish chunk: ${(error as Error).message}`);

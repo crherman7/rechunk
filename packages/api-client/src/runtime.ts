@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * ReChunk API
- * API for managing chunks in the ReChunk project.
+ * API for managing chunks in the ReChunk project. Enables secure storage and retrieval of data chunks with project-based organization.
  *
  * The version of the OpenAPI document: 1.0.0
  *

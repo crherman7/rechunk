@@ -69,7 +69,7 @@ export const action: ActionFunction = async ({params, request}) => {
     const method = request.method.toUpperCase();
 
     if (method === 'POST') {
-      const data = await request.json();
+      const {data} = await request.json();
       if (typeof data !== 'string') {
         return json({error: 'Invalid data format'}, {status: 400});
       }

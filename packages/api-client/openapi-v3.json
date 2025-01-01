@@ -3,7 +3,7 @@
   "info": {
     "title": "ReChunk API",
     "version": "1.0.0",
-    "description": "API for managing chunks in the ReChunk project."
+    "description": "API for managing chunks in the ReChunk project. Enables secure storage and retrieval of data chunks with project-based organization."
   },
   "servers": [
     {
@@ -11,24 +11,43 @@
       "description": "Main API server"
     }
   ],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Token management operations"
+    },
+    {
+      "name": "Projects",
+      "description": "Project management operations"
+    },
+    {
+      "name": "Chunks",
+      "description": "Chunk management operations"
+    }
+  ],
   "paths": {
     "/token": {
       "post": {
+        "tags": ["Authentication"],
         "operationId": "createToken",
-        "summary": "Create a new project token.",
+        "summary": "Create a new project token",
+        "description": "Generates a new authentication token for project access",
         "responses": {
           "200": {
-            "description": "Successfully created a new project token.",
+            "description": "Successfully created a new project token",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Token"
+                },
+                "example": {
+                  "token": "eyJhbGciOiJIUzI1NiIs..."
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error."
+            "description": "Internal server error"
           }
         },
         "security": [
@@ -40,11 +59,13 @@
     },
     "/projects": {
       "post": {
+        "tags": ["Projects"],
         "operationId": "createProject",
-        "summary": "Create a new project.",
+        "summary": "Create a new project",
+        "description": "Creates a new project with generated security credentials",
         "responses": {
-          "200": {
-            "description": "Successfully created a new project.",
+          "201": {
+            "description": "Successfully created a new project",
             "content": {
               "application/json": {
                 "schema": {
@@ -54,10 +75,10 @@
             }
           },
           "400": {
-            "description": "Cannot create project."
+            "description": "Cannot create project"
           },
           "500": {
-            "description": "Internal server error."
+            "description": "Internal server error"
           }
         },
         "security": [
@@ -69,8 +90,9 @@
     },
     "/projects/{projectId}": {
       "get": {
+        "tags": ["Projects"],
         "operationId": "getProjectById",
-        "summary": "Get project details.",
+        "summary": "Get project details",
         "parameters": [
           {
             "name": "projectId",
@@ -79,12 +101,12 @@
             "schema": {
               "type": "string"
             },
-            "description": "The unique identifier for the project."
+            "description": "The unique identifier for the project"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved project details.",
+            "description": "Successfully retrieved project details",
             "content": {
               "application/json": {
                 "schema": {
@@ -94,10 +116,10 @@
             }
           },
           "404": {
-            "description": "Project not found."
+            "description": "Project not found"
           },
           "500": {
-            "description": "Internal server error."
+            "description": "Internal server error"
           }
         },
         "security": [
@@ -109,8 +131,9 @@
     },
     "/projects/{projectId}/chunks": {
       "get": {
+        "tags": ["Chunks"],
         "operationId": "getChunksByProjectId",
-        "summary": "Get details of all chunks in the project.",
+        "summary": "Get details of all chunks in the project",
         "parameters": [
           {
             "name": "projectId",
@@ -119,12 +142,12 @@
             "schema": {
               "type": "string"
             },
-            "description": "The unique identifier for the project."
+            "description": "The unique identifier for the project"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved all chunks and details.",
+            "description": "Successfully retrieved all chunks and details",
             "content": {
               "application/json": {
                 "schema": {
@@ -137,10 +160,10 @@
             }
           },
           "404": {
-            "description": "Project not found."
+            "description": "Project not found"
           },
           "500": {
-            "description": "Internal server error."
+            "description": "Internal server error"
           }
         },
         "security": [
@@ -152,8 +175,9 @@
     },
     "/projects/{projectId}/chunks/{chunkId}": {
       "post": {
+        "tags": ["Chunks"],
         "operationId": "createChunkForProject",
-        "summary": "Create a chunk in the project.",
+        "summary": "Create a chunk in the project",
         "parameters": [
           {
             "name": "projectId",
@@ -162,7 +186,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The unique identifier for the project."
+            "description": "The unique identifier for the project"
           },
           {
             "name": "chunkId",
@@ -171,7 +195,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The unique identifier for the chunk."
+            "description": "The unique identifier for the chunk"
           }
         ],
         "requestBody": {
@@ -179,66 +203,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/ChunkCreate"
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "Successfully updated the chunk.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Project or chunk not found."
-          },
-          "500": {
-            "description": "Internal server error."
-          }
-        },
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ]
-      },
-      "get": {
-        "operationId": "getChunkById",
-        "summary": "Get details of a chunk in the project.",
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "The unique identifier for the project."
-          },
-          {
-            "name": "chunkId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "The unique identifier for the chunk."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved the chunk details.",
+          "201": {
+            "description": "Successfully created the chunk",
             "content": {
               "application/json": {
                 "schema": {
@@ -248,10 +220,58 @@
             }
           },
           "404": {
-            "description": "Project or chunk not found."
+            "description": "Project not found"
           },
           "500": {
-            "description": "Internal server error."
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "get": {
+        "tags": ["Chunks"],
+        "operationId": "getChunkById",
+        "summary": "Get details of a chunk in the project",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier for the project"
+          },
+          {
+            "name": "chunkId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier for the chunk"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the chunk details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Chunk"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project or chunk not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         },
         "security": [
@@ -261,8 +281,9 @@
         ]
       },
       "delete": {
+        "tags": ["Chunks"],
         "operationId": "deleteChunkById",
-        "summary": "Delete a chunk from the project.",
+        "summary": "Delete a chunk from the project",
         "parameters": [
           {
             "name": "projectId",
@@ -271,7 +292,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The unique identifier for the project."
+            "description": "The unique identifier for the project"
           },
           {
             "name": "chunkId",
@@ -280,30 +301,18 @@
             "schema": {
               "type": "string"
             },
-            "description": "The unique identifier for the chunk."
+            "description": "The unique identifier for the chunk"
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successfully deleted the chunk.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
+          "204": {
+            "description": "Successfully deleted the chunk"
           },
           "404": {
-            "description": "Project or chunk not found."
+            "description": "Project or chunk not found"
           },
           "500": {
-            "description": "Internal server error."
+            "description": "Internal server error"
           }
         },
         "security": [
@@ -320,44 +329,79 @@
         "type": "object",
         "properties": {
           "data": {
-            "type": "string"
+            "type": "string",
+            "description": "The chunk content"
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The signed chunk content"
+          }
+        }
+      },
+      "ChunkCreate": {
+        "type": "object",
+        "required": ["data"],
+        "properties": {
+          "data": {
+            "type": "string",
+            "description": "The chunk content"
           }
         }
       },
       "Project": {
         "type": "object",
         "properties": {
-          "$schema": {
-            "type": "string"
-          },
-          "project": {
-            "type": "string"
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the project"
           },
           "readKey": {
-            "type": "string"
+            "type": "string",
+            "description": "Read access key"
           },
           "writeKey": {
-            "type": "string"
+            "type": "string",
+            "description": "Write access key"
           },
           "publicKey": {
-            "type": "string"
+            "type": "string",
+            "description": "Public key"
           },
           "privateKey": {
-            "type": "string"
+            "type": "string",
+            "description": "Private key"
           },
-          "host": {
-            "type": "string"
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of project creation"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of last update"
           }
         }
       },
       "Token": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the token"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of project creation"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "The unique identifier for the project"
+          },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT token for authentication"
           }
         }
       }

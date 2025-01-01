@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './Chunk';
-export * from './CreateChunkForProject200Response';
+export * from './ChunkCreate';
 export * from './Project';
 export * from './Token';

@@ -1,6 +1,8 @@
 import {
-  Configuration as ReChunkApiConfiguration,
-  DefaultApi as ReChunkApi,
+  AuthenticationApi,
+  ChunksApi,
+  Configuration,
+  ProjectsApi,
 } from '@rechunk/api-client';
 import fs from 'fs';
 import path from 'path';
@@ -31,24 +33,72 @@ export function getRechunkConfig(dir: string = process.cwd()): ReChunkConfig {
 }
 
 /**
- * Creates and returns a configured instance of the ReChunk API client.
+ * Creates a configured instance of any ReChunk API client.
  *
  * @param host - The ReChunk server host URL.
  * @param username - Username for basic authentication.
  * @param password - Password for basic authentication.
- * @returns A configured instance of `ReChunkApi`.
+ * @returns Configured Configuration instance
  */
-export function configureReChunkApi(
+function createBaseConfiguration(
   host: string,
   username: string,
   password: string,
-): ReChunkApi {
-  return new ReChunkApi(
-    new ReChunkApiConfiguration({
-      basePath: host,
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
-      },
-    }),
+): Configuration {
+  return new Configuration({
+    basePath: host,
+    headers: {
+      Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
+    },
+  });
+}
+
+/**
+ * Creates and returns a configured instance of the ReChunk Chunks API client.
+ *
+ * @param host - The ReChunk server host URL.
+ * @param username - Username for basic authentication.
+ * @param password - Password for basic authentication.
+ * @returns A configured instance of `ChunksApi`.
+ */
+export function configureReChunkChunksApi(
+  host: string,
+  username: string,
+  password: string,
+): ChunksApi {
+  return new ChunksApi(createBaseConfiguration(host, username, password));
+}
+
+/**
+ * Creates and returns a configured instance of the ReChunk Projects API client.
+ *
+ * @param host - The ReChunk server host URL.
+ * @param username - Username for basic authentication.
+ * @param password - Password for basic authentication.
+ * @returns A configured instance of `ProjectsApi`.
+ */
+export function configureReChunkProjectsApi(
+  host: string,
+  username: string,
+  password: string,
+): ProjectsApi {
+  return new ProjectsApi(createBaseConfiguration(host, username, password));
+}
+
+/**
+ * Creates and returns a configured instance of the ReChunk Authentication API client.
+ *
+ * @param host - The ReChunk server host URL.
+ * @param username - Username for basic authentication.
+ * @param password - Password for basic authentication.
+ * @returns A configured instance of `AuthenticationApi`.
+ */
+export function configureReChunkAuthenticationApi(
+  host: string,
+  username: string,
+  password: string,
+): AuthenticationApi {
+  return new AuthenticationApi(
+    createBaseConfiguration(host, username, password),
   );
 }
