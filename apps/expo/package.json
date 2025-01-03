@@ -34,6 +34,7 @@
     "@babel/core": "^7.25.2",
     "@rechunk/babel-plugin": "workspace:*",
     "@rechunk/cli": "workspace:*",
+    "@rechunk/metro-config": "workspace:*",
     "@repo/eslint-config": "workspace:*",
     "@repo/prettier-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",

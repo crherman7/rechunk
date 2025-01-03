@@ -38,6 +38,7 @@
     "@react-native/metro-config": "0.76.5",
     "@rechunk/babel-plugin": "workspace:*",
     "@rechunk/cli": "workspace:*",
+    "@rechunk/metro-config": "workspace:*",
     "@repo/eslint-config": "workspace:*",
     "@repo/prettier-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",

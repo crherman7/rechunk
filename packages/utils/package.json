@@ -1,15 +1,14 @@
 {
-  "name": "@rechunk/rollup-preset",
+  "name": "@rechunk/utils",
   "version": "0.0.0",
-  "description": "Rollup configuration preset for bundling ReChunk components and modules",
+  "description": "Utility functions and helpers for ReChunk packages and implementations",
   "keywords": [
     "rechunk",
-    "rollup",
-    "bundler",
-    "preset",
-    "configuration",
-    "build-tools",
-    "optimization"
+    "utilities",
+    "helpers",
+    "tools",
+    "react-native",
+    "development"
   ],
   "license": "MIT",
   "author": "Chris Herman",
@@ -20,16 +19,10 @@
     "release": "release-it"
   },
   "dependencies": {
-    "@babel/core": "^7.25.2",
-    "@rechunk/utils": "workspace:*",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-image": "^3.0.3",
-    "merge-anything": "^6.0.2",
-    "rollup": "^4.13.0"
+    "find-up": "5.0.0"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "@types/babel__core": "^7.20.5",
     "release-it": "^17.6.0",
     "typescript": "^5.4.3"
   },

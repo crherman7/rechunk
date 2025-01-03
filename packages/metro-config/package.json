@@ -1,8 +1,16 @@
 {
   "name": "@rechunk/metro-config",
   "version": "0.0.0",
-  "description": "",
-  "keywords": [],
+  "description": "Metro bundler configuration utilities for ReChunk integration with React Native",
+  "keywords": [
+    "rechunk",
+    "metro",
+    "react-native",
+    "bundler",
+    "configuration",
+    "build-tools",
+    "optimization"
+  ],
   "license": "MIT",
   "author": "Chris Herman",
   "main": "dist/index.js",
@@ -11,9 +19,11 @@
     "build": "tsup",
     "release": "release-it"
   },
+  "dependencies": {
+    "@rechunk/utils": "workspace:*"
+  },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "@types/babel__core": "^7.20.5",
     "release-it": "^17.6.0",
     "typescript": "^5.4.3"
   },

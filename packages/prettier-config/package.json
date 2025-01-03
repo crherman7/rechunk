@@ -1,9 +1,15 @@
 {
   "name": "@repo/prettier-config",
-  "version": "2.0.0-rc.12",
+  "version": "0.0.0",
   "private": true,
-  "description": "Prettier configuration",
-  "keywords": [],
+  "description": "Prettier configuration presets for consistent code formatting in ReChunk projects",
+  "keywords": [
+    "prettier",
+    "prettier-config",
+    "formatting",
+    "code-style",
+    "rechunk"
+  ],
   "license": "MIT",
   "author": "Chris Herman",
   "exports": {

@@ -1,11 +1,15 @@
 import type * as Babel from '@babel/core';
-import {ConfigAPI, template, type TransformCaller, types} from '@babel/core';
+import {
+  type ConfigAPI,
+  template,
+  type TransformCaller,
+  types,
+} from '@babel/core';
+import {findClosestJSON, isRechunkDevServerRunning} from '@rechunk/utils';
+import {type BabelPresetExpoOptions} from 'babel-preset-expo';
 import chalk from 'chalk';
 import dedent from 'dedent';
-import {readFileSync} from 'fs';
-import {dirname, relative, resolve} from 'path';
-
-import {getCacheVersion, isRechunkDevServerRunning} from './lib';
+import {relative} from 'path';
 
 /**
  * Checks if the Babel transformation is being invoked by the ReChunk bundler.
@@ -117,31 +121,6 @@ export default function (
    * @type {Map<string, object>}
    */
   const fileCache: Map<string, object> = new Map();
-
-  /**
-   * Recursively searches for the closest JSON file, starting from a given directory.
-   *
-   * @param filename - The name of the JSON file to search for.
-   * @param start - The directory to start searching from, defaults to the current working directory.
-   * @param level - The current depth of the recursive search, used to limit recursion.
-   * @returns The parsed JSON content, or an empty object if the file is not found after 10 levels.
-   */
-  function findClosestJSON(
-    filename: string,
-    start = process.cwd(),
-    level = 0,
-  ): any {
-    try {
-      const path = resolve(start, filename);
-      const content = readFileSync(path, {encoding: 'utf8'});
-      return JSON.parse(content);
-    } catch {
-      // Limit recursion to 10 levels to prevent potential infinite loops
-      return level >= 10
-        ? {}
-        : findClosestJSON(filename, dirname(start), level + 1);
-    }
-  }
 
   /**
    * Retrieves and caches the JSON content for a given key. If the content is not already cached, it finds
@@ -498,21 +477,61 @@ export default function (
 }
 
 /**
- * Cache version string generated for the Metro Bundler.
+ * Modifies React Native Babel preset options when running in the ReChunk bundler environment.
  *
- * @remarks
- * This constant is derived by calling the `getCacheVersion` function, which generates
- * a deterministic hash based on:
- * - The last modified time of the `.rechunkrc.json` file.
- * - The `RECHUNK_ENVIRONMENT` environment variable.
- * - The running status of the Rechunk development server.
+ * This function customizes the Babel preset options based on whether the code is being processed
+ * by the ReChunk bundler. It disables both the Babel runtime and import/export transforms when
+ * running in ReChunk to prevent conflicts and ensure proper bundle compatibility.
  *
- * The cache version helps ensure that Metro uses the correct cache when bundling,
- * avoiding stale or inconsistent builds.
+ * @param {ConfigAPI} api - The Babel configuration API object that provides info about the current transformation
+ * @param {Record<string, unknown>} options - The current React Native Babel preset options object
+ * @returns {Record<string, unknown>} A modified options object with adjusted settings for ReChunk compatibility
  *
  * @example
  * ```typescript
- * console.log(cacheVersion); // e.g., "3d94d1c0f..."
+ * const modifiedOptions = withReactNativeBabelPresetOptions(api, defaultOptions);
+ * // Returns options with enableBabelRuntime and importExportTransform disabled if running in ReChunk
  * ```
  */
-export const cacheVersion = getCacheVersion();
+export function withReactNativeBabelPresetOptions(
+  api: ConfigAPI,
+  options: Record<string, unknown> = {},
+): Record<string, unknown> {
+  const isRechunk = api.caller(getIsRechunkBundler);
+
+  return {
+    ...options,
+    enableBabelRuntime: !isRechunk,
+    disableImportExportTransform: isRechunk,
+  };
+}
+
+/**
+ * Modifies Babel Preset Expo options when running in the ReChunk bundler environment.
+ *
+ * This function takes the current Babel Preset Expo options and adjusts them based on
+ * whether the code is being processed by the ReChunk bundler. Specifically, it disables
+ * the Babel runtime when running in ReChunk to prevent conflicts with ReChunk's own
+ * runtime handling.
+ *
+ * @param {ConfigAPI} api - The Babel configuration API object that provides information about the current transformation
+ * @param {BabelPresetExpoOptions} options - The current Babel Preset Expo options object
+ * @returns {BabelPresetExpoOptions} A modified options object with adjusted settings for ReChunk compatibility
+ *
+ * @example
+ * ```typescript
+ * const modifiedOptions = withBabelPresetExpoOptions(api, defaultOptions);
+ * // Returns options with enableBabelRuntime disabled if running in ReChunk
+ * ```
+ */
+export function withBabelPresetExpoOptions(
+  api: ConfigAPI,
+  options: BabelPresetExpoOptions = {},
+): BabelPresetExpoOptions {
+  const isRechunk = api.caller(getIsRechunkBundler);
+
+  return {
+    ...options,
+    enableBabelRuntime: !isRechunk,
+  };
+}

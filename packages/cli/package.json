@@ -1,8 +1,16 @@
 {
   "name": "@rechunk/cli",
   "version": "0.0.0",
-  "description": "",
-  "keywords": [],
+  "description": "Command-line interface for managing ReChunk projects, chunks, and deployments",
+  "keywords": [
+    "rechunk",
+    "cli",
+    "react-native",
+    "code-splitting",
+    "deployment",
+    "management",
+    "chunks"
+  ],
   "license": "MIT",
   "author": "Chris Herman",
   "main": "dist/index.js",

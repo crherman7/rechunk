@@ -1,7 +1,4 @@
-import {readFileSync} from 'node:fs';
-import {dirname, resolve} from 'node:path';
-import {cwd} from 'node:process';
-
+import {findClosestJSON} from '@rechunk/utils';
 import babel from '@rollup/plugin-babel';
 import image from '@rollup/plugin-image';
 import {RollupOptions} from 'rollup';
@@ -42,27 +39,6 @@ export const BABEL_ROLLUP_OVERRIDES = {
     },
   ],
 };
-
-/**
- * Recursively searches for the closest JSON file, starting from a given directory.
- *
- * @param filename - The name of the JSON file to search for.
- * @param start - The directory to start searching from, defaults to the current working directory.
- * @param level - The current depth of the recursive search, used to limit recursion.
- * @returns The parsed JSON content, or an empty object if the file is not found after 10 levels.
- */
-function findClosestJSON(filename: string, start = cwd(), level = 0): any {
-  try {
-    const path = resolve(start, filename);
-    const content = readFileSync(path, {encoding: 'utf8'});
-    return JSON.parse(content);
-  } catch {
-    // Limit recursion to 10 levels to prevent potential infinite loops
-    return level >= 10
-      ? {}
-      : findClosestJSON(filename, dirname(start), level + 1);
-  }
-}
 
 /**
  * Processes the given Rollup options, merging them with default configurations.

@@ -133,6 +133,9 @@ importers:
       '@rechunk/cli':
         specifier: workspace:*
         version: link:../../packages/cli
+      '@rechunk/metro-config':
+        specifier: workspace:*
+        version: link:../../packages/metro-config
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -218,6 +221,9 @@ importers:
       '@rechunk/cli':
         specifier: workspace:*
         version: link:../../packages/cli
+      '@rechunk/metro-config':
+        specifier: workspace:*
+        version: link:../../packages/metro-config
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -375,6 +381,9 @@ importers:
       '@babel/core':
         specifier: ^7.25.2
         version: 7.25.2
+      '@rechunk/utils':
+        specifier: workspace:*
+        version: link:../utils
       chalk:
         specifier: ^4.0.0
         version: 4.1.2
@@ -388,6 +397,9 @@ importers:
       '@types/babel__core':
         specifier: ^7.20.5
         version: 7.20.5
+      babel-preset-expo:
+        specifier: ^12.0.4
+        version: 12.0.4(@babel/core@7.25.2)
       release-it:
         specifier: ^17.6.0
         version: 17.6.0(typescript@5.4.3)
@@ -542,13 +554,14 @@ importers:
         version: 5.6.2
 
   packages/metro-config:
+    dependencies:
+      '@rechunk/utils':
+        specifier: workspace:*
+        version: link:../utils
     devDependencies:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
-      '@types/babel__core':
-        specifier: ^7.20.5
-        version: 7.20.5
       release-it:
         specifier: ^17.6.0
         version: 17.6.0(typescript@5.6.2)
@@ -573,6 +586,9 @@ importers:
       '@babel/core':
         specifier: ^7.25.2
         version: 7.25.2
+      '@rechunk/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@rollup/plugin-babel':
         specifier: ^6.0.4
         version: 6.0.4(@babel/core@7.25.2)(@types/babel__core@7.20.5)(rollup@4.28.1)
@@ -600,6 +616,22 @@ importers:
         version: 5.4.3
 
   packages/typescript-config: {}
+
+  packages/utils:
+    dependencies:
+      find-up:
+        specifier: 5.0.0
+        version: 5.0.0
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      release-it:
+        specifier: ^17.6.0
+        version: 17.6.0(typescript@5.6.2)
+      typescript:
+        specifier: ^5.4.3
+        version: 5.6.2
 
 packages:
 
@@ -14111,6 +14143,13 @@ snapshots:
 
   '@react-native/assets-registry@0.76.5': {}
 
+  '@react-native/babel-plugin-codegen@0.76.5':
+    dependencies:
+      '@react-native/codegen': 0.76.5
+    transitivePeerDependencies:
+      - '@babel/preset-env'
+      - supports-color
+
   '@react-native/babel-plugin-codegen@0.76.5(@babel/preset-env@7.25.4(@babel/core@7.25.2))':
     dependencies:
       '@react-native/codegen': 0.76.5(@babel/preset-env@7.25.4(@babel/core@7.25.2))
@@ -14121,6 +14160,57 @@ snapshots:
   '@react-native/babel-plugin-codegen@0.76.5(@babel/preset-env@7.25.4(@babel/core@7.26.0))':
     dependencies:
       '@react-native/codegen': 0.76.5(@babel/preset-env@7.25.4(@babel/core@7.26.0))
+    transitivePeerDependencies:
+      - '@babel/preset-env'
+      - supports-color
+
+  '@react-native/babel-preset@0.76.5(@babel/core@7.25.2)':
+    dependencies:
+      '@babel/core': 7.25.2
+      '@babel/plugin-proposal-export-default-from': 7.25.9(@babel/core@7.25.2)
+      '@babel/plugin-syntax-dynamic-import': 7.8.3(@babel/core@7.25.2)
+      '@babel/plugin-syntax-export-default-from': 7.25.9(@babel/core@7.25.2)
+      '@babel/plugin-syntax-nullish-coalescing-operator': 7.8.3(@babel/core@7.25.2)
+      '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.25.2)
+      '@babel/plugin-transform-arrow-functions': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-async-generator-functions': 7.25.4(@babel/core@7.25.2)
+      '@babel/plugin-transform-async-to-generator': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-block-scoping': 7.25.0(@babel/core@7.25.2)
+      '@babel/plugin-transform-class-properties': 7.25.4(@babel/core@7.25.2)
+      '@babel/plugin-transform-classes': 7.25.4(@babel/core@7.25.2)
+      '@babel/plugin-transform-computed-properties': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-destructuring': 7.24.8(@babel/core@7.25.2)
+      '@babel/plugin-transform-flow-strip-types': 7.25.9(@babel/core@7.25.2)
+      '@babel/plugin-transform-for-of': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-function-name': 7.25.1(@babel/core@7.25.2)
+      '@babel/plugin-transform-literals': 7.25.2(@babel/core@7.25.2)
+      '@babel/plugin-transform-logical-assignment-operators': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-modules-commonjs': 7.24.8(@babel/core@7.25.2)
+      '@babel/plugin-transform-named-capturing-groups-regex': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-nullish-coalescing-operator': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-numeric-separator': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-object-rest-spread': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-optional-catch-binding': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-optional-chaining': 7.24.8(@babel/core@7.25.2)
+      '@babel/plugin-transform-parameters': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-private-methods': 7.25.4(@babel/core@7.25.2)
+      '@babel/plugin-transform-private-property-in-object': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-react-display-name': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-react-jsx': 7.25.9(@babel/core@7.25.2)
+      '@babel/plugin-transform-react-jsx-self': 7.25.9(@babel/core@7.25.2)
+      '@babel/plugin-transform-react-jsx-source': 7.25.9(@babel/core@7.25.2)
+      '@babel/plugin-transform-regenerator': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-runtime': 7.25.9(@babel/core@7.25.2)
+      '@babel/plugin-transform-shorthand-properties': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-spread': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-sticky-regex': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-typescript': 7.26.3(@babel/core@7.25.2)
+      '@babel/plugin-transform-unicode-regex': 7.24.7(@babel/core@7.25.2)
+      '@babel/template': 7.25.9
+      '@react-native/babel-plugin-codegen': 0.76.5
+      babel-plugin-syntax-hermes-parser: 0.25.1
+      babel-plugin-transform-flow-enums: 0.0.2(@babel/core@7.25.2)
+      react-refresh: 0.14.2
     transitivePeerDependencies:
       - '@babel/preset-env'
       - supports-color
@@ -14225,6 +14315,19 @@ snapshots:
       react-refresh: 0.14.2
     transitivePeerDependencies:
       - '@babel/preset-env'
+      - supports-color
+
+  '@react-native/codegen@0.76.5':
+    dependencies:
+      '@babel/parser': 7.26.3
+      glob: 7.2.3
+      hermes-parser: 0.23.1
+      invariant: 2.2.4
+      jscodeshift: 0.14.0(@babel/preset-env@7.25.4(@babel/core@7.26.0))
+      mkdirp: 0.5.6
+      nullthrows: 1.1.1
+      yargs: 17.7.2
+    transitivePeerDependencies:
       - supports-color
 
   '@react-native/codegen@0.76.5(@babel/preset-env@7.25.4(@babel/core@7.25.2))':
@@ -15838,6 +15941,22 @@ snapshots:
       '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.26.0)
       '@babel/plugin-syntax-private-property-in-object': 7.14.5(@babel/core@7.26.0)
       '@babel/plugin-syntax-top-level-await': 7.14.5(@babel/core@7.26.0)
+
+  babel-preset-expo@12.0.4(@babel/core@7.25.2):
+    dependencies:
+      '@babel/plugin-proposal-decorators': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-export-namespace-from': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-object-rest-spread': 7.24.7(@babel/core@7.25.2)
+      '@babel/plugin-transform-parameters': 7.24.7(@babel/core@7.25.2)
+      '@babel/preset-react': 7.24.7(@babel/core@7.25.2)
+      '@babel/preset-typescript': 7.23.3(@babel/core@7.25.2)
+      '@react-native/babel-preset': 0.76.5(@babel/core@7.25.2)
+      babel-plugin-react-native-web: 0.19.13
+      react-refresh: 0.14.2
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@babel/preset-env'
+      - supports-color
 
   babel-preset-expo@12.0.4(@babel/core@7.25.2)(@babel/preset-env@7.25.4(@babel/core@7.25.2)):
     dependencies:

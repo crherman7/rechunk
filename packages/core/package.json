@@ -1,8 +1,16 @@
 {
   "name": "@rechunk/core",
   "version": "0.0.0",
-  "description": "",
-  "keywords": [],
+  "description": "Core functionality for ReChunk dynamic code loading and chunk management in React Native",
+  "keywords": [
+    "rechunk",
+    "react-native",
+    "code-splitting",
+    "dynamic-imports",
+    "chunk-loading",
+    "lazy-loading",
+    "runtime"
+  ],
   "license": "MIT",
   "author": "Chris Herman",
   "main": "dist/index.js",

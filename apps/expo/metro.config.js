@@ -1,5 +1,5 @@
 const path = require('path');
-const {cacheVersion} = require('@rechunk/babel-plugin');
+const {cacheVersion} = require('@rechunk/metro-config');
 const {getDefaultConfig} = require('expo/metro-config');
 
 const root = path.resolve(__dirname, '../..');

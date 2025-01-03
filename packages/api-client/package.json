@@ -1,8 +1,16 @@
 {
   "name": "@rechunk/api-client",
   "version": "0.0.0",
-  "description": "",
-  "keywords": [],
+  "description": "TypeScript API client for ReChunk services with OpenAPI-generated interfaces",
+  "keywords": [
+    "rechunk",
+    "api-client",
+    "openapi",
+    "typescript",
+    "fetch",
+    "rest-api",
+    "code-splitting"
+  ],
   "license": "MIT",
   "author": "Chris Herman",
   "main": "dist/index.js",

@@ -1,15 +1,11 @@
-module.exports = api => {
-  // Determine if we should disable Babel runtime based on the caller
-  const isRechunk = api.caller(caller => caller && caller.name === 'rechunk');
+const {withReactNativeBabelPresetOptions} = require('@rechunk/babel-plugin');
 
+module.exports = api => {
   return {
     presets: [
       [
         'module:@react-native/babel-preset',
-        {
-          enableBabelRuntime: !isRechunk,
-          disableImportExportTransform: isRechunk,
-        },
+        withReactNativeBabelPresetOptions(api),
       ],
     ],
     plugins: [

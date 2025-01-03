@@ -1,9 +1,8 @@
-module.exports = api => {
-  // Determine if we should disable Babel runtime based on the caller
-  const isRechunk = api.caller(caller => caller && caller.name === 'rechunk');
+const {withBabelPresetExpoOptions} = require('@rechunk/babel-plugin');
 
+module.exports = api => {
   return {
-    presets: [['babel-preset-expo', {enableBabelRuntime: !isRechunk}]],
+    presets: [['babel-preset-expo', withBabelPresetExpoOptions(api)]],
     plugins: [['@rechunk/babel-plugin']],
   };
 };

@@ -1,8 +1,16 @@
 {
   "name": "@rechunk/babel-plugin",
   "version": "0.0.0",
-  "description": "",
-  "keywords": [],
+  "description": "Babel plugin for transforming and processing ReChunk directives in React Native applications",
+  "keywords": [
+    "rechunk",
+    "babel-plugin",
+    "react-native",
+    "code-splitting",
+    "transformation",
+    "ast",
+    "bundling"
+  ],
   "license": "MIT",
   "author": "Chris Herman",
   "main": "dist/index.js",
@@ -13,14 +21,24 @@
   },
   "dependencies": {
     "@babel/core": "^7.25.2",
+    "@rechunk/utils": "workspace:*",
     "chalk": "^4.0.0",
     "dedent": "^1.5.3"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@types/babel__core": "^7.20.5",
+    "babel-preset-expo": "^12.0.4",
     "release-it": "^17.6.0",
     "typescript": "^5.4.3"
+  },
+  "peerDependencies": {
+    "babel-preset-expo": "^12.0.4"
+  },
+  "peerDependenciesMeta": {
+    "babel-preset-expo": {
+      "optional": true
+    }
   },
   "publishConfig": {
     "access": "public",
