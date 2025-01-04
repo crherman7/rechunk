@@ -5,11 +5,16 @@ import {
   type TransformCaller,
   types,
 } from '@babel/core';
+import {parse} from '@babel/parser';
+import traverse from '@babel/traverse';
 import {findClosestJSON, isRechunkDevServerRunning} from '@rechunk/utils';
 import {type BabelPresetExpoOptions} from 'babel-preset-expo';
 import chalk from 'chalk';
 import dedent from 'dedent';
+import {readFileSync} from 'fs';
+import {glob} from 'glob';
 import {relative} from 'path';
+import {loadConfig} from 'tsconfig-paths';
 
 /**
  * Checks if the Babel transformation is being invoked by the ReChunk bundler.
@@ -60,6 +65,11 @@ const RECHUNK_CONFIG_KEY = '@rechunk+config+json';
 const RECHUNK_PACKAGE_KEY = '@rechunk+package+json';
 
 /**
+ * Cache key used to store and retrieve path alias imports gathered from the project.
+ * This key is used to cache resolved aliases to avoid re-scanning source files on subsequent runs.
+ */ const ALIAS_IMPORTS_CACHE_KEY = '@rechunk+alias-imports';
+
+/**
  * An array of dependencies that should be considered as extra dependencies for the project.
  * These dependencies might need special handling or inclusion in certain processes.
  *
@@ -71,6 +81,75 @@ const EXTRA_DEPENDENCIES = ['react/jsx-runtime'];
  * The default host used by the Rechunk development server.
  */
 const RECHUNK_DEV_SERVER_HOST = 'http://localhost:49904';
+
+/**
+ * Gathers all import statements that use path aliases from TypeScript/React files in the project.
+ *
+ * This function scans all TypeScript and React files in the project directory, analyzing their
+ * import statements to find those that use path aliases defined in tsconfig.json. It uses the
+ * project's tsconfig.json configuration to determine valid path aliases and returns a unique
+ * list of all aliased imports found.
+ *
+ * @param {string} projectRoot - The root directory of the project to scan for files
+ * @returns {string[]} An array of unique import paths that use aliases
+ *
+ * @example
+ * ```typescript
+ * // Given a file with: import Button from '@components/Button';
+ * const aliases = gatherAliasImports('./project');
+ * console.log(aliases); // ['@components/Button']
+ * ```
+ */
+function gatherAliasImports(projectRoot: string): string[] {
+  // Load tsconfig
+  const configLoaderResult = loadConfig(projectRoot);
+  if (configLoaderResult.resultType === 'failed') {
+    return [];
+  }
+
+  const {paths} = configLoaderResult;
+
+  // Create regex pattern for all aliases
+  const aliasPatterns = Object.keys(paths).map(alias =>
+    alias.replace('/*', ''),
+  );
+  const aliasRegex = new RegExp(`^(${aliasPatterns.join('|')})`);
+
+  // Find all TypeScript/React files in the project
+  const sourceFiles = glob.sync('**/*.{ts,tsx}', {
+    ignore: ['node_modules/**', 'dist/**'],
+    cwd: projectRoot,
+    absolute: true,
+  });
+
+  const aliasImports: string[] = [];
+
+  // Parse each file and look for imports using aliases
+  sourceFiles.forEach(filePath => {
+    try {
+      const code = readFileSync(filePath, 'utf-8');
+      const ast = parse(code, {
+        sourceType: 'module',
+        plugins: ['typescript', 'jsx'],
+      });
+
+      traverse(ast, {
+        ImportDeclaration(path) {
+          const importSource = path.node.source.value;
+
+          // Check if import uses an alias
+          if (aliasRegex.test(importSource)) {
+            aliasImports.push(importSource);
+          }
+        },
+      });
+    } catch (error) {
+      console.warn(`Failed to parse ${filePath}:`, error);
+    }
+  });
+
+  return Array.from(new Set(aliasImports));
+}
 
 export default function (
   api: ConfigAPI & {types: typeof types},
@@ -422,6 +501,31 @@ export default function (
           const external = rechunkJson.external || [];
           const dependencies = packageJson.dependencies || {};
 
+          let aliasImports = fileCache.get(ALIAS_IMPORTS_CACHE_KEY) as string[];
+
+          if (!aliasImports) {
+            aliasImports = gatherAliasImports(process.cwd());
+            fileCache.set(ALIAS_IMPORTS_CACHE_KEY, aliasImports);
+          }
+
+          // Create require statements for alias imports
+          const aliasRequireStatements = aliasImports.map(aliasImport =>
+            t.ifStatement(
+              t.binaryExpression(
+                '===',
+                t.identifier('moduleId'),
+                t.stringLiteral(aliasImport),
+              ),
+              t.blockStatement([
+                t.returnStatement(
+                  t.callExpression(t.identifier('require'), [
+                    t.stringLiteral(aliasImport),
+                  ]),
+                ),
+              ]),
+            ),
+          );
+
           // Generate requireStatements for each dependency
           const requireStatements = [
             ...Object.keys(dependencies),
@@ -450,6 +554,7 @@ export default function (
             [t.identifier('moduleId')],
             t.blockStatement([
               ...requireStatements,
+              ...aliasRequireStatements,
               t.returnStatement(t.nullLiteral()),
             ]),
           );

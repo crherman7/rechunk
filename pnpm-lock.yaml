@@ -381,6 +381,12 @@ importers:
       '@babel/core':
         specifier: ^7.25.2
         version: 7.25.2
+      '@babel/parser':
+        specifier: ^7.26.3
+        version: 7.26.3
+      '@babel/traverse':
+        specifier: ^7.26.4
+        version: 7.26.4
       '@rechunk/utils':
         specifier: workspace:*
         version: link:../utils
@@ -390,6 +396,12 @@ importers:
       dedent:
         specifier: ^1.5.3
         version: 1.5.3
+      glob:
+        specifier: ^11.0.0
+        version: 11.0.0
+      tsconfig-paths:
+        specifier: 4.2.0
+        version: 4.2.0
     devDependencies:
       '@repo/typescript-config':
         specifier: workspace:*
@@ -14501,9 +14513,7 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/preset-env'
-      - bufferutil
       - supports-color
-      - utf-8-validate
 
   '@react-native/normalize-colors@0.76.5': {}
 
