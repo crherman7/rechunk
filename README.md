@@ -51,7 +51,17 @@ yarn add -D @rechunk/cli @rechunk/babel-plugin @rechunk/metro-config
 
 ## Quick Example
 
+### 1. Initialize Project
+
+```bash
+# Create a new ReChunk project
+npx rechunk init -h https://your-rechunk-host.com -u username -p password
+```
+
+### 2. Create a ReChunk Component
+
 ```tsx
+// components/FeatureCard.tsx
 'use rechunk';
 
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
@@ -63,7 +73,7 @@ interface FeatureCardProps {
   onPress?: () => void;
 }
 
-export default function RemoteFeatureCard({
+export default function FeatureCard({
   title = 'New Feature',
   description = 'Try out our latest update!',
   onPress,
@@ -88,37 +98,106 @@ export default function RemoteFeatureCard({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
-    margin: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  pressed: {
-    opacity: 0.8,
-    transform: [{scale: 0.98}],
-  },
-  content: {
-    gap: 8,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000000',
-  },
-  description: {
-    fontSize: 14,
-    color: '#666666',
-  },
+  // ... styles remain the same
 });
+```
+
+### 3. Configure Your Project
+
+```javascript
+// babel.config.js
+const {withReactNativeBabelPresetOptions} = require('@rechunk/babel-plugin');
+
+module.exports = {
+  presets: [
+    [
+      'module:metro-react-native-babel-preset',
+      api => withReactNativeBabelPresetOptions(api),
+    ],
+  ],
+  plugins: ['@rechunk/babel-plugin'],
+};
+
+// metro.config.js
+const {cacheVersion} = require('@rechunk/metro-config');
+
+module.exports = {
+  cacheVersion,
+  // ... other Metro configuration
+};
+```
+
+### 4. Use the Component
+
+```tsx
+// App.tsx
+import React, {Suspense} from 'react';
+import {View, ActivityIndicator} from 'react-native';
+import ReChunk from '@rechunk/core';
+
+import FeatureCard from './FeatureCard';
+
+export default function App() {
+  return (
+    <Suspense fallback={<ActivityIndicator />}>
+      <FeatureCard
+        title="Welcome!"
+        description="This component was loaded dynamically!"
+        onPress={() => console.log('Pressed!')}
+      />
+    </Suspense>
+  );
+}
+```
+
+### 5. Publish Your Component
+
+```bash
+# Start development server
+npx rechunk dev-server
+
+# Or publish to production
+npx rechunk publish
+```
+
+## Usage Guide
+
+### Development Workflow
+
+1. **Start Development Server**
+
+```bash
+npx rechunk dev-server
+```
+
+2. **Mark Components for Remote Loading**
+   Add the `"use rechunk"` directive to any component you want to load remotely.
+
+3. **Configure Environment**
+
+```bash
+# Development
+export RECHUNK_ENVIRONMENT=dev
+
+# Production
+export RECHUNK_ENVIRONMENT=prod
+
+# Offline testing
+export RECHUNK_ENVIRONMENT=offline
+```
+
+### Production Deployment
+
+1. **Publish Components**
+
+```bash
+npx rechunk publish
+```
+
+2. **Manage Deployments**
+
+```bash
+npx rechunk manage
 ```
 
 ## Features
