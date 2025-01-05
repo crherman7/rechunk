@@ -15,8 +15,6 @@
 #
 # 2. **ReChunk Initialization for the `expo` App**:
 #    - Runs `pnpm rechunk init` with predefined host and credentials.
-#    - Modifies the `.rechunkrc.json` configuration file to include `"@/components"`
-#      in the `external` field.
 #    - Publishes ReChunk chunks using `pnpm rechunk publish`.
 #
 # 3. **Platform Compatibility**:
@@ -106,25 +104,6 @@ cd ../expo
 # ReChunk initialization
 echo "Running pnpm rechunk init..."
 pnpm rechunk init --host http://localhost:5173/api/v1 --username admin --password password123
-
-# Modify .rechunkrc.json to include '@/components' in 'external'
-CONFIG_FILE=".rechunkrc.json"
-
-# Check if the configuration file exists
-if [ -f "$CONFIG_FILE" ]; then
-  echo "Updating 'external' field in $CONFIG_FILE..."
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS: In-place editing with an empty backup suffix
-    sed -i '' 's/"external": \[\(.*\)\]/"external": ["@\/components"]/' "$CONFIG_FILE"
-  else
-    # Linux: In-place editing without a backup suffix
-    sed -i 's/"external": \[\(.*\)\]/"external": ["@\/components"]/' "$CONFIG_FILE"
-  fi
-  echo "'external' field updated."
-else
-  echo "Error: $CONFIG_FILE not found."
-  exit 1
-fi
 
 # Publish chunks
 echo "Publishing chunks..."

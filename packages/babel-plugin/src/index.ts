@@ -144,7 +144,8 @@ function gatherAliasImports(projectRoot: string): string[] {
         },
       });
     } catch (error) {
-      console.warn(`Failed to parse ${filePath}:`, error);
+      // Ignore parse errors for individual files
+      // This allows the plugin to continue gathering aliases from other files
     }
   });
 
