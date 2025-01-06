@@ -45,6 +45,7 @@
           - ufw
           - nginx
           - python3-certbot-nginx
+          - jq
         state: present
 
     - name: Enable ufw firewall

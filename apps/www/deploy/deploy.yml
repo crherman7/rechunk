@@ -2,11 +2,23 @@
   hosts: all
   remote_user: root
   tasks:
+    - name: Create prisma directory
+      file:
+        path: /home/{{ domain }}/prisma
+        state: directory
+        mode: '0755'
+
     - name: Copy app files to server
       synchronize:
         src: '{{ item.src }}'
         dest: '{{ item.dest }}'
       loop: '{{ deploy_files }}'
+
+    - name: Remove development dependencies from package.json
+      shell: |
+        jq 'del(.devDependencies["@repo/eslint-config", "@repo/prettier-config", "@repo/typescript-config"])' package.json > package.json.tmp && mv package.json.tmp package.json
+      args:
+        chdir: /home/{{ domain }}
 
     - name: Install pnpm deps
       shell:

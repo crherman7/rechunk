@@ -15,11 +15,10 @@ import * as Text from '~/components/ui/text';
 
 export const meta: MetaFunction = () => {
   return [
-    {title: 'ReChunk | Over-The-Air Chunks'},
+    {title: 'ReChunk | OTA React Native Components & Functions'},
     {
       name: 'description',
-      content:
-        'Seamless Code Chunking for over-the-air React Native components.',
+      content: 'Over-the-air React Native components and functions.',
     },
   ];
 };

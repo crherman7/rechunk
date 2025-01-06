@@ -76,7 +76,7 @@ fi
 
 # Seed the database
 echo "Seeding the database..."
-pnpm seed
+pnpm db:setup:dev
 
 # Kill any process using port 5173 before starting the dev server
 kill_port_5173
