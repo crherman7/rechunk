@@ -1,6 +1,6 @@
 {
   "name": "@rechunk/babel-plugin",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Babel plugin for transforming and processing ReChunk directives in React Native applications",
   "keywords": [
     "rechunk",
@@ -16,8 +16,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup",
-    "release": "release-it"
+    "build": "tsup"
   },
   "dependencies": {
     "@babel/core": "^7.25.2",
@@ -33,7 +32,6 @@
     "@repo/typescript-config": "workspace:*",
     "@types/babel__core": "^7.20.5",
     "babel-preset-expo": "^12.0.4",
-    "release-it": "^17.6.0",
     "typescript": "^5.4.3"
   },
   "peerDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@rechunk/core",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Core functionality for ReChunk dynamic code loading and chunk management in React Native",
   "keywords": [
     "rechunk",
@@ -16,8 +16,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup",
-    "release": "release-it"
+    "build": "tsup"
   },
   "dependencies": {
     "@rechunk/api-client": "workspace:*",
@@ -33,7 +32,6 @@
     "@types/jsrsasign": "^10.5.14",
     "react": "18.3.1",
     "react-native": "0.76.5",
-    "release-it": "^17.6.0",
     "typescript": "^5.4.3"
   },
   "peerDependencies": {

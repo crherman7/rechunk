@@ -1,6 +1,6 @@
 {
   "name": "@rechunk/cli",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Command-line interface for managing ReChunk projects, chunks, and deployments",
   "keywords": [
     "rechunk",
@@ -19,8 +19,7 @@
     "rechunk": "bin/rechunk"
   },
   "scripts": {
-    "build": "tsup",
-    "release": "release-it"
+    "build": "tsup"
   },
   "dependencies": {
     "@babel/parser": "^7.26.3",
@@ -39,8 +38,7 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "@types/jsrsasign": "^10.5.14",
-    "release-it": "^17.6.0"
+    "@types/jsrsasign": "^10.5.14"
   },
   "publishConfig": {
     "access": "public",

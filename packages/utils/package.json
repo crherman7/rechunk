@@ -1,6 +1,6 @@
 {
   "name": "@rechunk/utils",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Utility functions and helpers for ReChunk packages and implementations",
   "keywords": [
     "rechunk",
@@ -15,15 +15,13 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup",
-    "release": "release-it"
+    "build": "tsup"
   },
   "dependencies": {
     "find-up": "5.0.0"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "release-it": "^17.6.0",
     "typescript": "^5.4.3"
   },
   "publishConfig": {

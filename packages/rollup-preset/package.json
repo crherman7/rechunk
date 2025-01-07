@@ -1,6 +1,6 @@
 {
   "name": "@rechunk/rollup-preset",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Rollup configuration preset for bundling ReChunk components and modules",
   "keywords": [
     "rechunk",
@@ -16,8 +16,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup",
-    "release": "release-it"
+    "build": "tsup"
   },
   "dependencies": {
     "@babel/core": "^7.25.2",
@@ -30,7 +29,6 @@
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@types/babel__core": "^7.20.5",
-    "release-it": "^17.6.0",
     "typescript": "^5.4.3"
   },
   "publishConfig": {

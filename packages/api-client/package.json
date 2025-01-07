@@ -1,6 +1,6 @@
 {
   "name": "@rechunk/api-client",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "TypeScript API client for ReChunk services with OpenAPI-generated interfaces",
   "keywords": [
     "rechunk",
@@ -17,13 +17,11 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup",
-    "generate": "openapi-generator-cli generate -i ./openapi-v3.json -g typescript-fetch -o ./src",
-    "release": "release-it"
+    "generate": "openapi-generator-cli generate -i ./openapi-v3.json -g typescript-fetch -o ./src"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.13.5",
     "@repo/typescript-config": "workspace:*",
-    "release-it": "^17.6.0",
     "typescript": "^5.4.3"
   },
   "publishConfig": {

@@ -1,17 +1,23 @@
 {
   "name": "rechunk",
-  "version": "2.0.0-rc.12",
+  "version": "0.0.0",
   "private": true,
-  "description": "🚀 Securely render externally hosted components in React Native",
+  "description": "🚀 Securely load and execute remote React Native components and functions over-the-air",
   "keywords": [
     "react-native",
-    "typescript",
-    "chunks",
+    "remote-components",
+    "dynamic-rendering",
+    "secure-components",
     "code-splitting",
+    "server-driven-ui",
     "sdui",
-    "hosted-components"
+    "typescript",
+    "remote-modules",
+    "hosted-components",
+    "ota",
+    "over-the-air"
   ],
-  "homepage": "https://crherman7.github.io/rechunk",
+  "homepage": "https://rechunk.xyz",
   "repository": "git@github.com:crherman7/rechunk.git",
   "license": "MIT",
   "author": "Chris Herman <crherman7@gmail.com>",
@@ -25,7 +31,7 @@
   "scripts": {
     "build": "pnpm --filter '@repo/*' --filter '@rechunk/*' recursive run --sort build",
     "prepare": "husky",
-    "release": "pnpm --filter '@rechunk/*' recursive run --sort release --ci",
+    "release": "release-it --ci",
     "release:dry-run": "pnpm release --dry-run",
     "release:major": "pnpm release --increment major",
     "release:minor": "pnpm release --increment minor",
@@ -63,12 +69,31 @@
       "pagefind@<1.1.1": ">=1.1.1",
       "path-to-regexp@>=0.2.0 <8.0.0": ">=8.0.0",
       "path-to-regexp@<0.1.12": "0.1.12",
-      "release-it>signal-exit": "3.0.7",
       "rollup@>=4.0.0 <4.22.4": ">=4.22.4 <5.x",
       "semver@>=7.0.0 <7.5.2": ">=7.5.2",
       "send@<0.19.0": ">=0.19.0",
       "serve-static@<1.16.0": ">=1.16.0",
       "vite@>=5.2.0 <5.2.14": ">=5.2.14 <6.x"
     }
+  },
+  "release-it": {
+    "plugins": {
+      "@release-it-plugins/workspaces": {
+        "workspaces": [
+          "packages/*"
+        ]
+      }
+    },
+    "git": {
+      "commitMessage": "chore: release v${version}",
+      "requireBranch": "develop",
+      "requireCleanWorkingDir": true,
+      "tagName": "v${version}"
+    },
+    "github": {
+      "releaseName": "Release ${name} v${version}",
+      "release": true
+    },
+    "npm": false
   }
 }
