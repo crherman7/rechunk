@@ -54,9 +54,17 @@ yarn add -D @rechunk/cli @rechunk/babel-plugin @rechunk/metro-config
 ### 1. Initialize Project
 
 ```bash
-# Create a new ReChunk project
+# Create a new ReChunk project with a custom host
 npx rechunk init -h https://your-rechunk-host.com -u username -p password
 ```
+
+If you'd like to use the hosted ReChunk service at [rechunk.xyz](https://rechunk.xyz), you can run:
+
+```bash
+npx rechunk init --host https://rechunk.xyz/api/v1 --username admin --password password123
+```
+
+> **Note:** This project is currently in beta. As we continue to improve the platform, certain aspects, such as authentication mechanisms (e.g., basic auth), may change in the future. Stay tuned for updates in our documentation and changelogs.
 
 ### 2. Create a ReChunk Component
 
