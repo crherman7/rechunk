@@ -1,48 +1,75 @@
 'use rechunk';
 
-import React, {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useRef,
-} from 'react';
-import {StyleSheet} from 'react-native';
-import CardFlip, {type FlipCardProps} from 'react-native-card-flip';
+import React from 'react';
+import {Pressable, StyleSheet, View} from 'react-native';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 
-import {BackSide, type CardFlipEvents, FrontSide} from '@/components';
+import {BackSide, FrontSide} from '@/components';
 
-export default forwardRef<CardFlipEvents, FlipCardProps>(
-  function Card(props, ref) {
-    const cardRef = useRef<CardFlip | null>(null);
+export default function Card() {
+  const progress = useSharedValue(0);
 
-    useImperativeHandle(ref, () => ({
-      flip: () => cardRef?.current?.flip(),
-      tip: args => cardRef.current?.tip(args),
-      jiggle: args => cardRef.current?.jiggle(args),
-    }));
-
-    const handleFlip = useCallback(() => {
-      cardRef?.current?.flip();
-    }, []);
-
-    return (
-      // @ts-ignore
-      <CardFlip
-        ref={cardRef}
-        flipZoom={-0.15}
-        style={styles.container}
-        {...props}>
-        <FrontSide handleFlip={handleFlip} />
-        <BackSide handleFlip={handleFlip} />
-      </CardFlip>
+  const frontAnimatedStyle = useAnimatedStyle(() => {
+    const rotateY = interpolate(
+      progress.value,
+      [0, 1],
+      [0, Math.PI],
+      Extrapolation.CLAMP,
     );
-  },
-);
+
+    return {transform: [{rotateY: `${rotateY}rad`}]};
+  });
+
+  const backAnimatedStyle = useAnimatedStyle(() => {
+    const rotateY = interpolate(
+      progress.value,
+      [0, 1],
+      [Math.PI, 2 * Math.PI],
+      Extrapolation.CLAMP,
+    );
+
+    return {transform: [{rotateY: `${rotateY}rad`}]};
+  });
+
+  const flipCard = () => {
+    progress.value = withSpring(progress.value ? 0 : 1, {
+      duration: 900,
+    });
+  };
+
+  return (
+    <View style={styles.container}>
+      <Pressable style={styles.cardContainer} onPress={flipCard}>
+        <Animated.View style={[styles.card, frontAnimatedStyle]}>
+          <FrontSide />
+        </Animated.View>
+        <Animated.View style={[styles.card, backAnimatedStyle]}>
+          <BackSide />
+        </Animated.View>
+      </Pressable>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
-    height: 200,
-    marginBottom: 24,
-    borderRadius: 12,
+    marginVertical: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cardContainer: {height: 200, width: '100%'},
+  card: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    backfaceVisibility: 'hidden',
+    overflow: 'hidden',
+    borderRadius: 8,
   },
 });

@@ -18,6 +18,7 @@ module.exports = api => {
           },
         },
       ],
+      'react-native-reanimated/plugin',
       ['@rechunk/babel-plugin'],
     ],
   };

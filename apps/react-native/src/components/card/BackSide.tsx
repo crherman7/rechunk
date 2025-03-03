@@ -1,24 +1,15 @@
 import React, {memo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import {LinearGradient} from 'react-native-linear-gradient';
 
-import CardWrapper from './CardWrapper';
-
-type BackSideProps = {
-  handleFlip?: () => void;
-};
-
-export default memo<BackSideProps>(function BackSide({handleFlip}) {
+export default memo(function BackSide() {
   return (
-    <CardWrapper
-      handleFlip={handleFlip}
-      colors={backgroundGradient}
-      contentStyle={styles.content}>
+    <LinearGradient colors={backgroundGradient} style={styles.gradient}>
       <LinearGradient
-        colors={magneticBarGradient}
         start={{x: 0, y: 0.1}}
         end={{x: 0.5, y: 1.0}}
         locations={[0, 0.4, 0.75, 1]}
+        colors={magneticBarGradient}
         style={styles.magneticBar}
       />
       <View style={styles.layout}>
@@ -31,7 +22,7 @@ export default memo<BackSideProps>(function BackSide({handleFlip}) {
           <View style={[styles.cardMask, styles.cardCode]} />
         </View>
       </View>
-    </CardWrapper>
+    </LinearGradient>
   );
 });
 
@@ -39,9 +30,8 @@ const backgroundGradient = ['rgba(32,32,32,0.7)', '#333'];
 const magneticBarGradient = ['#000', '#111', '#333', '#000'];
 
 const styles = StyleSheet.create({
-  content: {
-    paddingTop: 32,
-  },
+  gradient: {height: '100%', width: '100%'},
+  content: {paddingTop: 32},
   cardText: {
     color: '#fff',
     fontWeight: '500',

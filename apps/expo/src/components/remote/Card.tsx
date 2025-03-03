@@ -1,37 +1,58 @@
 'use rechunk';
 
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import Animated, {
-  Easing,
+  Extrapolation,
+  interpolate,
   useAnimatedStyle,
   useSharedValue,
-  withTiming,
+  withSpring,
 } from 'react-native-reanimated';
 
+import {BackSide, FrontSide} from '@/components';
+
 export default function Card() {
-  const randomWidth = useSharedValue(10);
+  const progress = useSharedValue(0);
 
-  const config = {
-    duration: 500,
-    easing: Easing.bezier(0.5, 0.01, 0, 1),
-  };
+  const frontAnimatedStyle = useAnimatedStyle(() => {
+    const rotateY = interpolate(
+      progress.value,
+      [0, 1],
+      [0, Math.PI],
+      Extrapolation.CLAMP,
+    );
 
-  const style = useAnimatedStyle(() => {
-    return {
-      width: withTiming(randomWidth.value, config),
-    };
+    return {transform: [{rotateY: `${rotateY}rad`}]};
   });
+
+  const backAnimatedStyle = useAnimatedStyle(() => {
+    const rotateY = interpolate(
+      progress.value,
+      [0, 1],
+      [Math.PI, 2 * Math.PI],
+      Extrapolation.CLAMP,
+    );
+
+    return {transform: [{rotateY: `${rotateY}rad`}]};
+  });
+
+  const flipCard = () => {
+    progress.value = withSpring(progress.value ? 0 : 1, {
+      duration: 900,
+    });
+  };
 
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.box, style]} />
-      <TouchableOpacity
-        style={{backgroundColor: 'grey', height: 200, width: 100}}
-        onPress={() => {
-          randomWidth.value = Math.random() * 350;
-        }}
-      />
+      <Pressable style={styles.cardContainer} onPress={flipCard}>
+        <Animated.View style={[styles.card, frontAnimatedStyle]}>
+          <FrontSide />
+        </Animated.View>
+        <Animated.View style={[styles.card, backAnimatedStyle]}>
+          <BackSide />
+        </Animated.View>
+      </Pressable>
     </View>
   );
 }
@@ -43,10 +64,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  box: {
-    width: 100,
-    height: 80,
-    backgroundColor: 'black',
-    margin: 30,
+  cardContainer: {height: 200, width: '100%'},
+  card: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    backfaceVisibility: 'hidden',
+    overflow: 'hidden',
+    borderRadius: 8,
   },
 });

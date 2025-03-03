@@ -1,15 +1,10 @@
 import React, {memo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {LinearGradient} from 'react-native-linear-gradient';
 
-import CardWrapper from './CardWrapper';
-
-type FrontSideProps = {
-  handleFlip?: () => void;
-};
-
-export default memo<FrontSideProps>(function FrontSide({handleFlip}) {
+export default memo(function FrontSide() {
   return (
-    <CardWrapper colors={backgroundGradient} handleFlip={handleFlip}>
+    <LinearGradient colors={backgroundGradient} style={styles.gradient}>
       <View style={styles.cardContent}>
         <View style={[styles.cardMask, styles.cardNumber]} />
         <View style={[styles.cardMask, styles.cardNumber]} />
@@ -21,13 +16,14 @@ export default memo<FrontSideProps>(function FrontSide({handleFlip}) {
         <Text style={styles.cardText}>/</Text>
         <View style={[styles.cardMask, styles.cardCode]} />
       </View>
-    </CardWrapper>
+    </LinearGradient>
   );
 });
 
 const backgroundGradient = ['rgba(0,0,0,0.7)', 'black'];
 
 const styles = StyleSheet.create({
+  gradient: {height: '100%', width: '100%'},
   cardText: {
     color: '#fff',
     fontWeight: '500',
