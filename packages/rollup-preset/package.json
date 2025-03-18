@@ -23,8 +23,10 @@
     "@rechunk/utils": "workspace:*",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-image": "^3.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
     "merge-anything": "^6.0.2",
-    "rollup": "^4.13.0"
+    "rollup": "^4.13.0",
+    "rollup-plugin-tsconfig-paths": "1.5.2"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
