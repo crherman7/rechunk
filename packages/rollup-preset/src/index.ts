@@ -1,7 +1,9 @@
 import {findClosestJSON} from '@rechunk/utils';
 import babel from '@rollup/plugin-babel';
 import image from '@rollup/plugin-image';
-import {RollupOptions} from 'rollup';
+import resolve from '@rollup/plugin-node-resolve';
+import type {RollupOptions} from 'rollup';
+import tsConfigPaths from 'rollup-plugin-tsconfig-paths';
 
 /**
  * Babel overrides to disable specific plugins for compatibility with Rollup.
@@ -69,6 +71,11 @@ async function processOptions(options: RollupOptions) {
   const defaultOptions = {
     external,
     plugins: [
+      tsConfigPaths(),
+      resolve({
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        resolveOnly: [/^\.\//, /^\.\.\//],
+      }),
       babel({
         filename: options.input,
         caller: {

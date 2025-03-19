@@ -7,7 +7,7 @@ import {
   TransactionItem,
   type TransactionItemType,
   TransactionsHeader,
-} from '@/components';
+} from '../../components';
 
 interface TransactionsProps
   extends Omit<FlatListProps<TransactionItemType>, 'renderItem'> {}
