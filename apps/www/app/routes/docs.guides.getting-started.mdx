@@ -1,0 +1,22 @@
+---
+meta:
+  - title: Getting Started
+---
+
+import {json} from '@remix-run/react';
+
+export const meta = frontmatter.meta;
+
+export async function loader() {
+    return json({title: frontmatter.meta[0].title });
+}
+
+ReChunk is an all-inclusive package that includes a command-line interface (CLI) and library designed for rendering encoded components with React Native. The CLI is designed to work alongside an API that adheres to the interface specified in the library. You can use the Docker image right out of the box and deploy it wherever best suits your project, or alternatively, create your own server that conforms to the interface.
+
+## Setup
+
+The CLI, React Native library and Babel plugin are included in the same package. This library does not require a particular React Native version but is more related to the React version as it is expected to be utilized with Suspense via lazy loading. Suspense was introduced into React 16.6.
+
+### Installation
+
+Use your current project package manager to install ReChunk.

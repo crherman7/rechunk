@@ -14,7 +14,7 @@ export function Header({disableIcon = false}: HeaderProps) {
   const projectId = useProjectId();
 
   return (
-    <header className="sticky top-0 z-10 flex h-[57px] flex-row items-center justify-between border-b pr-4 backdrop-blur-[10px]">
+    <header className="sticky top-0 z-10 flex h-[var(--header-height)] flex-row items-center justify-between border-b pr-4 backdrop-blur-[10px]">
       <div className="flex flex-row items-center justify-center">
         {disableIcon ? (
           <></>

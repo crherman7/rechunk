@@ -1,0 +1,22 @@
+---
+meta:
+  - title: How it works
+---
+
+import {json} from '@remix-run/react';
+
+export const meta = frontmatter.meta;
+
+export async function loader() {
+    return json({title: frontmatter.meta[0].title });
+}
+
+This guide is optional and provides a high-level explanation of how to render a remote component using ReChunk. There are two main parts to this library - the client and the command-line interface (CLI). The CLI is the precursor to actually being able to render a remote component via the client.
+
+## Command-line Interface
+
+The CLI has 5 commands currently: `dev-server`, `init`, `list`, `publish` and `unpublish`. The commands allow you to actively integrate with a remote ReChunk service to bundle and cache your components. In this guide only 3 commands will be discuused: `dev-server` `init` and `publish` - as this guide is more high-level and explaining how this library works.
+
+### Initialization
+
+The ReChunk library relies almost completely on a configuration file to ease the integration process. This configuration is denoted by the `rechunk.json` file. In the example app of this repo there is already a `rechunk.json` configuration file generated for anybody to test out this library without a remote ReChunk service. To generate a `rechunk.json` configuration file utilize the `init` command - this will generate a new ReChunk project to publish components to.

@@ -14,11 +14,11 @@ interface GridPatternProps {
 }
 
 export function GridPattern({
-  width = 40,
-  height = 40,
+  width = 30,
+  height = 30,
   x = -1,
   y = -1,
-  strokeDasharray = '0',
+  strokeDasharray = '4 2',
   squares,
   className,
   ...props

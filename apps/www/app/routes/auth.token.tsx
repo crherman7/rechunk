@@ -62,14 +62,7 @@ export default function Token() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}>
-        <GridPattern
-          width={30}
-          height={30}
-          x={-1}
-          y={-1}
-          strokeDasharray="4 2"
-          className="-z-10 [mask-image:radial-gradient(750px_circle_at_center,white,transparent)]"
-        />
+        <GridPattern className="-z-10 [mask-image:radial-gradient(750px_circle_at_center,white,transparent)]" />
       </motion.div>
       <Header />
       <div className="animate-opacity flex justify-center opacity-0">

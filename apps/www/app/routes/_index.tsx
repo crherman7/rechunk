@@ -31,14 +31,7 @@ export default function Index() {
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden">
       {/* Background Grid */}
-      <GridPattern
-        width={30}
-        height={30}
-        x={-1}
-        y={-1}
-        strokeDasharray="4 2"
-        className="-z-10 [mask-image:radial-gradient(750px_circle_at_center,white,transparent)]"
-      />
+      <GridPattern className="-z-10 [mask-image:radial-gradient(750px_circle_at_center,white,transparent)]" />
 
       {/* Header Section */}
       <Header />

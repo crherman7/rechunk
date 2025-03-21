@@ -7,6 +7,9 @@
 
 @layer base {
   :root {
+    --header-height: 57px;
+    --sidebar-width: 18rem;
+
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -36,6 +39,15 @@
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
+
+    --sidebar-background: 80 12% 100%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
@@ -66,6 +78,15 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -86,4 +107,42 @@
 
 .rechunk-font-size {
   font-size: clamp(2rem, 10cqi, 40rem);
+}
+
+.markdown {
+  & code,
+  & pre {
+    word-wrap: normal;
+    @apply overflow-auto rounded-lg text-sm leading-none;
+  }
+
+  & pre {
+    @apply relative border border-gray-300 leading-relaxed p-3 md:p-4;
+  }
+
+  & pre > code {
+    @apply m-0 p-0 whitespace-pre break-normal border-0 bg-transparent;
+  }
+
+  & pre[data-line-number="true"],
+  pre[data-filename] {
+    @apply pl-0 pr-0;
+  }
+
+  & pre[data-filename]::before {
+    @apply mb-4 block border-b border-gray-300 bg-no-repeat pb-2 pl-14 tracking-tight;
+    content: attr(data-filename);
+  }
+
+  & pre[data-filename]::after {
+    @apply absolute left-[1.125rem] top-5 h-4 w-4 bg-gray-400;
+    content: "";
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z' vector-effect='non-scaling-stroke'%3E%3C/path%3E%3Cpolyline points='13 2 13 9 20 9' vector-effect='non-scaling-stroke'%3E%3C/polyline%3E%3C/svg%3E");
+    mask-size: cover;
+  }
+
+  & pre[data-line-number="true"] [data-line-number]::before {
+    content: attr(data-line-number);
+    @apply mr-6 inline-block w-8 pl-0 text-right font-thin text-gray-400;
+  }
 }

@@ -1,0 +1,18 @@
+---
+meta:
+  - title: Command-line Interface
+---
+
+import {json} from '@remix-run/react';
+
+export const meta = frontmatter.meta;
+
+export async function loader() {
+    return json({title: frontmatter.meta[0].title });
+}
+
+The command-line interface (CLI) provides the primary means to interact with the ReChunk service, enabling the hosting and distribution of your bundled chunks.
+
+### Initialize
+
+The `init` command initializes a new ReChunk project via the CLI. To create a new ReChunk project, you must provide the host, username, and password for basic authentication. Upon executing this command, a `rechunk.json` configuration file will be generated in the root directory of your React Native project. This configuration file will be used to automatically configure your React Native app with the ReChunk instance.

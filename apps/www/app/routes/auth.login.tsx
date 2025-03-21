@@ -75,14 +75,7 @@ export default function Login() {
 
   return (
     <div className="flex h-screen flex-col justify-between">
-      <GridPattern
-        width={30}
-        height={30}
-        x={-1}
-        y={-1}
-        strokeDasharray="4 2"
-        className="-z-10 [mask-image:radial-gradient(750px_circle_at_center,white,transparent)]"
-      />
+      <GridPattern className="-z-10 [mask-image:radial-gradient(750px_circle_at_center,white,transparent)]" />
       <Header />
       <div className="animate-opacity flex justify-center opacity-0">
         <Form method="post">
