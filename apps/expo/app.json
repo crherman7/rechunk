@@ -3,6 +3,7 @@
     "name": "react-native-expo",
     "slug": "react-native-expo",
     "version": "1.0.0",
+    "newArchEnabled": true,
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

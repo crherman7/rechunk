@@ -1,25 +1,6 @@
 {
   "name": "www",
   "version": "0.0.1",
-  "private": true,
-  "sideEffects": false,
-  "type": "module",
-  "scripts": {
-    "build": "remix vite:build",
-    "db:push": "prisma db push",
-    "db:reset": "prisma migrate reset --force",
-    "db:seed": "pnpm db:setup:dev && prisma migrate reset --force && prisma db seed",
-    "db:setup:dev": "prisma generate && prisma migrate dev --name init",
-    "db:setup:prod": "prisma generate && prisma migrate deploy",
-    "db:studio": "prisma studio",
-    "deploy": "pnpm build && ansible-playbook -i deploy/inventory.yml deploy/deploy.yml",
-    "dev": "remix vite:dev",
-    "lint": "pnpm eslint .",
-    "prisma:generate": "prisma generate",
-    "provision": "ansible-playbook -i deploy/inventory.yml deploy/provision.yml",
-    "start": "remix-serve ./build/server/index.js",
-    "typecheck": "tsc"
-  },
   "dependencies": {
     "@fontsource-variable/pixelify-sans": "^5.0.3",
     "@fontsource/permanent-marker": "^5.0.12",
@@ -69,5 +50,24 @@
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
-  }
+  },
+  "private": true,
+  "scripts": {
+    "build": "remix vite:build",
+    "db:push": "prisma db push",
+    "db:reset": "prisma migrate reset --force",
+    "db:seed": "pnpm db:setup:dev && prisma migrate reset --force && prisma db seed",
+    "db:setup:dev": "prisma generate && prisma migrate dev --name init",
+    "db:setup:prod": "prisma generate && prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "deploy": "pnpm build && ansible-playbook -i deploy/inventory.yml deploy/deploy.yml",
+    "dev": "remix vite:dev",
+    "lint": "pnpm eslint .",
+    "prisma:generate": "prisma generate",
+    "provision": "ansible-playbook -i deploy/inventory.yml deploy/provision.yml",
+    "start": "remix-serve ./build/server/index.js",
+    "typecheck": "tsc"
+  },
+  "sideEffects": false,
+  "type": "module"
 }

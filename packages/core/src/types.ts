@@ -52,19 +52,6 @@ export type ResolverFunction = (
 ) => Promise<DeepRequired<Chunk>>;
 
 /**
- * Represents an interface for a custom require function to control module access.
- */
-export type CustomRequire = {
-  /**
-   * Custom implementation of require function to control module access.
-   * @param {string} moduleId - The ID of the module to be required.
-   * @returns {Object|null} - The required module if allowed, otherwise null.
-   * @protected
-   */
-  require: RequireFunction<string>;
-};
-
-/**
  * Represents a function signature for a custom require function.
  * @template T - The type of module ID.
  */
@@ -72,7 +59,6 @@ type RequireFunction<T extends string> = (moduleId: T) => object | null;
 
 export type Configuration = {
   resolver?: ResolverFunction;
-  global?: CustomRequire;
   publicKey?: string;
   verify?: boolean;
 };

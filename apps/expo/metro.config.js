@@ -1,6 +1,7 @@
-const path = require('path');
+const path = require('node:path');
 const {cacheVersion} = require('@rechunk/metro-config');
 const {getDefaultConfig} = require('expo/metro-config');
+const {withMetroRequirexConfig} = require('@metro-requirex/metro-config');
 
 const root = path.resolve(__dirname, '../..');
 const config = getDefaultConfig(__dirname);
@@ -13,4 +14,4 @@ config.resolver.nodeModulesPaths = [
   path.resolve(root, 'node_modules'),
 ];
 
-module.exports = config;
+module.exports = withMetroRequirexConfig(config);

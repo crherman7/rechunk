@@ -1,25 +1,10 @@
 {
   "name": "@rechunk/cli",
-  "version": "0.1.3",
   "description": "Command-line interface for managing ReChunk projects, chunks, and deployments",
-  "keywords": [
-    "rechunk",
-    "cli",
-    "react-native",
-    "code-splitting",
-    "deployment",
-    "management",
-    "chunks"
-  ],
-  "license": "MIT",
+  "version": "0.1.3",
   "author": "Chris Herman",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "bin": {
     "rechunk": "bin/rechunk"
-  },
-  "scripts": {
-    "build": "tsup"
   },
   "dependencies": {
     "@babel/parser": "^7.26.3",
@@ -40,8 +25,23 @@
     "@repo/typescript-config": "workspace:*",
     "@types/jsrsasign": "^10.5.14"
   },
+  "keywords": [
+    "chunks",
+    "cli",
+    "code-splitting",
+    "deployment",
+    "management",
+    "react-native",
+    "rechunk"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
-  }
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "types": "dist/index.d.ts"
 }

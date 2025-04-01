@@ -4,10 +4,10 @@ import React, {memo} from 'react';
 import {FlatList, type FlatListProps, StyleSheet} from 'react-native';
 
 import {
-  TransactionItem,
+  default as TransactionItem,
   type TransactionItemType,
-  TransactionsHeader,
-} from '@/components';
+} from '@/components/transactions/TransactionItem';
+import TransactionsHeader from '@/components/transactions/TransactionsHeader';
 
 interface TransactionsProps
   extends Omit<FlatListProps<TransactionItemType>, 'renderItem'> {}

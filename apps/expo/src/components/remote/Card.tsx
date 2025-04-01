@@ -10,7 +10,8 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
-import {BackSide, FrontSide} from '../card';
+import BackSide from '../card/BackSide';
+import FrontSide from '../card/FrontSide';
 
 export default function Card() {
   const progress = useSharedValue(0);
