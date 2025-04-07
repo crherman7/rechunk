@@ -342,12 +342,12 @@ export default function (
           t.isImportDeclaration(statement),
         );
 
-        const extraImportNodes = EXTRA_DEPENDENCIES.map(dep =>
-          t.importDeclaration([], t.stringLiteral(dep)) // import 'dep';
+        const extraImportNodes = EXTRA_DEPENDENCIES.map(
+          dep => t.importDeclaration([], t.stringLiteral(dep)), // import 'dep';
         );
 
         // Replace Program.body with preserved imports only (clear everything else)
-        path.node.body = [...preservedImports, ...extraImportNodes as any];
+        path.node.body = [...preservedImports, ...(extraImportNodes as any)];
         path.node.directives = [];
 
         let relativePath = relative(process.cwd(), state.filename);

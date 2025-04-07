@@ -18,6 +18,9 @@ const config = {
       dependencyTypes: ['dev', 'prod'],
       pinVersion: '18.3.1',
     },
+    {
+      dependencies: ['**'],
+    },
   ],
 };
 
