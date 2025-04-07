@@ -1,21 +1,21 @@
 {
   "name": "@repo/typescript-config",
-  "version": "0.0.0",
-  "private": true,
   "description": "TypeScript configuration presets for ReChunk packages and applications",
-  "keywords": [
-    "typescript",
-    "tsconfig",
-    "configuration",
-    "type-checking",
-    "rechunk"
-  ],
-  "license": "MIT",
+  "version": "0.0.0",
   "author": "Chris Herman",
   "files": [
     "base.json",
     "expo.json",
     "common-js.json",
     "react-native.json"
-  ]
+  ],
+  "keywords": [
+    "configuration",
+    "rechunk",
+    "tsconfig",
+    "type-checking",
+    "typescript"
+  ],
+  "license": "MIT",
+  "private": true
 }

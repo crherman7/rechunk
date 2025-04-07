@@ -1,23 +1,8 @@
 {
   "name": "@rechunk/rollup-preset",
-  "version": "0.1.3",
   "description": "Rollup configuration preset for bundling ReChunk components and modules",
-  "keywords": [
-    "rechunk",
-    "rollup",
-    "bundler",
-    "preset",
-    "configuration",
-    "build-tools",
-    "optimization"
-  ],
-  "license": "MIT",
+  "version": "0.1.3",
   "author": "Chris Herman",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsup"
-  },
   "dependencies": {
     "@babel/core": "^7.25.2",
     "@rechunk/utils": "workspace:*",
@@ -33,8 +18,23 @@
     "@types/babel__core": "^7.20.5",
     "typescript": "^5.4.3"
   },
+  "keywords": [
+    "build-tools",
+    "bundler",
+    "configuration",
+    "optimization",
+    "preset",
+    "rechunk",
+    "rollup"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
-  }
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "types": "dist/index.d.ts"
 }

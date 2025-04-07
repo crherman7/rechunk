@@ -1,44 +1,8 @@
 {
   "name": "rechunk",
-  "version": "0.1.3",
-  "private": true,
   "description": "🚀 Securely load and execute remote React Native components and functions over-the-air",
-  "keywords": [
-    "react-native",
-    "remote-components",
-    "dynamic-rendering",
-    "secure-components",
-    "code-splitting",
-    "server-driven-ui",
-    "sdui",
-    "typescript",
-    "remote-modules",
-    "hosted-components",
-    "ota",
-    "over-the-air"
-  ],
-  "homepage": "https://rechunk.xyz",
-  "repository": "git@github.com:crherman7/rechunk.git",
-  "license": "MIT",
+  "version": "0.1.3",
   "author": "Chris Herman <crherman7@gmail.com>",
-  "files": [
-    "android",
-    "dist",
-    "ios",
-    "plugin",
-    "rechunk.podspec"
-  ],
-  "scripts": {
-    "build": "pnpm --filter '@repo/*' --filter '@rechunk/*' recursive run --sort build",
-    "prepare": "husky",
-    "release": "release-it --ci",
-    "postrelease": "pnpm --filter '@rechunk/*' recursive exec pnpm publish",
-    "release:dry-run": "pnpm release --dry-run",
-    "release:major": "pnpm release --increment major",
-    "release:minor": "pnpm release --increment minor",
-    "release:patch": "pnpm release --increment patch",
-    "release:pre-release": "pnpm release --preRelease=rc"
-  },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
@@ -49,10 +13,33 @@
     "release-it": "^17.6.0",
     "tsup": "^8.3.4"
   },
-  "packageManager": "pnpm@9.7.0",
   "engines": {
     "node": ">=20.14.0"
   },
+  "files": [
+    "android",
+    "dist",
+    "ios",
+    "plugin",
+    "rechunk.podspec"
+  ],
+  "homepage": "https://rechunk.xyz",
+  "keywords": [
+    "code-splitting",
+    "dynamic-rendering",
+    "hosted-components",
+    "ota",
+    "over-the-air",
+    "react-native",
+    "remote-components",
+    "remote-modules",
+    "sdui",
+    "secure-components",
+    "server-driven-ui",
+    "typescript"
+  ],
+  "license": "MIT",
+  "packageManager": "pnpm@9.7.0",
   "pnpm": {
     "overrides": {
       "@octokit/endpoint@>=9.0.5 <9.0.6": ">=9.0.6 <10.x",
@@ -89,6 +76,7 @@
       "@babel/helpers@<7.26.10": ">=7.26.10"
     }
   },
+  "private": true,
   "release-it": {
     "plugins": {
       "@release-it-plugins/workspaces": {
@@ -115,5 +103,17 @@
       "release": true
     },
     "npm": false
+  },
+  "repository": "git@github.com:crherman7/rechunk.git",
+  "scripts": {
+    "build": "pnpm --filter '@repo/*' --filter '@rechunk/*' recursive run --sort build",
+    "postrelease": "pnpm --filter '@rechunk/*' recursive exec pnpm publish",
+    "prepare": "husky",
+    "release": "release-it --ci",
+    "release:dry-run": "pnpm release --dry-run",
+    "release:major": "pnpm release --increment major",
+    "release:minor": "pnpm release --increment minor",
+    "release:patch": "pnpm release --increment patch",
+    "release:pre-release": "pnpm release --preRelease=rc"
   }
 }

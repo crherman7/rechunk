@@ -65,11 +65,6 @@ const RECHUNK_CONFIG_KEY = '@rechunk+config+json';
 const RECHUNK_PACKAGE_KEY = '@rechunk+package+json';
 
 /**
- * Cache key used to store and retrieve path alias imports gathered from the project.
- * This key is used to cache resolved aliases to avoid re-scanning source files on subsequent runs.
- */ const ALIAS_IMPORTS_CACHE_KEY = '@rechunk+alias-imports';
-
-/**
  * An array of dependencies that should be considered as extra dependencies for the project.
  * These dependencies might need special handling or inclusion in certain processes.
  *
@@ -342,12 +337,17 @@ export default function (
           );
         }
 
-        path.traverse({
-          ImportDeclaration(path) {
-            path.remove();
-          },
-        });
-        path.node.body = [];
+        // Filter out non-imports, but keep all ImportDeclarations
+        const preservedImports = path.node.body.filter(statement =>
+          t.isImportDeclaration(statement),
+        );
+
+        const extraImportNodes = EXTRA_DEPENDENCIES.map(dep =>
+          t.importDeclaration([], t.stringLiteral(dep)) // import 'dep';
+        );
+
+        // Replace Program.body with preserved imports only (clear everything else)
+        path.node.body = [...preservedImports, ...extraImportNodes as any];
         path.node.directives = [];
 
         let relativePath = relative(process.cwd(), state.filename);
@@ -490,82 +490,6 @@ export default function (
 
             parent.replaceWith(t.stringLiteral(RECHUNK_DEV_SERVER_HOST));
           }
-        }
-
-        // Replace process.env.__RECHUNK_GLOBAL__ with the rechunk host
-        if (
-          t.isIdentifier(parent.node.property, {
-            name: '__RECHUNK_GLOBAL__',
-          }) &&
-          parent.parentPath?.isAssignmentExpression()
-        ) {
-          const external = rechunkJson.external || [];
-          const dependencies = packageJson.dependencies || {};
-
-          let aliasImports = fileCache.get(ALIAS_IMPORTS_CACHE_KEY) as string[];
-
-          if (!aliasImports) {
-            aliasImports = gatherAliasImports(process.cwd());
-            fileCache.set(ALIAS_IMPORTS_CACHE_KEY, aliasImports);
-          }
-
-          // Create require statements for alias imports
-          const aliasRequireStatements = aliasImports.map(aliasImport =>
-            t.ifStatement(
-              t.binaryExpression(
-                '===',
-                t.identifier('moduleId'),
-                t.stringLiteral(aliasImport),
-              ),
-              t.blockStatement([
-                t.returnStatement(
-                  t.callExpression(t.identifier('require'), [
-                    t.stringLiteral(aliasImport),
-                  ]),
-                ),
-              ]),
-            ),
-          );
-
-          // Generate requireStatements for each dependency
-          const requireStatements = [
-            ...Object.keys(dependencies),
-            ...external,
-            ...EXTRA_DEPENDENCIES,
-          ].map(dependency =>
-            t.ifStatement(
-              t.binaryExpression(
-                '===',
-                t.identifier('moduleId'),
-                t.stringLiteral(dependency),
-              ),
-              t.blockStatement([
-                t.returnStatement(
-                  t.callExpression(t.identifier('require'), [
-                    t.stringLiteral(dependency),
-                  ]),
-                ),
-              ]),
-            ),
-          );
-
-          // Create the require function expression
-          const requireFunction = t.functionExpression(
-            null,
-            [t.identifier('moduleId')],
-            t.blockStatement([
-              ...requireStatements,
-              ...aliasRequireStatements,
-              t.returnStatement(t.nullLiteral()),
-            ]),
-          );
-
-          parent.replaceWith(
-            t.objectExpression([
-              t.objectProperty(t.identifier('require'), requireFunction),
-              t.objectProperty(t.identifier('global'), t.identifier('global')),
-            ]),
-          );
         }
 
         // Replace process.env.__RECHUNK_PUBLIC_KEY__ with the rechunk host

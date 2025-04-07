@@ -1,8 +1,34 @@
 {
   "name": "react-native-expo",
   "version": "2.0.0-rc.12",
-  "private": true,
+  "dependencies": {
+    "@rechunk/api-client": "workspace:*",
+    "@rechunk/core": "workspace:*",
+    "expo": "~52.0.42",
+    "expo-linear-gradient": "~14.0.2",
+    "expo-status-bar": "~2.0.1",
+    "react": "18.3.1",
+    "react-native": "0.76.9",
+    "react-native-chart-kit": "^6.12.0",
+    "react-native-reanimated": "~3.16.1",
+    "react-native-svg": "15.8.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@metro-requirex/metro-config": "^0.1.3",
+    "@rechunk/babel-plugin": "workspace:*",
+    "@rechunk/cli": "workspace:*",
+    "@rechunk/metro-config": "workspace:*",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/react": "~18.3.14",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "concurrently": "^9.1.0",
+    "typescript": "^5.4.3"
+  },
   "main": "index.js",
+  "private": true,
   "scripts": {
     "android": "expo start --android",
     "android:dev": "concurrently  \"rechunk dev-server\" \"RECHUNK_ENVIRONMENT=dev expo start --android -c\"",
@@ -16,30 +42,5 @@
     "start:dev": "RECHUNK_ENVIRONMENT=dev expo start",
     "start:offline": "RECHUNK_ENVIRONMENT=offline expo start",
     "web": "expo start --web"
-  },
-  "dependencies": {
-    "@rechunk/api-client": "workspace:*",
-    "@rechunk/core": "workspace:*",
-    "expo": "~52.0.40",
-    "expo-linear-gradient": "~14.0.2",
-    "expo-status-bar": "~2.0.1",
-    "react": "18.3.1",
-    "react-native": "0.76.7",
-    "react-native-chart-kit": "^6.12.0",
-    "react-native-reanimated": "~3.16.1",
-    "react-native-svg": "15.8.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.25.2",
-    "@rechunk/babel-plugin": "workspace:*",
-    "@rechunk/cli": "workspace:*",
-    "@rechunk/metro-config": "workspace:*",
-    "@repo/eslint-config": "workspace:*",
-    "@repo/prettier-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "@types/react": "~18.3.14",
-    "babel-plugin-module-resolver": "^5.0.2",
-    "concurrently": "^9.1.0",
-    "typescript": "^5.4.3"
   }
 }

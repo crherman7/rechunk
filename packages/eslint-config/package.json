@@ -1,34 +1,8 @@
 {
   "name": "@repo/eslint-config",
-  "version": "0.0.0",
-  "private": true,
   "description": "ESLint configuration presets for ReChunk projects and packages",
-  "keywords": [
-    "eslint",
-    "eslint-config",
-    "linting",
-    "code-quality",
-    "rechunk"
-  ],
-  "license": "MIT",
+  "version": "0.0.0",
   "author": "Chris Herman",
-  "exports": {
-    "./base": {
-      "types": "./dist/base.d.ts",
-      "require": "./dist/base.js"
-    },
-    "./react": {
-      "types": "./dist/react.d.ts",
-      "require": "./dist/react.js"
-    },
-    "./remix": {
-      "types": "./dist/remix.d.ts",
-      "require": "./dist/remix.js"
-    }
-  },
-  "scripts": {
-    "build": "pnpm tsc"
-  },
   "devDependencies": {
     "@react-native/eslint-config": "0.76.5",
     "@repo/typescript-config": "workspace:*",
@@ -46,5 +20,31 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "typescript": "^5.4.3"
+  },
+  "exports": {
+    "./base": {
+      "types": "./dist/base.d.ts",
+      "require": "./dist/base.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "require": "./dist/react.js"
+    },
+    "./remix": {
+      "types": "./dist/remix.d.ts",
+      "require": "./dist/remix.js"
+    }
+  },
+  "keywords": [
+    "code-quality",
+    "eslint",
+    "eslint-config",
+    "linting",
+    "rechunk"
+  ],
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "pnpm tsc"
   }
 }

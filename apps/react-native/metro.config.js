@@ -1,6 +1,7 @@
-const path = require('path');
+const path = require('node:path');
 const {cacheVersion} = require('@rechunk/metro-config');
 const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
+const {withMetroRequirexConfig} = require('@metro-requirex/metro-config');
 
 const root = path.resolve(__dirname, '../..');
 
@@ -22,4 +23,6 @@ const config = {
   },
 };
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+module.exports = withMetroRequirexConfig(
+  mergeConfig(getDefaultConfig(__dirname), config),
+);

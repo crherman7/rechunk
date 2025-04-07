@@ -2,7 +2,7 @@
 
 import React, {memo} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
-import {LineChart} from 'react-native-chart-kit';
+import LineChart from 'react-native-chart-kit';
 import type {AbstractChartConfig} from 'react-native-chart-kit/dist/AbstractChart';
 import type {LineChartProps} from 'react-native-chart-kit/dist/line-chart/LineChart';
 
@@ -28,7 +28,7 @@ export default memo<BalanceProps>(function Balance({
           <Text style={styles.title}>Card balance</Text>
           <Text style={styles.balance}>${balance.toFixed(2)}</Text>
         </View>
-        <LineChart
+        <LineChart.LineChart
           bezier
           data={data}
           width={width}

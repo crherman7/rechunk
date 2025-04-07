@@ -1,20 +1,16 @@
+import {evalx} from '@metro-requirex/react-native';
 import {
-  Chunk,
+  type Chunk,
   ChunksApi,
   Configuration as ReChunkApiConfiguration,
 } from '@rechunk/api-client';
-import React from 'react';
+import type React from 'react';
 import {TinyEmitter} from 'tiny-emitter';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
 
 import {createIntegrityChecker} from './jws';
-import type {
-  Configuration,
-  CustomRequire,
-  DeepRequired,
-  ResolverFunction,
-} from './types';
+import type {Configuration, DeepRequired, ResolverFunction} from './types';
 
 /**
  * Manager class for handling chunk imports and caching.
@@ -83,15 +79,6 @@ export class ChunkManager extends TinyEmitter {
   };
 
   /**
-   * Object representing protected global variables and functions.
-   * This object provides controlled access to certain modules and settings.
-   * @type {Object}
-   * @protected
-   */
-  protected global: CustomRequire = process.env
-    .__RECHUNK_GLOBAL__ as unknown as CustomRequire;
-
-  /**
    * Flag indicating whether verification is enabled.
    * @type {boolean}
    * @protected
@@ -145,18 +132,7 @@ export class ChunkManager extends TinyEmitter {
     const exports = {};
     const module = {exports};
 
-    // The new Function operator is allowed to be used here as it is
-    // essential to rendering a component from a string.
-    // eslint-disable-next-line no-new-func
-    const Component = new Function(
-      '__rechunk__',
-      'module, exports',
-      `${Object.keys(this.global)
-        .map(key => `var ${key} = __rechunk__.${key};`)
-        .join('\n')} ${chunk}
-        return module.exports;
-      `,
-    )(this.global, module, exports);
+    const Component = evalx<React.ComponentType>(chunk);
 
     // Add chunkId and chunk to cache
     this.cache[chunkId] = Component;
@@ -177,7 +153,7 @@ export class ChunkManager extends TinyEmitter {
    * @param {ResolverFunction} [config.resolver] - The resolver function used to resolve chunk imports.
    * @param {ResolverFunction} [config.publicKey] - The publicKey for ChunkManager configuration.
    */
-  addConfiguration({resolver, verify, global, publicKey}: Configuration) {
+  addConfiguration({resolver, verify, publicKey}: Configuration) {
     if (resolver) {
       // Set the resolver function
       this.resolver = resolver;
@@ -189,11 +165,6 @@ export class ChunkManager extends TinyEmitter {
 
       // Set the verification flag
       this.verify = verify;
-    }
-
-    if (global) {
-      // Set the global require object
-      this.global = global;
     }
 
     if (publicKey) {
