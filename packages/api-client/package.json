@@ -25,6 +25,7 @@
   },
   "scripts": {
     "build": "tsup",
+    "check-types": "tsc --noEmit",
     "generate": "openapi-generator-cli generate -i ./openapi-v3.json -g typescript-fetch -o ./src"
   },
   "types": "dist/index.d.ts"

@@ -30,7 +30,7 @@ export class ChunkManager extends TinyEmitter {
    * @type {Record<string, React.ComponentType<any>>}
    * @protected
    */
-  protected cache: Record<string, React.ComponentType<any>> = {};
+  protected cache: Record<string, React.ComponentType> = {};
 
   /**
    * An instance of the ReChunkApi class that is used to make requests to the API.
@@ -128,7 +128,7 @@ export class ChunkManager extends TinyEmitter {
   protected chunkToComponent(
     chunkId: string,
     chunk: string,
-  ): React.ComponentType<any> {
+  ): React.ComponentType {
     const exports = {};
     const module = {exports};
 
@@ -178,12 +178,10 @@ export class ChunkManager extends TinyEmitter {
    * @param {string} chunkId - The ID of the chunk to import.
    * @returns {Promise<*>} A promise resolving to the JavaScript component imported from the chunk.
    */
-  async importChunk(
-    chunkId: string,
-  ): Promise<{default: React.ComponentType<any>}> {
+  async importChunk(chunkId: string): Promise<{default: React.ComponentType}> {
     // If chunk is already cached, return the cached component
     if (this.cache[chunkId]) {
-      return {default: this.cache[chunkId]};
+      return {default: this.cache[chunkId] as React.ComponentType};
     }
 
     // Resolve the chunk
