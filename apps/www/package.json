@@ -1,6 +1,6 @@
 {
   "name": "@repo/www",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "dependencies": {
     "@fontsource-variable/pixelify-sans": "^5.0.3",
     "@fontsource/permanent-marker": "^5.0.12",
