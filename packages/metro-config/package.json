@@ -26,7 +26,8 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "check-types": "tsc --noEmit"
   },
   "types": "dist/index.d.ts"
 }

@@ -18,6 +18,7 @@ import path from 'path';
  * @returns {ReChunkConfig} The ReChunk configuration object.
  * @throws Will throw an error if the `.rechunkrc.json` file is not found.
  */
+// eslint-disable-next-line no-undef
 export function getRechunkConfig(dir: string = process.cwd()): ReChunkConfig {
   const rechunkConfigPath = path.resolve(dir, '.rechunkrc.json');
 

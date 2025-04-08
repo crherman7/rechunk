@@ -4,14 +4,15 @@
   "version": "0.1.3",
   "author": "Chris Herman <crherman7@gmail.com>",
   "devDependencies": {
+    "@changesets/cli": "^2.28.1",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
-    "@release-it-plugins/workspaces": "^4.2.0",
     "@repo/eslint-config": "workspace:*",
     "@repo/prettier-config": "workspace:*",
     "husky": "^9.0.11",
-    "release-it": "^17.6.0",
-    "tsup": "^8.3.4"
+    "syncpack": "^13.0.3",
+    "tsup": "^8.4.0",
+    "turbo": "^2.5.0"
   },
   "engines": {
     "node": ">=20.14.0"
@@ -77,43 +78,9 @@
     }
   },
   "private": true,
-  "release-it": {
-    "plugins": {
-      "@release-it-plugins/workspaces": {
-        "workspaces": [
-          "packages/api-client",
-          "packages/babel-plugin",
-          "packages/cli",
-          "packages/core",
-          "packages/metro-config",
-          "packages/rollup-preset",
-          "packages/utils"
-        ],
-        "publish": false
-      }
-    },
-    "git": {
-      "commitMessage": "chore: release v${version}",
-      "requireBranch": "develop",
-      "requireCleanWorkingDir": true,
-      "tagName": "v${version}"
-    },
-    "github": {
-      "releaseName": "Release ${name} v${version}",
-      "release": true
-    },
-    "npm": false
-  },
   "repository": "git@github.com:crherman7/rechunk.git",
   "scripts": {
-    "build": "pnpm --filter '@repo/*' --filter '@rechunk/*' recursive run --sort build",
-    "postrelease": "pnpm --filter '@rechunk/*' recursive exec pnpm publish",
-    "prepare": "husky",
-    "release": "release-it --ci",
-    "release:dry-run": "pnpm release --dry-run",
-    "release:major": "pnpm release --increment major",
-    "release:minor": "pnpm release --increment minor",
-    "release:patch": "pnpm release --increment patch",
-    "release:pre-release": "pnpm release --preRelease=rc"
+    "build": "turbo build",
+    "check-types": "turbo check-types"
   }
 }

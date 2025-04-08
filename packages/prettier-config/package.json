@@ -28,6 +28,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "pnpm tsc"
+    "build": "pnpm tsc",
+    "check-types": "tsc --noEmit"
   }
 }
