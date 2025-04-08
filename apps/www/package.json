@@ -1,5 +1,5 @@
 {
-  "name": "www",
+  "name": "@repo/www",
   "version": "0.0.1",
   "dependencies": {
     "@fontsource-variable/pixelify-sans": "^5.0.3",

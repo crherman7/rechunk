@@ -4,7 +4,6 @@ import {Link} from '@remix-run/react';
 import {animate, stagger} from 'framer-motion';
 import {useEffect} from 'react';
 
-import {BetaWarning} from '~/components/BetaWarning';
 import {ButtonLink} from '~/components/ButtonLink';
 import {Header} from '~/components/Header';
 import {GridPattern} from '~/components/ui/grid-pattern';
@@ -102,8 +101,6 @@ export default function Index() {
           />
         </div>
       </div>
-
-      <BetaWarning className="animate-opacity opacity-0" />
     </div>
   );
 }

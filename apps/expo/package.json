@@ -1,5 +1,5 @@
 {
-  "name": "react-native-expo",
+  "name": "@repo/expo",
   "version": "2.0.0-rc.12",
   "dependencies": {
     "@rechunk/api-client": "workspace:*",
