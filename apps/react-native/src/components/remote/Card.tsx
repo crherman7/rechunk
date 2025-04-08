@@ -13,7 +13,6 @@ import Animated, {
 import BackSide from '@/components/card/BackSide';
 import FrontSide from '@/components/card/BackSide';
 
-
 export default function Card() {
   const progress = useSharedValue(0);
 
