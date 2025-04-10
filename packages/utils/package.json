@@ -1,7 +1,7 @@
 {
   "name": "@rechunk/utils",
   "description": "Utility functions and helpers for ReChunk packages and implementations",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Chris Herman",
   "dependencies": {
     "find-up": "5.0.0"

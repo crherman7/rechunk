@@ -1,7 +1,7 @@
 {
   "name": "@rechunk/babel-plugin",
   "description": "Babel plugin for transforming and processing ReChunk directives in React Native applications",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Chris Herman",
   "dependencies": {
     "@babel/core": "^7.26.10",
