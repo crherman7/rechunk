@@ -4,9 +4,10 @@
   "version": "0.2.0",
   "author": "Chris Herman",
   "dependencies": {
-    "@babel/core": "^7.25.2",
-    "@babel/parser": "^7.26.3",
-    "@babel/traverse": "^7.26.4",
+    "@babel/core": "^7.26.10",
+    "@babel/parser": "^7.27.0",
+    "@babel/traverse": "^7.27.0",
+    "@babel/types": "^7.27.0",
     "@rechunk/utils": "workspace:*",
     "chalk": "^4.0.0",
     "dedent": "^1.5.3",
@@ -16,6 +17,7 @@
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@types/babel__core": "^7.20.5",
+    "@types/babel__traverse": "^7.20.7",
     "babel-preset-expo": "^12.0.4",
     "typescript": "^5.4.3"
   },

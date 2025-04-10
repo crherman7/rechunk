@@ -4,7 +4,7 @@
   "version": "0.2.0",
   "author": "Chris Herman",
   "dependencies": {
-    "@metro-requirex/react-native": "^0.1.3",
+    "@metro-requirex/react-native": "^0.2.2",
     "@rechunk/api-client": "workspace:*",
     "base-64": "^1.0.0",
     "jsrsasign": "^11.1.0",

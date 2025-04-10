@@ -25,4 +25,5 @@ const config = {
 
 module.exports = withMetroRequirexConfig(
   mergeConfig(getDefaultConfig(__dirname), config),
+  {eager: true},
 );

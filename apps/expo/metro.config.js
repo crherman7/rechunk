@@ -14,4 +14,4 @@ config.resolver.nodeModulesPaths = [
   path.resolve(root, 'node_modules'),
 ];
 
-module.exports = withMetroRequirexConfig(config);
+module.exports = withMetroRequirexConfig(config, {eager: true});
