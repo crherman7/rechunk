@@ -4,7 +4,7 @@
   "version": "0.2.0",
   "author": "Chris Herman",
   "dependencies": {
-    "@babel/core": "^7.25.2",
+    "@babel/core": "^7.26.10",
     "@rechunk/utils": "workspace:*",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-image": "^3.0.3",

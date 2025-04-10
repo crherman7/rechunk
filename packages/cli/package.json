@@ -7,8 +7,8 @@
     "rechunk": "bin/rechunk"
   },
   "dependencies": {
-    "@babel/parser": "^7.26.3",
-    "@babel/traverse": "^7.26.4",
+    "@babel/parser": "^7.27.0",
+    "@babel/traverse": "^7.27.0",
     "@rechunk/api-client": "workspace:*",
     "@rechunk/rollup-preset": "workspace:*",
     "chalk": "^4.0.0",

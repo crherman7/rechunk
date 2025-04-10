@@ -14,7 +14,7 @@
     "react-native-svg": "15.8.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
+    "@babel/core": "^7.26.10",
     "@metro-requirex/metro-config": "^0.2.2",
     "@rechunk/babel-plugin": "workspace:*",
     "@rechunk/cli": "workspace:*",

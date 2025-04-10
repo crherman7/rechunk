@@ -13,7 +13,7 @@
     "react-native-svg": "15.8.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
+    "@babel/core": "^7.26.10",
     "@babel/preset-env": "^7.25.2",
     "@babel/runtime": "^7.25.2",
     "@metro-requirex/metro-config": "^0.2.2",
