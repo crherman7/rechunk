@@ -88,7 +88,7 @@ export default function Index() {
           className="pointer-events-none absolute bottom-0 w-full">
           <Safari
             url="https://rechunk.xyz"
-            src="/screenshot_browser.png"
+            src="/screenshot_browser.webp"
             className="relative inset-y-[450px] mx-auto h-[100vh] w-[80vw] sm:inset-y-[500px] sm:h-[90vh]"
           />
         </div>
@@ -97,7 +97,7 @@ export default function Index() {
           className="pointer-events-none absolute bottom-0 w-full">
           <Iphone15Pro
             className="relative inset-x-[27vw] inset-y-[400px] mx-auto h-[100vh] w-[30vw] sm:inset-y-[450px]"
-            src="/screenshot_mobile.png"
+            src="/screenshot_mobile.webp"
           />
         </div>
       </div>
