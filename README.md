@@ -225,6 +225,30 @@ Join our growing community! We're excited to help and hear your feedback:
 - 💬 Join our [Discord](https://discord.gg/xFhuxjwhss) for real-time discussions
 - ⭐ Star us on [GitHub](https://github.com/crherman7/rechunk) to show your support
 
+## Upcoming Features
+
+We’re actively working on improvements to make ReChunk even more powerful. Here's what’s coming soon:
+
+### 🔖 Version-Based Manifest
+- Enable selective loading of components based on app version.
+- Support backward compatibility across deployments.
+- Manifest schema will define available components, versions, signatures, and dependencies.
+
+### 🏷️ Component Tagging & Versioning
+- Tag and version individual components (e.g. `v1.2.0`, `beta`, `experimental`).
+- Use tags to manage releases, rollbacks, and A/B testing.
+- CLI support for tagging:  
+  ```bash
+  npx rechunk publish --tag beta
+  ```
+
+### 📚 Exhaustive Documentation
+- Expanded guides and advanced use cases
+- Custom environments, CDN hosting, and authentication strategies
+- End-to-end examples for enterprise workflows
+
+> Stay tuned — we’re building this in the open. Join [Discord](https://discord.gg/xFhuxjwhss) for updates.
+
 ## Contributing
 
 Please read our [Contributing Guide](./CONTRIBUTING.md) and help us build ReChunk together. For questions or feedback, feel free to open an issue.
