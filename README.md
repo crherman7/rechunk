@@ -51,7 +51,7 @@
 | **Production-safe delivery** | Host-build compatibility, immutable versions, rollouts, fallback, rollback |
 | **rechunk cloud** *(optional)* | Component-first registry, release UI, and observability on Cloudflare |
 
-**Nonnegotiables:** Metro stays the host bundler. `"use rechunk"` stays the opt-in API. Development runs a **real** rechunk-bundled artifact (no silent Metro source bypass). Core stays open source; Cloud is optional. Signing authenticates artifacts — it is **not** a sandbox.
+**Nonnegotiables:** Metro stays the host bundler. `"use rechunk"` stays the opt-in API. Development runs a **real** rechunk-bundled artifact (no silent Metro source bypass). core stays open source; cloud is optional. Signing authenticates artifacts — it is **not** a sandbox.
 
 ---
 
@@ -137,7 +137,7 @@ Builds and signs an **immutable** artifact with size, dependency, and compatibil
 
 ---
 
-## Core vs Cloud
+## core vs cloud
 
 | Capability | rechunk core (OSS) | rechunk cloud |
 | --- | --- | --- |
@@ -189,7 +189,7 @@ We do **not** claim “nobody else does remote RN code,” “first Metro remote
 2. **Remote Fast Refresh** — Counter stays at `7` + stable `useRef` on Hermes  
 3. **Host resolver hardening** — registry vs hash benchmarks; typed errors; immutable cache  
 4. **Manifests + compatibility** — reject incompatible natives before eval  
-5. **Cloud MVP** — publish, digest, canary rollout, pause/rollback  
+5. **cloud MVP** — publish, digest, canary rollout, pause/rollback  
 6. **Analytics + paid workflows** — adoption/latency with honest denominators  
 
 ### Explicit non-goals (early releases)
@@ -236,7 +236,7 @@ pnpm install
 pnpm build
 ```
 
-**Implementation priority:** Metro-integrated on-demand artifacts first, then remote Fast Refresh proofs, then compatibility/Cloud — not Cloud first.
+**Implementation priority:** Metro-integrated on-demand artifacts first, then remote Fast Refresh proofs, then compatibility/cloud — not cloud first.
 
 ---
 
