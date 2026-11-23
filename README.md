@@ -141,10 +141,10 @@ Builds and signs an **immutable** artifact with size, dependency, and compatibil
 
 | Capability | rechunk core (OSS) | rechunk cloud |
 | --- | --- | --- |
-| `"use rechunk"` + Babel proxy | Yes | Uses Core |
+| `"use rechunk"` + Babel proxy | Yes | Uses core |
 | Metro-integrated local development | Yes | Not required |
 | On-demand remote compilation | Yes | Publish via CLI / CI |
-| Runtime verify, cache, fallback | Yes | Uses Core |
+| Runtime verify, cache, fallback | Yes | Uses core |
 | Self-hosted release resolution | Supported path | Managed API |
 | Artifact CDN | Bring your own | R2 + Cloudflare CDN |
 | Dashboard, rollouts, audit | Optional self-host | Managed |
@@ -161,7 +161,7 @@ Local development never depends on a Cloudflare account.
 | Unit of delivery | Component artifact | App JS update | Remotes / shared scopes |
 | Host bundler | Metro kept | Metro | Often Re.Pack / custom |
 | Opt-in | File directive | Update channels | Federation config |
-| Local cloud account | Not required for Core | Expo account for EAS | Varies |
+| Local cloud account | Not required for core | Expo account for EAS | Varies |
 
 We do **not** claim “nobody else does remote RN code,” “first Metro remotes,” or “signed = sandboxed.”
 
