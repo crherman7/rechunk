@@ -1,10 +1,10 @@
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./.github/assets/readme/logo-dark.svg">
-    <img src="./.github/assets/readme/logo-light.svg" alt="ReChunk logo" width="220">
+    <img src="./.github/assets/readme/logo-light.svg" alt="rechunk logo" width="220">
   </picture>
 
-  <h1>ReChunk</h1>
+  <h1>rechunk</h1>
 
   <p><strong>Independently build, develop, deliver, and manage ordinary React Native components — without replacing Metro or restructuring the app.</strong></p>
 
@@ -28,15 +28,15 @@
 
 <br>
 
-**ReChunk** is a component-level delivery platform for React Native. Mark a file with `"use rechunk"`, keep your usual Metro / Expo / React Native CLI, and ship that one component as a **real signed remote artifact** — not a whole-app OTA bundle, and not a Module Federation remotes project.
+**rechunk** is a component-level delivery platform for React Native. Mark a file with `"use rechunk"`, keep your usual Metro / Expo / React Native CLI, and ship that one component as a **real signed remote artifact** — not a whole-app OTA bundle, and not a Module Federation remotes project.
 
 > **Defining developer experience**
 >
 > 1. Add `"use rechunk";` to a default-export component  
 > 2. Run `npx expo start` or `npx react-native start`  
-> 3. The on-demand ReChunk artifact loads (and refreshes) through **Metro’s own server**  
+> 3. The on-demand rechunk artifact loads (and refreshes) through **Metro’s own server**  
 >
-> No second ReChunk process. No second port. No cloud account for local development.
+> No second rechunk process. No second port. No cloud account for local development.
 
 > **Status:** npm packages are public beta (`@rechunk/*` **0.3.0**). The shipped toolchain still uses a companion `rechunk dev-server` (`:49904`) while we land Metro middleware. This README describes the **target product** from the architecture blueprint; [Implementation status](#implementation-status) separates what exists today from what is decided next.
 
@@ -49,9 +49,9 @@
 | **Zero-friction integration** | Keep Metro, Expo, and React Native CLIs; one-time init + a file directive |
 | **Reliable remote execution** | Download, validate, verify, resolve, execute, and cache a real remote artifact |
 | **Production-safe delivery** | Host-build compatibility, immutable versions, rollouts, fallback, rollback |
-| **ReChunk Cloud** *(optional)* | Component-first registry, release UI, and observability on Cloudflare |
+| **rechunk Cloud** *(optional)* | Component-first registry, release UI, and observability on Cloudflare |
 
-**Nonnegotiables:** Metro stays the host bundler. `"use rechunk"` stays the opt-in API. Development runs a **real** ReChunk-bundled artifact (no silent Metro source bypass). Core stays open source; Cloud is optional. Signing authenticates artifacts — it is **not** a sandbox.
+**Nonnegotiables:** Metro stays the host bundler. `"use rechunk"` stays the opt-in API. Development runs a **real** rechunk-bundled artifact (no silent Metro source bypass). Core stays open source; Cloud is optional. Signing authenticates artifacts — it is **not** a sandbox.
 
 ---
 
@@ -82,10 +82,10 @@ Same hooks, context, styles, and host native modules. Execution stays inside the
 flowchart TD
   CLI["expo start / react-native start"] --> METRO["Metro server"]
   METRO --> APP["Normal app JS / HMR"]
-  METRO --> MW["ReChunk middleware /__rechunk/*"]
+  METRO --> MW["rechunk middleware /__rechunk/*"]
   MW --> BUILD["On-demand Rollup / Rolldown compiler"]
   BUILD --> SIGN["Dev signing + digest"]
-  SIGN --> RT["ReChunk runtime in the app"]
+  SIGN --> RT["rechunk runtime in the app"]
   MW --> WATCH["Watch + invalidate"]
   WATCH --> REFRESH["Dev-only remote Fast Refresh"]
   REFRESH --> RT
@@ -125,7 +125,7 @@ npx expo start
 npx react-native start
 ```
 
-Expected: the host proxy calls `importChunk`, Metro’s ReChunk middleware builds and signs the remote artifact on demand, the runtime verifies and evaluates it, and the component renders in the normal React tree. Save the source → rebuild → **state-preserving remote Fast Refresh** (Phase 2 gate).
+Expected: the host proxy calls `importChunk`, Metro’s rechunk middleware builds and signs the remote artifact on demand, the runtime verifies and evaluates it, and the component renders in the normal React tree. Save the source → rebuild → **state-preserving remote Fast Refresh** (Phase 2 gate).
 
 ### Publish
 
@@ -133,13 +133,13 @@ Expected: the host proxy calls `importChunk`, Metro’s ReChunk middleware build
 npx rechunk publish
 ```
 
-Builds and signs an **immutable** artifact with size, dependency, and compatibility metadata, then pushes to self-hosted storage or ReChunk Cloud. Promotion / rollout is a separate, auditable step — not an implicit 100% ship.
+Builds and signs an **immutable** artifact with size, dependency, and compatibility metadata, then pushes to self-hosted storage or rechunk Cloud. Promotion / rollout is a separate, auditable step — not an implicit 100% ship.
 
 ---
 
 ## Core vs Cloud
 
-| Capability | ReChunk Core (OSS) | ReChunk Cloud |
+| Capability | rechunk Core (OSS) | rechunk Cloud |
 | --- | --- | --- |
 | `"use rechunk"` + Babel proxy | Yes | Uses Core |
 | Metro-integrated local development | Yes | Not required |
@@ -156,7 +156,7 @@ Local development never depends on a Cloudflare account.
 
 ## Compared to alternatives
 
-| | ReChunk | Expo EAS Update | Module Federation / Re.Pack |
+| | rechunk | Expo EAS Update | Module Federation / Re.Pack |
 | --- | --- | --- | --- |
 | Unit of delivery | Component artifact | App JS update | Remotes / shared scopes |
 | Host bundler | Metro kept | Metro | Often Re.Pack / custom |
@@ -180,7 +180,7 @@ We do **not** claim “nobody else does remote RN code,” “first Metro remote
 | State-preserving remote Fast Refresh | Proposed | Unproven on RN / Hermes |
 | Host registry vs hashed Metro IDs | Open | Hashed IDs exist; registry / hybrid to benchmark |
 | Manifests + native compatibility gating | Planned | Limited metadata today |
-| ReChunk Cloud (Workers / D1 / R2 / dashboard) | Selected direction | Product design / mocks — not shipped |
+| rechunk Cloud (Workers / D1 / R2 / dashboard) | Selected direction | Product design / mocks — not shipped |
 
 ### Milestone order
 
@@ -195,7 +195,7 @@ We do **not** claim “nobody else does remote RN code,” “first Metro remote
 ### Explicit non-goals (early releases)
 
 - Forced Re.Pack / Rspack migration  
-- Mandatory standalone ReChunk HTTP process  
+- Mandatory standalone rechunk HTTP process  
 - Silent Metro-source bypass as the primary dev mode  
 - Full sandbox / untrusted plugin marketplace  
 - Customer-facing AI agent  
