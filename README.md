@@ -49,7 +49,7 @@
 | **Zero-friction integration** | Keep Metro, Expo, and React Native CLIs; one-time init + a file directive |
 | **Reliable remote execution** | Download, validate, verify, resolve, execute, and cache a real remote artifact |
 | **Production-safe delivery** | Host-build compatibility, immutable versions, rollouts, fallback, rollback |
-| **rechunk Cloud** *(optional)* | Component-first registry, release UI, and observability on Cloudflare |
+| **rechunk cloud** *(optional)* | Component-first registry, release UI, and observability on Cloudflare |
 
 **Nonnegotiables:** Metro stays the host bundler. `"use rechunk"` stays the opt-in API. Development runs a **real** rechunk-bundled artifact (no silent Metro source bypass). Core stays open source; Cloud is optional. Signing authenticates artifacts — it is **not** a sandbox.
 
@@ -133,13 +133,13 @@ Expected: the host proxy calls `importChunk`, Metro’s rechunk middleware build
 npx rechunk publish
 ```
 
-Builds and signs an **immutable** artifact with size, dependency, and compatibility metadata, then pushes to self-hosted storage or rechunk Cloud. Promotion / rollout is a separate, auditable step — not an implicit 100% ship.
+Builds and signs an **immutable** artifact with size, dependency, and compatibility metadata, then pushes to self-hosted storage or rechunk cloud. Promotion / rollout is a separate, auditable step — not an implicit 100% ship.
 
 ---
 
 ## Core vs Cloud
 
-| Capability | rechunk Core (OSS) | rechunk Cloud |
+| Capability | rechunk core (OSS) | rechunk cloud |
 | --- | --- | --- |
 | `"use rechunk"` + Babel proxy | Yes | Uses Core |
 | Metro-integrated local development | Yes | Not required |
@@ -180,7 +180,7 @@ We do **not** claim “nobody else does remote RN code,” “first Metro remote
 | State-preserving remote Fast Refresh | Proposed | Unproven on RN / Hermes |
 | Host registry vs hashed Metro IDs | Open | Hashed IDs exist; registry / hybrid to benchmark |
 | Manifests + native compatibility gating | Planned | Limited metadata today |
-| rechunk Cloud (Workers / D1 / R2 / dashboard) | Selected direction | Product design / mocks — not shipped |
+| rechunk cloud (Workers / D1 / R2 / dashboard) | Selected direction | Product design / mocks — not shipped |
 
 ### Milestone order
 
