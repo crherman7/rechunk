@@ -6,7 +6,7 @@
 
   <h1>ReChunk</h1>
 
-  <p><strong>Deploy a React Native component independently — without changing how you build your app.</strong></p>
+  <p><strong>Independently build, develop, deliver, and manage ordinary React Native components — without replacing Metro or restructuring the app.</strong></p>
 
   <p>
     <a href="https://www.npmjs.com/package/@rechunk/core"><img src="https://img.shields.io/npm/v/@rechunk/core.svg?style=flat-square&color=121212" alt="npm @rechunk/core"></a>
@@ -28,17 +28,34 @@
 
 <br>
 
-**ReChunk** is a component-level delivery layer for React Native developers. Mark a file with `"use rechunk"`, keep Metro and Expo as they are, and ship that one component as a signed remote artifact — without turning your app into a federation host.
+**ReChunk** is a component-level delivery platform for React Native. Mark a file with `"use rechunk"`, keep your usual Metro / Expo / React Native CLI, and ship that one component as a **real signed remote artifact** — not a whole-app OTA bundle, and not a Module Federation remotes project.
 
-> **Status:** public beta on npm (`@rechunk/*` **0.3.0**). Local development currently uses a companion `rechunk dev-server` on port **49904**. Metro-integrated development (no second process) and remote Fast Refresh are next milestones — see [Roadmap](#roadmap).
+> **Defining developer experience**
+>
+> 1. Add `"use rechunk";` to a default-export component  
+> 2. Run `npx expo start` or `npx react-native start`  
+> 3. The on-demand ReChunk artifact loads (and refreshes) through **Metro’s own server**  
+>
+> No second ReChunk process. No second port. No cloud account for local development.
+
+> **Status:** npm packages are public beta (`@rechunk/*` **0.3.0**). The shipped toolchain still uses a companion `rechunk dev-server` (`:49904`) while we land Metro middleware. This README describes the **target product** from the architecture blueprint; [Implementation status](#implementation-status) separates what exists today from what is decided next.
 
 ---
 
-## The idea
+## Product pillars
 
-App-level OTA (Expo Updates and similar) replaces a whole JS bundle. Module Federation can distribute remotes, but usually asks you to restructure hosts, remotes, and shared scopes.
+| Pillar | Outcome |
+| --- | --- |
+| **Zero-friction integration** | Keep Metro, Expo, and React Native CLIs; one-time init + a file directive |
+| **Reliable remote execution** | Download, validate, verify, resolve, execute, and cache a real remote artifact |
+| **Production-safe delivery** | Host-build compatibility, immutable versions, rollouts, fallback, rollback |
+| **ReChunk Cloud** *(optional)* | Component-first registry, release UI, and observability on Cloudflare |
 
-ReChunk’s bet is narrower: **one ordinary React Native component**, independently buildable and deliverable, with almost no surface area in source:
+**Nonnegotiables:** Metro stays the host bundler. `"use rechunk"` stays the opt-in API. Development runs a **real** ReChunk-bundled artifact (no silent Metro source bypass). Core stays open source; Cloud is optional. Signing authenticates artifacts — it is **not** a sandbox.
+
+---
+
+## The API
 
 ```tsx
 "use rechunk";
@@ -48,162 +65,141 @@ export default function CheckoutCard() {
 }
 ```
 
-That file still uses normal hooks, context, styles, and host native modules. At runtime it executes **inside the host JS runtime** after download and RS256 verification — not in a separate sandbox.
+Same hooks, context, styles, and host native modules. Execution stays inside the host JS runtime via [`metro-requirex`](https://github.com/crherman7/metro-requirex).
 
 ---
 
-## Why teams reach for it
-
-| You want… | ReChunk’s approach |
-| --- | --- |
-| Ship UI without a full store release | Publish a signed component artifact, not a whole app bundle |
-| Keep Metro / Expo | Host bundler stays Metro; no Re.Pack / Rspack migration required |
-| Tiny developer API | File directive + default export; Babel swaps in a `React.lazy` proxy |
-| Integrity on the wire | Artifacts are signed (RS256) and verified before evaluation |
-| Host capabilities | Shared React runtime via [`metro-requirex`](https://github.com/crherman7/metro-requirex) |
-
-**Not a claim we make:** signing is not a sandbox. Remote code runs with the same privileges as your app JS. Treat publishers and release policy as the real security boundary.
-
-**When to use something else:** if you only need whole-app OTA, Expo EAS Update is simpler. If you are building a full microfrontend platform with many remotes and shared scopes, Module Federation / Re.Pack may fit better.
-
----
-
-## How it works today
+## Target architecture
 
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./.github/assets/readme/architecture-dark.svg">
-    <img alt="Pipeline: use rechunk directive, React.lazy importChunk, fetch and RS256 verify, evalx via metro-requirex, render in host React" src="./.github/assets/readme/architecture-light.svg" width="900">
+    <img alt="Target pipeline: use rechunk, Metro withRechunk middleware, on-demand signed build, verify and eval, host React with Fast Refresh" src="./.github/assets/readme/architecture-light.svg" width="900">
   </picture>
 </p>
 
-1. **Babel** sees `"use rechunk"`, requires a single default export, strips the implementation from the host graph, and inserts `React.lazy(() => importChunk(...))`.
-2. **Runtime** (`@rechunk/core`) fetches the artifact, verifies the signature, evaluates with `evalx`, and resolves host modules through Metro.
-3. **Dev** serves on-demand Rollup builds from `rechunk dev-server` (default `http://localhost:49904`).
-4. **Prod** publishes immutable chunks to your configured host (`rechunk publish`).
-
 ```mermaid
-flowchart LR
-  A["use rechunk component"] --> B[Babel host proxy]
-  B --> C["React.lazy → importChunk"]
-  C --> D[ChunkManager fetch]
-  D --> E[RS256 verify]
-  E --> F[metro-requirex evalx]
-  F --> G[Host React tree]
-  H[Rollup remote compiler] --> I["dev-server :49904"]
-  I --> D
+flowchart TD
+  CLI["expo start / react-native start"] --> METRO["Metro server"]
+  METRO --> APP["Normal app JS / HMR"]
+  METRO --> MW["ReChunk middleware /__rechunk/*"]
+  MW --> BUILD["On-demand Rollup / Rolldown compiler"]
+  BUILD --> SIGN["Dev signing + digest"]
+  SIGN --> RT["ReChunk runtime in the app"]
+  MW --> WATCH["Watch + invalidate"]
+  WATCH --> REFRESH["Dev-only remote Fast Refresh"]
+  REFRESH --> RT
 ```
+
+**What “no extra server” means:** no second Node process, no mandatory `:49904`, no cloud round-trip for local compile. Compilation still costs CPU inside Metro — caching and scheduling matter.
 
 ---
 
-## Quick start
+## Quick start *(target)*
 
-**Requires Node ≥ 20.14** (see root `package.json` `engines`).
+**Requires Node ≥ 20.14.**
 
-### 1. Install
-
-```bash
-npm install @rechunk/core
-npm install -D @rechunk/cli @rechunk/babel-plugin @rechunk/metro-config
-
-# or
-pnpm add @rechunk/core
-pnpm add -D @rechunk/cli @rechunk/babel-plugin @rechunk/metro-config
-```
-
-### 2. Initialize a project
-
-Creates `.rechunkrc.json` against a ReChunk host (basic auth today — expected to evolve):
+### One-time setup
 
 ```bash
-npx rechunk init \
-  --host https://your-rechunk-host.example/api/v1 \
-  --username <user> \
-  --password <password>
+npx rechunk init
 ```
 
-Hosted beta endpoint (credentials rotate; treat as demo only):
+`init` detects Expo or bare RN, installs `@rechunk/*`, composes Metro instead of replacing it, wires the Babel directive, and sets sensible local defaults. Publishing credentials stay out of the embedded runtime config.
 
-```bash
-npx rechunk init \
-  --host https://rechunk.xyz/api/v1 \
-  --username admin \
-  --password password123
-```
-
-### 3. Wire Babel + Metro
-
-**Expo** (matches `apps/expo` in this repo):
+**Metro** *(target API — `withRechunk`)*:
 
 ```js
-// babel.config.js
-const {withBabelPresetExpoOptions} = require('@rechunk/babel-plugin');
-
-module.exports = api => ({
-  presets: [['babel-preset-expo', withBabelPresetExpoOptions(api)]],
-  plugins: [['@rechunk/babel-plugin']],
-});
-```
-
-```js
-// metro.config.js
-const {cacheVersion} = require('@rechunk/metro-config');
 const {getDefaultConfig} = require('expo/metro-config');
-const {withMetroRequirexConfig} = require('@metro-requirex/metro-config');
+const {withRechunk} = require('@rechunk/metro-config');
 
 const config = getDefaultConfig(__dirname);
-config.cacheVersion = cacheVersion;
-
-module.exports = withMetroRequirexConfig(config, {eager: true});
+module.exports = withRechunk(config, {projectRoot: __dirname});
 ```
 
-**Bare React Native** — use `withReactNativeBabelPresetOptions` from `@rechunk/babel-plugin` (see `apps/react-native/babel.config.js`).
-
-### 4. Mark a component
-
-```tsx
-"use rechunk";
-
-import React, {useState} from 'react';
-import {Pressable, Text} from 'react-native';
-
-export default function PromoBanner() {
-  const [n, setN] = useState(0);
-  return (
-    <Pressable onPress={() => setN(n + 1)}>
-      <Text>Shipped remotely · taps {n}</Text>
-    </Pressable>
-  );
-}
-```
-
-Render it behind `Suspense` like any other lazy component. On first mount the host proxy calls `importChunk`, downloads the signed artifact, verifies it, and mounts the remote default export in the same React tree.
-
-### 5. Develop and publish
+### Develop
 
 ```bash
-# Terminal A — on-demand remote compiler (required today)
-npx rechunk dev-server
-
-# Terminal B — your usual Metro / Expo process
-RECHUNK_ENVIRONMENT=dev npx expo start
+npx expo start
+# or
+npx react-native start
 ```
 
+Expected: the host proxy calls `importChunk`, Metro’s ReChunk middleware builds and signs the remote artifact on demand, the runtime verifies and evaluates it, and the component renders in the normal React tree. Save the source → rebuild → **state-preserving remote Fast Refresh** (Phase 2 gate).
+
+### Publish
+
 ```bash
-# Production publish (interactive component picker)
 npx rechunk publish
-
-# Optional project management UI
-npx rechunk manage
 ```
 
-| `RECHUNK_ENVIRONMENT` | Behavior |
-| --- | --- |
-| `dev` | Load from the local ReChunk dev server |
-| `prod` | Load from the configured remote host |
-| `offline` | Offline / fixture path for local testing |
+Builds and signs an **immutable** artifact with size, dependency, and compatibility metadata, then pushes to self-hosted storage or ReChunk Cloud. Promotion / rollout is a separate, auditable step — not an implicit 100% ship.
 
-Example apps in-repo: [`apps/expo`](./apps/expo) and [`apps/react-native`](./apps/react-native) (`ios:dev` / `android:dev` scripts run `rechunk dev-server` alongside Metro).
+---
+
+## Core vs Cloud
+
+| Capability | ReChunk Core (OSS) | ReChunk Cloud |
+| --- | --- | --- |
+| `"use rechunk"` + Babel proxy | Yes | Uses Core |
+| Metro-integrated local development | Yes | Not required |
+| On-demand remote compilation | Yes | Publish via CLI / CI |
+| Runtime verify, cache, fallback | Yes | Uses Core |
+| Self-hosted release resolution | Supported path | Managed API |
+| Artifact CDN | Bring your own | R2 + Cloudflare CDN |
+| Dashboard, rollouts, audit | Optional self-host | Managed |
+| Hosted analytics | SDK hooks | Managed ingestion |
+
+Local development never depends on a Cloudflare account.
+
+---
+
+## Compared to alternatives
+
+| | ReChunk | Expo EAS Update | Module Federation / Re.Pack |
+| --- | --- | --- | --- |
+| Unit of delivery | Component artifact | App JS update | Remotes / shared scopes |
+| Host bundler | Metro kept | Metro | Often Re.Pack / custom |
+| Opt-in | File directive | Update channels | Federation config |
+| Local cloud account | Not required for Core | Expo account for EAS | Varies |
+
+We do **not** claim “nobody else does remote RN code,” “first Metro remotes,” or “signed = sandboxed.”
+
+**Use something else when:** whole-app OTA is enough (EAS Update), or you already want a full federation platform.
+
+---
+
+## Implementation status
+
+| Area | Blueprint | Today (0.3.0 beta) |
+| --- | --- | --- |
+| `"use rechunk"` → `React.lazy` / `importChunk` | Decided | **Shipped** |
+| Rollup remote compiler + RS256 verify | Decided | **Shipped** |
+| Shared host React via metro-requirex | Decided | **Shipped** |
+| Metro middleware (`withRechunk`, no `:49904`) | Decided | In progress — companion `rechunk dev-server` still required |
+| State-preserving remote Fast Refresh | Proposed | Unproven on RN / Hermes |
+| Host registry vs hashed Metro IDs | Open | Hashed IDs exist; registry / hybrid to benchmark |
+| Manifests + native compatibility gating | Planned | Limited metadata today |
+| ReChunk Cloud (Workers / D1 / R2 / dashboard) | Selected direction | Product design / mocks — not shipped |
+
+### Milestone order
+
+0. **Baseline** — reproducible signed loads on iOS/Android + benchmarks  
+1. **One Metro server** — middleware only; gate: `expo start` alone  
+2. **Remote Fast Refresh** — Counter stays at `7` + stable `useRef` on Hermes  
+3. **Host resolver hardening** — registry vs hash benchmarks; typed errors; immutable cache  
+4. **Manifests + compatibility** — reject incompatible natives before eval  
+5. **Cloud MVP** — publish, digest, canary rollout, pause/rollback  
+6. **Analytics + paid workflows** — adoption/latency with honest denominators  
+
+### Explicit non-goals (early releases)
+
+- Forced Re.Pack / Rspack migration  
+- Mandatory standalone ReChunk HTTP process  
+- Silent Metro-source bypass as the primary dev mode  
+- Full sandbox / untrusted plugin marketplace  
+- Customer-facing AI agent  
+- Blanket “app-store compliant OTA” promises  
 
 ---
 
@@ -211,52 +207,36 @@ Example apps in-repo: [`apps/expo`](./apps/expo) and [`apps/react-native`](./app
 
 | Package | Role |
 | --- | --- |
-| [`@rechunk/core`](./packages/core) | Runtime: `importChunk`, configuration, events |
-| [`@rechunk/babel-plugin`](./packages/babel-plugin) | `"use rechunk"` → host proxy |
-| [`@rechunk/cli`](./packages/cli) | `init`, `dev-server`, `publish`, `manage` |
-| [`@rechunk/metro-config`](./packages/metro-config) | Metro `cacheVersion` helper |
+| [`@rechunk/core`](./packages/core) | Runtime loader pipeline |
+| [`@rechunk/babel-plugin`](./packages/babel-plugin) | Directive → host proxy |
+| [`@rechunk/cli`](./packages/cli) | `init`, `dev-server` *(current)*, `publish`, `manage` |
+| [`@rechunk/metro-config`](./packages/metro-config) | Evolving toward `withRechunk()` |
 | [`@rechunk/rollup-preset`](./packages/rollup-preset) | Remote component bundling |
-| [`@rechunk/api-client`](./packages/api-client) | Typed HTTP client for the control plane |
+| [`@rechunk/api-client`](./packages/api-client) | Control-plane HTTP client |
 
-Companion: [`metro-requirex`](https://github.com/crherman7/metro-requirex) — deterministic host module IDs + `evalx`.
+Example apps: [`apps/expo`](./apps/expo), [`apps/react-native`](./apps/react-native).
 
----
+### Current beta workflow *(until Phase 1)*
 
-## Roadmap
-
-Direction from the working architecture blueprint. Labels match implementation reality:
-
-| Milestone | Intent | State |
-| --- | --- | --- |
-| **One Metro server** | Mount ReChunk compile/serve on Metro’s HTTP listener; retire `:49904` for the default workflow | Decided — not shipped |
-| **Remote Fast Refresh** | Rebuild the real remote artifact and preserve hook state via host React Refresh | Proposed — unproven on RN/Hermes |
-| **Host resolver** | Abstract hashed Metro IDs vs generated host registry; drop brittle eager hacks | Open — benchmark both |
-| **Manifests + compatibility** | Immutable digests, host build descriptors, block incompatible natives before eval | Planned |
-| **ReChunk Cloud** | Cloudflare Workers / D1 / R2 delivery, component-first dashboard, rollouts | Optional managed layer |
-
-Non-goals for early releases: forcing Re.Pack, sandboxing third-party plugins, or a customer-facing AI agent.
-
----
-
-## Comparison
-
-| | ReChunk | Expo EAS Update | Module Federation / Re.Pack |
-| --- | --- | --- | --- |
-| Unit of delivery | Component artifact | App JS bundle / update | Remote modules / remotes |
-| Host bundler | Metro (kept) | Metro | Often Re.Pack / custom |
-| Opt-in API | `"use rechunk"` file directive | Update channels / runtime | Federation config |
-| Local cloud account | Not required for Core | Expo account for EAS | Varies |
+```bash
+npx rechunk init --host <url> --username <user> --password <pass>
+npx rechunk dev-server          # Terminal A — :49904 today
+RECHUNK_ENVIRONMENT=dev npx expo start   # Terminal B
+npx rechunk publish
+```
 
 ---
 
 ## Contributing
 
-Development happens on the `develop` branch. See [CONTRIBUTING.md](./CONTRIBUTING.md), [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md), and [SECURITY.md](./SECURITY.md).
+Work lands on `develop`. See [CONTRIBUTING.md](./CONTRIBUTING.md), [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md), and [SECURITY.md](./SECURITY.md).
 
 ```bash
 pnpm install
 pnpm build
 ```
+
+**Implementation priority:** Metro-integrated on-demand artifacts first, then remote Fast Refresh proofs, then compatibility/Cloud — not Cloud first.
 
 ---
 
