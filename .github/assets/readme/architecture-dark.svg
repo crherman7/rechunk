@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="220" viewBox="0 0 920 220" role="img" aria-label="ReChunk load pipeline">
+  <title>How ReChunk loads a component</title>
+  <rect width="920" height="220" fill="#121212"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1ed760"/>
+    </marker>
+  </defs>
+  <g font-family="ui-sans-serif, system-ui, -apple-system, Helvetica Neue, Arial, sans-serif">
+    <rect x="8" y="58" width="150" height="84" rx="10" fill="#1f1f1f" stroke="#8a8a8a" stroke-width="1.5"/>
+    <text x="83" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">"use rechunk"</text>
+    <text x="83" y="118" text-anchor="middle" font-size="12" fill="#b3b3b3">Babel host proxy</text>
+    <rect x="198" y="58" width="150" height="84" rx="10" fill="#1f1f1f" stroke="#8a8a8a" stroke-width="1.5"/>
+    <text x="273" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">React.lazy</text>
+    <text x="273" y="118" text-anchor="middle" font-size="12" fill="#b3b3b3">importChunk()</text>
+    <rect x="388" y="58" width="150" height="84" rx="10" fill="#1f1f1f" stroke="#8a8a8a" stroke-width="1.5"/>
+    <text x="463" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">Fetch + verify</text>
+    <text x="463" y="118" text-anchor="middle" font-size="12" fill="#b3b3b3">RS256 signature</text>
+    <rect x="578" y="58" width="150" height="84" rx="10" fill="#1f1f1f" stroke="#8a8a8a" stroke-width="1.5"/>
+    <text x="653" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">evalx</text>
+    <text x="653" y="118" text-anchor="middle" font-size="12" fill="#b3b3b3">metro-requirex</text>
+    <rect x="768" y="58" width="144" height="84" rx="10" fill="#1f1f1f" stroke="#8a8a8a" stroke-width="1.5"/>
+    <text x="840" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">Host React</text>
+    <text x="840" y="118" text-anchor="middle" font-size="12" fill="#b3b3b3">shared runtime</text>
+  </g>
+  <g stroke="#1ed760" stroke-width="2.5" fill="none" marker-end="url(#arrow)">
+    <line x1="158" y1="100" x2="192" y2="100"/>
+    <line x1="348" y1="100" x2="382" y2="100"/>
+    <line x1="538" y1="100" x2="572" y2="100"/>
+    <line x1="728" y1="100" x2="762" y2="100"/>
+  </g>
+  <text x="460" y="200" text-anchor="middle" font-size="12" fill="#b3b3b3" font-family="ui-sans-serif, system-ui, Helvetica Neue, Arial, sans-serif">Same JS runtime as your app - hooks, context, and host native modules stay available</text>
+</svg>

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-label="ReChunk social preview">
+  <title>ReChunk</title>
+  <rect width="1280" height="640" fill="#121212"/>
+  <g transform="translate(120,90) scale(0.9)">
+  <g transform="translate(79 51) scale(0.95)">
+    <g fill="none" fill-rule="evenodd">
+      <g opacity="0.3" stroke="#ffffff" stroke-width="2.2" stroke-dasharray="4 5.5">
+        <rect x="32.4" y="32.4" width="75.6" height="351"/>
+        <path d="M108 32.4h75.6c59.65 0 108 48.35 108 108s-48.35 108-108 108H108V183.6h75.6c17.89 0 32.4-14.51 32.4-32.4S201.49 118.8 183.6 118.8H108z"/>
+        <polygon points="140.4,248.4 224.1,248.4 329.4,383.4 245.7,383.4"/>
+      </g>
+      <g stroke="#1ed760" stroke-width="2.2" stroke-dasharray="2.7 5.4">
+        <line x1="108" y1="32.4" x2="132.3" y2="0"/>
+        <line x1="108" y1="248.4" x2="132.3" y2="216"/>
+        <line x1="140.4" y1="248.4" x2="164.7" y2="275.4"/>
+        <line x1="329.4" y1="383.4" x2="353.7" y2="410.4"/>
+        <line x1="32.4" y1="32.4" x2="0" y2="32.4"/>
+        <line x1="32.4" y1="383.4" x2="0" y2="383.4"/>
+      </g>
+      <g fill="#1ed760">
+        <circle cx="108" cy="32.4" r="5"/>
+        <circle cx="108" cy="248.4" r="5"/>
+        <circle cx="140.4" cy="248.4" r="5"/>
+        <circle cx="329.4" cy="383.4" r="5"/>
+        <circle cx="32.4" cy="32.4" r="5"/>
+        <circle cx="32.4" cy="383.4" r="5"/>
+      </g>
+      <rect x="0" y="32.4" width="75.6" height="351" fill="#ffffff"/>
+      <path d="M132.3 0h75.6c59.65 0 108 48.35 108 108s-48.35 108-108 108h-75.6V140.4h75.6c17.89 0 32.4-14.51 32.4-32.4S225.79 75.6 207.9 75.6h-75.6z" fill="#ffffff"/>
+      <polygon points="164.7,275.4 248.4,275.4 353.7,410.4 270,410.4" fill="#1ed760"/>
+    </g>
+  </g>
+  </g>
+  <g font-family="ui-sans-serif, system-ui, -apple-system, Helvetica Neue, Arial, sans-serif" fill="#ffffff">
+    <text x="620" y="270" font-size="64" font-weight="700" letter-spacing="4">rechunk</text>
+    <text x="620" y="330" font-size="24" font-weight="500" fill="#b3b3b3">Deploy a React Native component independently</text>
+    <text x="620" y="372" font-size="20" fill="#b3b3b3">without changing how you build your app</text>
+  </g>
+  <rect x="620" y="410" width="48" height="3" fill="#1ed760" rx="1.5"/>
+  <text x="620" y="470" font-family="ui-sans-serif, system-ui, Helvetica Neue, Arial, sans-serif" font-size="15" fill="#b3b3b3">Metro · Expo · React Native · signed remote artifacts</text>
+</svg>

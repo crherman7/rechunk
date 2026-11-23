@@ -1,262 +1,265 @@
-<picture>
-  <img alt="ReChunk Banner" src="./.github/assets/hero.png">
-</picture>
-
-<br/>
-<br/>
-
 <div align="center">
-<a href="https://www.npmjs.com/package/@rechunk/core"><img src="https://img.shields.io/npm/v/@rechunk/core.svg?style=flat" alt="npm version"></a>
-<a href="https://www.npmjs.com/package/@rechunk/core"><img src="https://img.shields.io/npm/dm/@rechunk/core.svg?style=flat" alt="Downloads"></a>
-<a href="https://bundlephobia.com/package/@rechunk/core"><img src="https://img.shields.io/bundlephobia/minzip/@rechunk/core" alt="Bundle Size"></a>
-<a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-Ready-blue.svg" alt="TypeScript"></a>
-<a href="LICENSE.md"><img src="https://img.shields.io/github/license/crherman7/rechunk.svg" alt="License"></a>
-<a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"></a>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./.github/assets/readme/logo-dark.svg">
+    <img src="./.github/assets/readme/logo-light.svg" alt="ReChunk logo" width="220">
+  </picture>
+
+  <h1>ReChunk</h1>
+
+  <p><strong>Deploy a React Native component independently — without changing how you build your app.</strong></p>
+
+  <p>
+    <a href="https://www.npmjs.com/package/@rechunk/core"><img src="https://img.shields.io/npm/v/@rechunk/core.svg?style=flat-square&color=121212" alt="npm @rechunk/core"></a>
+    <a href="LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-0a7a38?style=flat-square" alt="MIT License"></a>
+    <img src="https://img.shields.io/badge/status-beta-b3b3b3?style=flat-square" alt="Project status: beta">
+    <img src="https://img.shields.io/badge/node-%E2%89%A520.14-121212?style=flat-square" alt="Node.js 20.14 or newer">
+  </p>
+
+  <p>
+    <a href="https://rechunk.xyz">Website</a>
+    ·
+    <a href="https://rechunk.xyz/docs/">Docs</a>
+    ·
+    <a href="https://discord.gg/xFhuxjwhss">Discord</a>
+    ·
+    <a href="https://github.com/crherman7/metro-requirex">metro-requirex</a>
+  </p>
 </div>
 
-<br/>
+<br>
 
-<div align="center">
-  <p><strong>ReChunk is a lightweight React Native library that enables secure over-the-air updates and dynamic component loading, allowing you to update your app's UI without app store submissions.</strong></p>
-</div>
+**ReChunk** is a component-level delivery layer for React Native developers. Mark a file with `"use rechunk"`, keep Metro and Expo as they are, and ship that one component as a signed remote artifact — without turning your app into a federation host.
 
-<div align="center">
-  <a aria-label="rechunk.xyz" href="https://rechunk.xyz">Website</a>
-  &nbsp;•&nbsp;
-  <a aria-label="ReChunk Documentation" href="https://rechunk.xyz/docs/">Documentation</a>
-  &nbsp;•&nbsp;
-  <a aria-label="ReChunk Discord Community" href="https://discord.gg/xFhuxjwhss">Discord Community</a>
-</div>
+> **Status:** public beta on npm (`@rechunk/*` **0.3.0**). Local development currently uses a companion `rechunk dev-server` on port **49904**. Metro-integrated development (no second process) and remote Fast Refresh are next milestones — see [Roadmap](#roadmap).
 
-<br/>
+---
 
-## Why ReChunk?
+## The idea
 
-- 📱 **Bypass App Store Updates**: Deploy UI changes without waiting for app store approval
-- 🔄 **Instant Updates**: Push changes to all users simultaneously
-- 🛠 **Developer Friendly**: Simple API with TypeScript support
-- 🏃 **Performance First**: Minimal bundle size impact and optimized loading
+App-level OTA (Expo Updates and similar) replaces a whole JS bundle. Module Federation can distribute remotes, but usually asks you to restructure hosts, remotes, and shared scopes.
 
-## Installation
+ReChunk’s bet is narrower: **one ordinary React Native component**, independently buildable and deliverable, with almost no surface area in source:
+
+```tsx
+"use rechunk";
+
+export default function CheckoutCard() {
+  return <CheckoutSummary />;
+}
+```
+
+That file still uses normal hooks, context, styles, and host native modules. At runtime it executes **inside the host JS runtime** after download and RS256 verification — not in a separate sandbox.
+
+---
+
+## Why teams reach for it
+
+| You want… | ReChunk’s approach |
+| --- | --- |
+| Ship UI without a full store release | Publish a signed component artifact, not a whole app bundle |
+| Keep Metro / Expo | Host bundler stays Metro; no Re.Pack / Rspack migration required |
+| Tiny developer API | File directive + default export; Babel swaps in a `React.lazy` proxy |
+| Integrity on the wire | Artifacts are signed (RS256) and verified before evaluation |
+| Host capabilities | Shared React runtime via [`metro-requirex`](https://github.com/crherman7/metro-requirex) |
+
+**Not a claim we make:** signing is not a sandbox. Remote code runs with the same privileges as your app JS. Treat publishers and release policy as the real security boundary.
+
+**When to use something else:** if you only need whole-app OTA, Expo EAS Update is simpler. If you are building a full microfrontend platform with many remotes and shared scopes, Module Federation / Re.Pack may fit better.
+
+---
+
+## How it works today
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./.github/assets/readme/architecture-dark.svg">
+    <img alt="Pipeline: use rechunk directive, React.lazy importChunk, fetch and RS256 verify, evalx via metro-requirex, render in host React" src="./.github/assets/readme/architecture-light.svg" width="900">
+  </picture>
+</p>
+
+1. **Babel** sees `"use rechunk"`, requires a single default export, strips the implementation from the host graph, and inserts `React.lazy(() => importChunk(...))`.
+2. **Runtime** (`@rechunk/core`) fetches the artifact, verifies the signature, evaluates with `evalx`, and resolves host modules through Metro.
+3. **Dev** serves on-demand Rollup builds from `rechunk dev-server` (default `http://localhost:49904`).
+4. **Prod** publishes immutable chunks to your configured host (`rechunk publish`).
+
+```mermaid
+flowchart LR
+  A["use rechunk component"] --> B[Babel host proxy]
+  B --> C["React.lazy → importChunk"]
+  C --> D[ChunkManager fetch]
+  D --> E[RS256 verify]
+  E --> F[metro-requirex evalx]
+  F --> G[Host React tree]
+  H[Rollup remote compiler] --> I["dev-server :49904"]
+  I --> D
+```
+
+---
+
+## Quick start
+
+**Requires Node ≥ 20.14** (see root `package.json` `engines`).
+
+### 1. Install
 
 ```bash
 npm install @rechunk/core
 npm install -D @rechunk/cli @rechunk/babel-plugin @rechunk/metro-config
 
 # or
-
-yarn add @rechunk/core
-yarn add -D @rechunk/cli @rechunk/babel-plugin @rechunk/metro-config
+pnpm add @rechunk/core
+pnpm add -D @rechunk/cli @rechunk/babel-plugin @rechunk/metro-config
 ```
 
-## Quick Example
+### 2. Initialize a project
 
-### 1. Initialize Project
+Creates `.rechunkrc.json` against a ReChunk host (basic auth today — expected to evolve):
 
 ```bash
-# Create a new ReChunk project with a custom host
-npx rechunk init -h https://your-rechunk-host.com -u username -p password
+npx rechunk init \
+  --host https://your-rechunk-host.example/api/v1 \
+  --username <user> \
+  --password <password>
 ```
 
-If you'd like to use the hosted ReChunk service at [rechunk.xyz](https://rechunk.xyz), you can run:
+Hosted beta endpoint (credentials rotate; treat as demo only):
 
 ```bash
-npx rechunk init --host https://rechunk.xyz/api/v1 --username admin --password password123
+npx rechunk init \
+  --host https://rechunk.xyz/api/v1 \
+  --username admin \
+  --password password123
 ```
 
-> **Note:** This project is currently in beta. As we continue to improve the platform, certain aspects, such as authentication mechanisms (e.g., basic auth), may change in the future. Stay tuned for updates in our documentation and changelogs.
+### 3. Wire Babel + Metro
 
-### 2. Create a ReChunk Component
+**Expo** (matches `apps/expo` in this repo):
 
-```tsx
-// components/FeatureCard.tsx
-'use rechunk';
+```js
+// babel.config.js
+const {withBabelPresetExpoOptions} = require('@rechunk/babel-plugin');
 
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
-
-interface FeatureCardProps {
-  title: string;
-  description: string;
-  onPress?: () => void;
-}
-
-export default function FeatureCard({
-  title = 'New Feature',
-  description = 'Try out our latest update!',
-  onPress,
-}: FeatureCardProps) {
-  const [pressed, setPressed] = useState(false);
-
-  const handlePress = () => {
-    setPressed(true);
-    onPress?.();
-  };
-
-  return (
-    <TouchableOpacity
-      style={[styles.container, pressed && styles.pressed]}
-      onPress={handlePress}>
-      <View style={styles.content}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.description}>{description}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-}
-
-const styles = StyleSheet.create({
-  // ... styles remain the same
+module.exports = api => ({
+  presets: [['babel-preset-expo', withBabelPresetExpoOptions(api)]],
+  plugins: [['@rechunk/babel-plugin']],
 });
 ```
 
-### 3. Configure Your Project
-
-```javascript
-// babel.config.js
-const {withReactNativeBabelPresetOptions} = require('@rechunk/babel-plugin');
-
-module.exports = {
-  presets: [
-    [
-      'module:metro-react-native-babel-preset',
-      api => withReactNativeBabelPresetOptions(api),
-    ],
-  ],
-  plugins: ['@rechunk/babel-plugin'],
-};
-
+```js
 // metro.config.js
 const {cacheVersion} = require('@rechunk/metro-config');
+const {getDefaultConfig} = require('expo/metro-config');
+const {withMetroRequirexConfig} = require('@metro-requirex/metro-config');
 
-module.exports = {
-  cacheVersion,
-  // ... other Metro configuration
-};
+const config = getDefaultConfig(__dirname);
+config.cacheVersion = cacheVersion;
+
+module.exports = withMetroRequirexConfig(config, {eager: true});
 ```
 
-### 4. Use the Component
+**Bare React Native** — use `withReactNativeBabelPresetOptions` from `@rechunk/babel-plugin` (see `apps/react-native/babel.config.js`).
+
+### 4. Mark a component
 
 ```tsx
-// App.tsx
-import React, {Suspense} from 'react';
-import {View, ActivityIndicator} from 'react-native';
-import ReChunk from '@rechunk/core';
+"use rechunk";
 
-import FeatureCard from './FeatureCard';
+import React, {useState} from 'react';
+import {Pressable, Text} from 'react-native';
 
-export default function App() {
+export default function PromoBanner() {
+  const [n, setN] = useState(0);
   return (
-    <Suspense fallback={<ActivityIndicator />}>
-      <FeatureCard
-        title="Welcome!"
-        description="This component was loaded dynamically!"
-        onPress={() => console.log('Pressed!')}
-      />
-    </Suspense>
+    <Pressable onPress={() => setN(n + 1)}>
+      <Text>Shipped remotely · taps {n}</Text>
+    </Pressable>
   );
 }
 ```
 
-### 5. Publish Your Component
+Render it behind `Suspense` like any other lazy component. On first mount the host proxy calls `importChunk`, downloads the signed artifact, verifies it, and mounts the remote default export in the same React tree.
+
+### 5. Develop and publish
 
 ```bash
-# Start development server
+# Terminal A — on-demand remote compiler (required today)
 npx rechunk dev-server
 
-# Or publish to production
+# Terminal B — your usual Metro / Expo process
+RECHUNK_ENVIRONMENT=dev npx expo start
+```
+
+```bash
+# Production publish (interactive component picker)
 npx rechunk publish
-```
 
-## Usage Guide
-
-### Development Workflow
-
-1. **Start Development Server**
-
-```bash
-npx rechunk dev-server
-```
-
-2. **Mark Components for Remote Loading**
-   Add the `"use rechunk"` directive to any component you want to load remotely.
-
-3. **Configure Environment**
-
-```bash
-# Development
-export RECHUNK_ENVIRONMENT=dev
-
-# Production
-export RECHUNK_ENVIRONMENT=prod
-
-# Offline testing
-export RECHUNK_ENVIRONMENT=offline
-```
-
-### Production Deployment
-
-1. **Publish Components**
-
-```bash
-npx rechunk publish
-```
-
-2. **Manage Deployments**
-
-```bash
+# Optional project management UI
 npx rechunk manage
 ```
 
-## Features
+| `RECHUNK_ENVIRONMENT` | Behavior |
+| --- | --- |
+| `dev` | Load from the local ReChunk dev server |
+| `prod` | Load from the configured remote host |
+| `offline` | Offline / fixture path for local testing |
 
-- **🚀 Over-The-Air Updates**: Deploy React Native components instantly without app store submissions. Push UI changes directly to your users in real-time.
-- **⚡️ Zero-Config Hosting**: Host your components anywhere - from S3 to your own servers. Zero vendor lock-in, maximum flexibility.
-- **🔒 Built-in Security**: Industry-standard digital signatures verify every component. Keep your dynamic updates secure and your users protected.
+Example apps in-repo: [`apps/expo`](./apps/expo) and [`apps/react-native`](./apps/react-native) (`ios:dev` / `android:dev` scripts run `rechunk dev-server` alongside Metro).
 
-## Getting Started
+---
 
-Visit our [Quick Start Guide](https://rechunk.xyz/docs/) to begin using ReChunk in your project.
+## Packages
 
-## Community
+| Package | Role |
+| --- | --- |
+| [`@rechunk/core`](./packages/core) | Runtime: `importChunk`, configuration, events |
+| [`@rechunk/babel-plugin`](./packages/babel-plugin) | `"use rechunk"` → host proxy |
+| [`@rechunk/cli`](./packages/cli) | `init`, `dev-server`, `publish`, `manage` |
+| [`@rechunk/metro-config`](./packages/metro-config) | Metro `cacheVersion` helper |
+| [`@rechunk/rollup-preset`](./packages/rollup-preset) | Remote component bundling |
+| [`@rechunk/api-client`](./packages/api-client) | Typed HTTP client for the control plane |
 
-Join our growing community! We're excited to help and hear your feedback:
+Companion: [`metro-requirex`](https://github.com/crherman7/metro-requirex) — deterministic host module IDs + `evalx`.
 
-- 💬 Join our [Discord](https://discord.gg/xFhuxjwhss) for real-time discussions
-- ⭐ Star us on [GitHub](https://github.com/crherman7/rechunk) to show your support
+---
 
-## Upcoming Features
+## Roadmap
 
-We’re actively working on improvements to make ReChunk even more powerful. Here's what’s coming soon:
+Direction from the working architecture blueprint. Labels match implementation reality:
 
-### 🔖 Version-Based Manifest
-- Enable selective loading of components based on app version.
-- Support backward compatibility across deployments.
-- Manifest schema will define available components, versions, signatures, and dependencies.
+| Milestone | Intent | State |
+| --- | --- | --- |
+| **One Metro server** | Mount ReChunk compile/serve on Metro’s HTTP listener; retire `:49904` for the default workflow | Decided — not shipped |
+| **Remote Fast Refresh** | Rebuild the real remote artifact and preserve hook state via host React Refresh | Proposed — unproven on RN/Hermes |
+| **Host resolver** | Abstract hashed Metro IDs vs generated host registry; drop brittle eager hacks | Open — benchmark both |
+| **Manifests + compatibility** | Immutable digests, host build descriptors, block incompatible natives before eval | Planned |
+| **ReChunk Cloud** | Cloudflare Workers / D1 / R2 delivery, component-first dashboard, rollouts | Optional managed layer |
 
-### 🏷️ Component Tagging & Versioning
-- Tag and version individual components (e.g. `v1.2.0`, `beta`, `experimental`).
-- Use tags to manage releases, rollbacks, and A/B testing.
-- CLI support for tagging:  
-  ```bash
-  npx rechunk publish --tag beta
-  ```
+Non-goals for early releases: forcing Re.Pack, sandboxing third-party plugins, or a customer-facing AI agent.
 
-### 📚 Exhaustive Documentation
-- Expanded guides and advanced use cases
-- Custom environments, CDN hosting, and authentication strategies
-- End-to-end examples for enterprise workflows
+---
 
-> Stay tuned — we’re building this in the open. Join [Discord](https://discord.gg/xFhuxjwhss) for updates.
+## Comparison
+
+| | ReChunk | Expo EAS Update | Module Federation / Re.Pack |
+| --- | --- | --- | --- |
+| Unit of delivery | Component artifact | App JS bundle / update | Remote modules / remotes |
+| Host bundler | Metro (kept) | Metro | Often Re.Pack / custom |
+| Opt-in API | `"use rechunk"` file directive | Update channels / runtime | Federation config |
+| Local cloud account | Not required for Core | Expo account for EAS | Varies |
+
+---
 
 ## Contributing
 
-Please read our [Contributing Guide](./CONTRIBUTING.md) and help us build ReChunk together. For questions or feedback, feel free to open an issue.
+Development happens on the `develop` branch. See [CONTRIBUTING.md](./CONTRIBUTING.md), [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md), and [SECURITY.md](./SECURITY.md).
 
-## Code of Conduct
+```bash
+pnpm install
+pnpm build
+```
 
-Please review our [Code of Conduct](./CODE_OF_CONDUCT.md) for guidelines on community interaction.
+---
 
 ## License
 
-ReChunk is licensed under the [MIT License](./LICENSE.md).
+[MIT](./LICENSE.md) © Christopher Herman
